@@ -103,9 +103,15 @@
 
         $('#submitVAForm').click(function() {
             $('#applyStep2').hide('slow');
+            /*
             $('#submittingAJAX').fadeIn();
+            $.ajax({
+                type: "POST",
+                url: "{{ "
+            }
             return false;
         })
+        */
 
         $("input[name='inputCategory[]']").change(function () {
             var maxAllowed = 5;

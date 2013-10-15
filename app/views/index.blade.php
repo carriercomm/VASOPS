@@ -50,7 +50,7 @@
 <div class="control-group">
     <label class="control-label" for="inputVaName">VA Name</label>
     <div class="controls">
-        <input name="inputVaName" type="text" id="inputVaName" placeholder="VA Name" />
+        <input name="inpuVAName" type="text" id="inputVAName" placeholder="VA Name" />
     </div>
 </div>
 <div class="control-group">
@@ -346,17 +346,6 @@
     </div>
 </div>
 <div class="control-group">
-    <label class="control-label" for="inputContactViaEmail">May we contact you via email?</label>
-    <div class="controls">
-        <div class="checkbox">
-            <label>
-                <input name="inputContactViaEmail" data-toggle="checkbox" checked="checked" type="checkbox" value="1">
-                Yes
-            </label>
-        </div>
-    </div>
-</div>
-<div class="control-group">
     <label class="control-label" for="inputPassword">Password</label>
     <div class="controls">
         <input name="inputPassword" type="password" id="inputPassword" placeholder="" />
@@ -581,4 +570,5 @@
 </div>
 </div>
 </div><!-- /container -->
+
 @include('core.footer')

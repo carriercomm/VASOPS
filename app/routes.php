@@ -11,4 +11,8 @@
 |
 */
 
+//Get Index
 Route::get('/', array('as' => 'index', 'uses' => 'IndexController@get_index'));
+
+//Submit VA Registration
+Route::post('/submitVARegistration', array('as' => 'submitVARegistration', 'uses' => 'IndexController@post_index'));
