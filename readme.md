@@ -5,4 +5,5 @@
 ### Current list of authorized users
 
 Colin Schoen
+
 Richard Gerrish
