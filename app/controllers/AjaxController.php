@@ -31,7 +31,6 @@ class AjaxController extends BaseController {
                 'Email' => $post['inputEmail'],
                 'Password' => $post['inputPassword'],
                 'Password_confirmation' => $post['inputPassword_confirmation'],
-//                'Logo File' => $post['inputLogoFile'],
                 'Category' => $post['inputCategory'],
             ),
             array(
@@ -47,7 +46,6 @@ class AjaxController extends BaseController {
                 'Email' => 'required|email',
                 'Password' => 'required|min:6|confirmed',
                 'Password_confirmation' => 'required|min:6',
-//                'Logo File' => 'required',
                 'Category' => 'required',
             )
         );
@@ -66,6 +64,8 @@ class AjaxController extends BaseController {
         }
         else {
             //Submit Data
+
+
         }
 
     }

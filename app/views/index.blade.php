@@ -375,12 +375,6 @@
     </div>
 </div>
 <div class="control-group">
-    <label class="control-label" for="inputLogoFile">Upload Logo (70Kb limit)</label>
-    <div class="controls">
-        <input name="inputLogoFile" type="file" id="inputLogoFile" />
-    </div>
-</div>
-<div class="control-group">
     <label><span id="chooseOrRemove">Choose</span> <span id="numberOfChoicesLabel" class="label label-success">5</span> categories</label>
     <div class="controls">
         <div class="checkbox">
