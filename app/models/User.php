@@ -10,7 +10,8 @@ class User extends Eloquent implements UserInterface, RemindableInterface {
 	 *
 	 * @var string
 	 */
-	protected $table = 'users';
+	protected $table = 'vas';
+    protected $primaryKey = 'cid';
 
 	/**
 	 * The attributes excluded from the model's JSON form.
@@ -48,5 +49,10 @@ class User extends Eloquent implements UserInterface, RemindableInterface {
 	{
 		return $this->email;
 	}
+
+    static public function getFirstName($id) {
+        $user = User::find($id);
+        return strstr($user->name," ", true);
+    }
 
 }

@@ -6,7 +6,11 @@ class IndexController extends BaseController {
 */
 public function get_index()
 {
-return View::make('index');
+    $fname = "";
+    if (Auth::check()) {
+        $fname = User::getFirstName(Auth::user()->cid);
+    }
+    return View::make('index')->with(array('fname' => $fname));
 }
 
 }

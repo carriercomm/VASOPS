@@ -35,16 +35,33 @@
             </div>
         </div>
         <!--<div class="span6 offset5">-->
-        <p style="margin-top: 10px; display: none;" id="helloUser" class="span2 offset7">
-            <button class="btn btn-inverse">G'Morning, Colin</button>
+        @if (!empty($fname))
+        <p style="margin-top: 10px;" id="helloUser" class="span2 offset7">
+            <button id="helloUser" class="btn btn-inverse">G'Day, <span id="helloUserName">{{$fname}}</span></button>
         </p>
+        @else
+        <p style="margin-top: 10px; display: none;" id="helloUser" class="span2 offset7">
+            <button id="helloUser" class="btn btn-inverse">G'Day, <span id="helloUserName"></span></button>
+        </p>
+        @endif
+        <p style="margin-top: 10px; display: none;" id="loginLoading" class="span2 offset7">
+            <img alt="Loading..." src="{{ URL::to('/') }}/images/loader.gif">
+        </p>
+        <div style="margin-top: -15px; display: none;" id="loginErrorCid" class="span2 offset4">
+            <span class="label label-important">Invalid VATSIM CID. Please try again.</span>
+        </div>
+        <div style="margin-top: -15px; display: none;" id="loginErrorPassword" class="span2 offset4">
+            <span class="label label-important">Invalid VATSIM Password. Please try again.</span>
+        </div>
+        @if (empty($fname))
         <p class="span3 offset1">
-        <form style=" margin-top: 10px;" class="form-inline">
-            <div id="loginForm" class="controls controls-row">
-                <input id="cd" class="input-medium" type="text" value="" placeholder="CID" class="span3"/>
-                <input id="pass" class="input-medium" type="password" value="" placeholder="Password" class="span3"/>
-                <input id="goLogin" type="submit" class="btn btn-success" value="Go" class="span3"/>
+        <form id="loginForm" style=" margin-top: 10px;" class="form-inline">
+            <div class="controls controls-row">
+                <input name="inputCid" id="login_cid" class="input-medium" type="text" value="" placeholder="CID" class="span3"/>
+                <input name="inputPassword" class="input-medium" type="password" value="" placeholder="Password" class="span3"/>
+                <input id="submitLoginForm" type="submit" class="btn btn-success" value="Go" class="span3"/>
             </div>
         </form>
         </p>
+        @endif
     </div>

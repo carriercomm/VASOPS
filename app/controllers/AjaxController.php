@@ -1,6 +1,27 @@
 <?php
 class AjaxController extends BaseController {
 
+
+    public function post_login() {
+        $postStr = Input::get('data');
+        parse_str($postStr, $post);
+        $cid = $post['inputCid'];
+        $password = $post['inputPassword'];
+        $user = User::where('cid', '=', $cid)->first();
+        if (!empty($user)) {
+           if (Hash::check($password, $user->password)) {
+                (Auth::attempt(array('cid' => $cid, 'password' => $user->password)));
+                echo User::getFirstName(Auth::user()->cid);
+            }
+            else {
+                echo "/errorBadPassword";
+            }
+        }
+        else {
+            echo "/errorBadCid";
+        }
+    }
+
     public function post_registration()
     {
         //Pull our AJAX post data
@@ -35,7 +56,7 @@ class AjaxController extends BaseController {
                 'Category' => $post['inputCategory'],
             ),
             array(
-                'Cid' => 'required|integer',
+                'Cid' => 'required|integer|unique:vas,cid',
                 'Va Name' => 'required',
                 'Url' => 'required|url',
                 'Description' => 'required|max:200',
@@ -52,6 +73,7 @@ class AjaxController extends BaseController {
             ),
             array (
                 'Category.max' => 'You have selected more than :max categories.',
+                'Cid.unique' => 'There is already an account with an active virtual airline with that CID.',
             )
         );
 
@@ -68,11 +90,14 @@ class AjaxController extends BaseController {
 
         }
         else {
+
             //Submit Data
             //Create an instance of our model
             $vas = new VAs;
             //Map our fields
             $vas->cid = $post['inputCid'];
+            //Hash our password
+            $vas->password = Hash::make($post['inputPassword']);
             $vas->vaname = $post['inputVaName'];
             $vas->url = $post['inputUrl'];
             $vas->description = $post['inputDescription'];

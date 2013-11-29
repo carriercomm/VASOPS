@@ -81,11 +81,6 @@
             $('#tooltip').fadeIn(1500);
         })
 
-        $('#goLogin').click(function() {
-            $('#loginForm').hide();
-            $('#helloUser').fadeIn();
-            return false;
-        })
 
         $('#inputDescription').keyup(function() {
             var tlength = $('#inputDescription').val().length;
@@ -106,7 +101,6 @@
             $('#submittingAJAX').fadeIn();
             var vaFormData;
             vaFormData =  $("#vaApplicationForm").serialize();
-          //  alert(vaFormData);
             $.ajax({
                 type: "POST",
                 url: "{{URL::route('ajaxRegistration')}}",
@@ -123,6 +117,36 @@
                         $('#applyStep2Success').fadeIn('slow');
                     }
                 });
+            return false;
+        });
+
+        $('#submitLoginForm').click(function() {
+            $('#loginForm').hide();
+            $('#loginErrorCid').hide();
+            $('#loginErrorPassword').hide();
+            $('#loginLoading').show('slow');
+            var loginFormData;
+            loginFormData = $("#loginForm").serialize();
+            $.ajax({
+                type: "POST",
+                url: "{{URL::route('ajaxLogin')}}",
+                data: { data: loginFormData }
+            })
+                .done(function(received) {
+                    $('#loginLoading').hide();
+                    if (received == "/errorBadPassword") {
+                        $('#loginForm').fadeIn('medium');
+                        $('#loginErrorPassword').fadeIn('medium');
+                    }
+                    else if (received == "/errorBadCid") {
+                        $('#loginForm').fadeIn('medium');
+                        $('#loginErrorCid').fadeIn('medium');
+                    }
+                    else {
+                        $('#helloUserName').html(received);
+                        $('#helloUser').fadeIn('slow');
+                    }
+            });
             return false;
         });
 
