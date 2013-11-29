@@ -36,13 +36,13 @@
         </div>
         <!--<div class="span6 offset5">-->
         @if (!empty($fname))
-        <p style="margin-top: 10px;" id="helloUser" class="span2 offset7">
-            <button id="helloUser" class="btn btn-inverse">G'Day, <span id="helloUserName">{{$fname}}</span></button>
-        </p>
+        <div style="margin-top: 10px; position: relative;" id="helloUser" class="span2 offset7">
+            <button id="helloUser" class="btn btn-inverse"><span style="position: absolute; display: none; top: -2px; right: 30px;" class="fui-cross"></span>G'Day, <span id="helloUserName">{{$fname}}</span></button>
+        </div>
         @else
-        <p style="margin-top: 10px; display: none;" id="helloUser" class="span2 offset7">
-            <button id="helloUser" class="btn btn-inverse">G'Day, <span id="helloUserName"></span></button>
-        </p>
+        <div style="margin-top: 10px; display: none; position: relative;" id="helloUser" class="span2 offset7">
+            <button id="helloUser" class="btn btn-inverse"><span style="position: absolute; display: none; top: -2px; right: 30px;" class="fui-cross"></span>G'Day, <span id="helloUserName"></span></button>
+        </div>
         @endif
         <p style="margin-top: 10px; display: none;" id="loginLoading" class="span2 offset7">
             <img alt="Loading..." src="{{ URL::to('/') }}/images/loader.gif">
