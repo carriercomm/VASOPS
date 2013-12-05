@@ -28,20 +28,25 @@
         <div class="span3">
             <div class="btn-toolbar">
                 <div class="btn-group">
+                    @if(!Auth::check())
                     <a id="applyBtn" class="btn btn-success" href="#">Apply to be a VA Partner</a>
+                    @endif
                     <a id="currentBtn" class="btn btn-success" href="#">Current VAs</a>
                     <a id="findBtn" class="btn btn-success" href="#">Find Your VA</a>
+                    @if(Auth::check())
+                    <a class="btn" href="{{URL::to('va')}}">Manage VA</a>
+                    @endif
                 </div>
             </div>
         </div>
         <!--<div class="span6 offset5">-->
         @if (!empty($fname))
         <div style="margin-top: 10px; position: relative;" id="helloUser" class="span2 offset7">
-            <button id="helloUser" class="btn btn-inverse"><span style="position: absolute; display: none; top: -2px; right: 30px;" class="fui-cross"></span>G'Day, <span id="helloUserName">{{$fname}}</span></button>
+            <a id="helloUser" class="btn btn-inverse"><i id="helloUserIcon" class="fui-user"></i>G'Day, <span id="helloUserName">{{Session::get('fname');}}</span></a>
         </div>
         @else
         <div style="margin-top: 10px; display: none; position: relative;" id="helloUser" class="span2 offset7">
-            <button id="helloUser" class="btn btn-inverse"><span style="position: absolute; display: none; top: -2px; right: 30px;" class="fui-cross"></span>G'Day, <span id="helloUserName"></span></button>
+            <a id="helloUser" class="btn btn-inverse"><i id="helloUserIcon" class="fui-user"></i> G'Day, <span id="helloUserName"></span></a>
         </div>
         @endif
         <p style="margin-top: 10px; display: none;" id="loginLoading" class="span2 offset7">
@@ -53,7 +58,7 @@
         <div style="margin-top: -15px; display: none;" id="loginErrorPassword" class="span2 offset4">
             <span class="label label-important">Invalid VATSIM Password. Please try again.</span>
         </div>
-        @if (empty($fname))
+        @if (!Auth::check())
         <p class="span3 offset1">
         <form id="loginForm" style=" margin-top: 10px;" class="form-inline">
             <div class="controls controls-row">

@@ -19,7 +19,7 @@
                 <div class="footer-banner">
                     <h3 class="footer-title">CS</h3>
                     <ul>
-                        <li>Cool contact info here</li>
+                        <li>Cool contact info here!</li>
                         <li>Many places to find help</li>
                         <li>VATSIM Rules</li>
                     </ul>
@@ -145,6 +145,7 @@
                     else {
                         $('#helloUserName').html(received);
                         $('#helloUser').fadeIn('slow');
+                        window.location.reload(true);
                     }
             });
             return false;
@@ -166,6 +167,27 @@
                 $('#chooseOrRemove').text('Choose');
                 $('#numberOfChoicesLabel').text(maxAllowed - cnt).prop('class','label label-warning');
             }
+        });
+
+        $("#helloUser").mouseenter(function (){
+            $('#helloUserIcon').hide();
+            $('#helloUserIcon').prop('class', 'fui-cross').fadeIn('slow');
+        });
+        $("#helloUser").mouseleave(function (){
+            $('#helloUserIcon').hide();
+            $('#helloUserIcon').prop('class', 'fui-user').fadeIn('slow');
+        });
+
+        $("#helloUser").click(function (){
+            $.ajax({
+                type: "POST",
+                url: "{{URL::route('ajaxLogout')}}"
+            })
+                .done(function() {
+                    $("#helloUser").hide();
+                    window.location.reload(true);
+                });
+            return false;
         });
     });
 

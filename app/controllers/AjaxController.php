@@ -1,6 +1,9 @@
 <?php
 class AjaxController extends BaseController {
 
+    public function post_logout() {
+        Auth::logout();
+    }
 
     public function post_login() {
         $postStr = Input::get('data');
@@ -10,8 +13,10 @@ class AjaxController extends BaseController {
         $user = User::where('cid', '=', $cid)->first();
         if (!empty($user)) {
            if (Hash::check($password, $user->password)) {
-                (Auth::attempt(array('cid' => $cid, 'password' => $user->password)));
-                echo User::getFirstName(Auth::user()->cid);
+               Auth::loginUsingId($cid);
+               $fname = User::getFirstName(Auth::user()->cid);
+               Session::put('fname', $fname);
+               echo $fname;
             }
             else {
                 echo "/errorBadPassword";
