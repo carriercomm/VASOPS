@@ -93,7 +93,7 @@ class AjaxController extends BaseController {
 
             //Submit Data
             //Create an instance of our model
-            $vas = new VAs;
+            $vas = new User;
             //Map our fields
             $vas->cid = $post['inputCid'];
             //Hash our password
