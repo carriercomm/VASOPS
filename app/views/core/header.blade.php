@@ -54,11 +54,11 @@
         <!--<div class="span6 offset5">-->
         @if (Auth::check())
         <div style="margin-top: 10px; position: relative;" id="helloUser" class="span2 offset7">
-            <a id="helloUser" class="btn btn-inverse"><i id="helloUserIcon" class="fui-user"></i>G'Day, <span id="helloUserName">{{Session::get('fname');}}</span></a>
+            <a id="helloUser" class="btn btn-inverse"><i id="helloUserIcon" class="fui-user"></i>Hello, <span id="helloUserName">{{Session::get('fname');}}</span></a>
         </div>
         @else
         <div style="margin-top: 10px; display: none; position: relative;" id="helloUser" class="span2 offset7">
-            <a id="helloUser" class="btn btn-inverse"><i id="helloUserIcon" class="fui-user"></i> G'Day, <span id="helloUserName"></span></a>
+            <a id="helloUser" class="btn btn-inverse"><i id="helloUserIcon" class="fui-user"></i> Hello, <span id="helloUserName"></span></a>
         </div>
         @endif
         <p style="margin-top: 10px; display: none;" id="loginLoading" class="span2 offset7">
