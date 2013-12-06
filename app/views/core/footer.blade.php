@@ -1,4 +1,5 @@
-<footer>
+</div><!-- /container -->
+<footer style="margin-top: 300px;">
     <div class="container">
         <div class="row">
             <div class="span7">
@@ -31,6 +32,7 @@
 
 <!-- Load JS here for greater good =============================-->
 
+<script src="js/bootstrap.js"></script>
 <script src="js/jquery-1.8.3.min.js"></script>
 <script src="js/jquery-ui-1.10.3.custom.min.js"></script>
 <script src="js/jquery.ui.touch-punch.min.js"></script>
@@ -50,7 +52,7 @@
             $('#vatsimparagraph').fadeOut('slow');
             return false;
         });
-
+    @if (Route::currentRouteName() == "index")
         $('#findBtn').click(function () {
             $('#moduleCurrent').hide();
             $('#moduleApply').hide();
@@ -69,6 +71,7 @@
             $('#moduleApply').fadeIn();
             return false;
         });
+    @endif
 
         $('#q1').click(function () {
             $('#progressBar').animate({width: '15%'});
@@ -185,7 +188,7 @@
             })
                 .done(function() {
                     $("#helloUser").hide();
-                    window.location.reload(true);
+                    window.location = '{{URL::to('/')}}';
                 });
             return false;
         });

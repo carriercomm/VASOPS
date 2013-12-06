@@ -572,8 +572,6 @@
 </div>
 
 
-<div style="margin-bottom: 300px;" class="span7">
 </div>
 </div>
-</div><!-- /container -->
 @include('core.footer')

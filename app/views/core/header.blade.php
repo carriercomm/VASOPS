@@ -28,6 +28,7 @@
         <div class="span3">
             <div class="btn-toolbar">
                 <div class="btn-group">
+                    @if (Route::currentRouteName() == "index")
                     @if(!Auth::check())
                     <a id="applyBtn" class="btn btn-success" href="#">Apply to be a VA Partner</a>
                     @endif
@@ -36,11 +37,22 @@
                     @if(Auth::check())
                     <a class="btn" href="{{URL::to('va')}}">Manage VA</a>
                     @endif
+                    @else
+                    @if(!Auth::check())
+                    <a id="applyBtn" class="btn btn-success" href="{{URL::to('/')}}">Apply to be a VA Partner</a>
+                    @endif
+                    <a id="currentBtn" class="btn btn-success" href="{{URL::to('/')}}">Current VAs</a>
+                    <a id="findBtn" class="btn btn-success" href="{{URL::to('/')}}">Find Your VA</a>
+                    @if(Auth::check())
+                    <a class="btn" href="{{URL::to('va')}}">Manage VA</a>
+                    @endif
+                    @endif
+
                 </div>
             </div>
         </div>
         <!--<div class="span6 offset5">-->
-        @if (!empty($fname))
+        @if (Auth::check())
         <div style="margin-top: 10px; position: relative;" id="helloUser" class="span2 offset7">
             <a id="helloUser" class="btn btn-inverse"><i id="helloUserIcon" class="fui-user"></i>G'Day, <span id="helloUserName">{{Session::get('fname');}}</span></a>
         </div>
