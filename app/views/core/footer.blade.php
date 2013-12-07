@@ -44,6 +44,7 @@
 <script src="js/jquery.tagsinput.js"></script>
 <script src="js/jquery.placeholder.js"></script>
 <script src="js/jquery.stacktable.js"></script>
+<script src="js/retina.js"></script>
 <script src="http://vjs.zencdn.net/c/video.js"></script>
 <script src="js/application.js"></script>
 <script type="text/javascript">

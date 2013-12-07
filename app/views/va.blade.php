@@ -19,13 +19,13 @@
                         <h4>Active</h4>
                     </div>
                     <div class="span2 offset6">
-                        <h4><i class="fui-check-inverted-2"></i></h4>
+                        <h4><i class="fui-cross"></i></h4>
                     </div>
                     <div style="text-align: left;" class="span2">
                         <h4>Image Link Back</h4>
                     </div>
                     <div class="span2 offset6">
-                        <h4><i class="fui-check-inverted-2"></i></h4>
+                        <h4><i class="fui-check"></i></h4>
                     </div>
                 </div>
                 <div class="tab-pane fade in" id="editva">
@@ -34,12 +34,12 @@
                 <div class="tab-pane fade in" id="clicks">
                     <h3>Clicks</h3>
                     <div class="table-responsive">
-                        <table class="table table-striped">
+                        <table class="table table-striped table-bordered">
                             <tr><th>August</th><th>September</th><th>October</th><th>November</th></tr>
                             <tr><td>203</td><td>2233</td><td>3</td><td>2803</td></tr>
-                            <tr><td>203</td><td>2233</td><td>3</td><td>2803</td></tr>
-                            <tr><td>203</td><td>2233</td><td>3</td><td>2803</td></tr>
-                            <tr><td>203</td><td>2233</td><td>3</td><td>2803</td></tr>
+                            <tr><td>297</td><td>973</td><td>5643</td><td>8703</td></tr>
+                            <tr><td>754</td><td>2565</td><td>66</td><td>878</td></tr>
+                            <tr><td>186</td><td>3</td><td>8644</td><td>453</td></tr>
                         </table>
                     </div>
                 </div>
