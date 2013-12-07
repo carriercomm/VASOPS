@@ -86,9 +86,15 @@
         })
 
 
+            var tlength = $('#inputDescription').val().length;
+            $('#inputDescription').val($('#inputDescription').val().substring(0, 200));
+            var tlength = $('#inputDescription').val().length;
+            var remain = 200 - tlength;
+            $('#inputDescriptionRemaining').text(remain);
+
         $('#inputDescription').keyup(function() {
             var tlength = $('#inputDescription').val().length;
-            $('#inputDescription').val($('#inputDescription').val().substring(0, '200'));
+            $('#inputDescription').val($('#inputDescription').val().substring(0, 200));
             var tlength = $('#inputDescription').val().length;
             var remain = 200 - tlength;
             $('#inputDescriptionRemaining').text(remain);
@@ -193,6 +199,14 @@
                 });
             return false;
         });
+
+        //Remove duplicate select options.
+        $("select>option").each( function(){
+            var $option = $(this);
+            $option.siblings()
+                .filter( function(){ return $(this).val() == $option.val() } )
+                .remove()
+        })
     });
 
 
