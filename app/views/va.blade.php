@@ -350,7 +350,7 @@
                             </div>
                             <div class="checkbox">
                                 <label>
-                                    <input class="limitToFiveCategories" checked="checked" name="inputCategory[]" type="checkbox" value="2">
+                                    <input class="limitToFiveCategories" name="inputCategory[]" type="checkbox" value="2">
                                     Asia
                                 </label>
                             </div>
