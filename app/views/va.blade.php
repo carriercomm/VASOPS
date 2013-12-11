@@ -340,8 +340,8 @@
                         </div>
                     </div>
                     <div class="control-group">
-                        <label><span id="chooseOrRemove">Choose</span> <span id="numberOfChoicesLabel" class="label label-success">5</span> categories</label>
-                        <div class="controls">
+                        <label class="control-label" for="inputCategory"><span id="chooseOrRemove">Choose</span> <span id="numberOfChoicesLabel" class="label label-success">5</span> categories</label>
+                        <div style="text-align: left; width: 30%; margin-left: 45%;" class="controls">
                             <div class="checkbox">
                                 <label>
                                     <input name="inputCategory[]" type="checkbox" value="1">
@@ -350,7 +350,7 @@
                             </div>
                             <div class="checkbox">
                                 <label>
-                                    <input class="limitToFiveCategories" name="inputCategory[]" type="checkbox" value="2">
+                                    <input class="limitToFiveCategories" checked="checked" name="inputCategory[]" type="checkbox" value="2">
                                     Asia
                                 </label>
                             </div>
