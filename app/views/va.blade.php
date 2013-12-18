@@ -37,6 +37,7 @@
                     <div style="display: none;" class="alert alert-success" id="vaEditFormSuccess">Saved</div>
 
                     <form id="vaEditForm" class="form-horizontal">
+                    <input type="hidden" name="_token" value="{{ csrf_token(); }}">
                     <div class="control-group">
                         <label class="control-label" for="inputVaName">VA Name</label>
                         <div class="controls">

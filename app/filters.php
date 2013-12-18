@@ -73,8 +73,31 @@ Route::filter('guest', function()
 
 Route::filter('csrf', function()
 {
-	if (Session::token() != Input::get('_token'))
-	{
-		throw new Illuminate\Session\TokenMismatchException;
-	}
+    //Possible places where are CSRF token is stored
+
+    $post_token = Input::get('_token');
+    $post_ajax = Input::get('data');
+    //Let's first check for a regular token in our POST/GET data
+    if (!empty($post_token)) {
+
+        if (Session::token() != $post_token)
+        {
+            throw new Illuminate\Session\TokenMismatchException;
+        }
+
+    }
+    //Darn that doesn't exist. That probably means this is an AJAX request. Let's check and see if we have a serialized string sent as data.
+    elseif (!empty($post_ajax)) {
+        //Parse the serialized string
+        parse_str($post_ajax, $post);
+        if (Session::token() != $post['_token'])
+        {
+            throw new Illuminate\Session\TokenMismatchException;
+        }
+    }
+
+    //Now we are screwed, not even that. Let's get the hell out of here.
+    else {
+        throw new Illuminate\Session\TokenMismatchException;
+    }
 });

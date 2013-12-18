@@ -53,6 +53,7 @@
 <div style="display: none;" id="applyStep2">
 <div style="display: none;" id="applyStep2Errors"></div>
 <form id="vaApplicationForm" class="form-horizontal">
+<input type="hidden" name="_token" value="{{ csrf_token(); }}">
 <div class="control-group">
     <label class="control-label" for="inputCid">VATSIM CID</label>
     <div class="controls">
