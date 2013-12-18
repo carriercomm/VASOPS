@@ -32,10 +32,10 @@
 
 <!-- Load JS here for greater good =============================-->
 
-<script src="js/bootstrap.js"></script>
 <script src="js/jquery-1.8.3.min.js"></script>
 <script src="js/jquery-ui-1.10.3.custom.min.js"></script>
 <script src="js/jquery.ui.touch-punch.min.js"></script>
+<script src="js/bootstrap.js"></script>
 <script src="js/bootstrap.min.js"></script>
 <script src="js/bootstrap-select.js"></script>
 <script src="js/bootstrap-switch.js"></script>
@@ -85,20 +85,16 @@
             $('#tooltip').fadeIn(1500);
         })
 
+        function calculateInputDescription() {
+                var tlength = $('#inputDescription').val().length;
+                $('#inputDescription').val($('#inputDescription').val().substring(0, 200));
+                var tlength = $('#inputDescription').val().length;
+                var remain = 200 - tlength;
+                $('#inputDescriptionRemaining').text(remain);
+        }
 
-            var tlength = $('#inputDescription').val().length;
-            $('#inputDescription').val($('#inputDescription').val().substring(0, 200));
-            var tlength = $('#inputDescription').val().length;
-            var remain = 200 - tlength;
-            $('#inputDescriptionRemaining').text(remain);
-
-        $('#inputDescription').keyup(function() {
-            var tlength = $('#inputDescription').val().length;
-            $('#inputDescription').val($('#inputDescription').val().substring(0, 200));
-            var tlength = $('#inputDescription').val().length;
-            var remain = 200 - tlength;
-            $('#inputDescriptionRemaining').text(remain);
-        });
+        calculateInputDescription();
+        $('#inputDescription').keyup(calculateInputDescription);
 
         $('#applyToStep2').click(function() {
             $('#applyStep1').hide();
@@ -108,6 +104,7 @@
 
         $('#submitVAForm').click(function() {
             $('#applyStep2').hide('slow');
+            $('#applyStep2Errors').hide();
             $('#submittingAJAX').fadeIn();
             var vaFormData;
             vaFormData =  $("#vaApplicationForm").serialize();
@@ -161,23 +158,6 @@
             return false;
         });
 
-        $("input[name='inputCategory[]']").change(function () {
-            var maxAllowed = 5;
-            var cnt = $("input[name='inputCategory[]']:checked").length;
-            if (cnt > maxAllowed) {
-               $('#chooseOrRemove').text('Remove');
-               $('#numberOfChoicesLabel').text(Math.abs(maxAllowed - cnt)).prop('class','label label-important');
-            }
-            if (cnt < maxAllowed) {
-                $('#chooseOrRemove').text('Choose');
-                $('#numberOfChoicesLabel').text(maxAllowed - cnt).prop('class','label label-success');
-            }
-            if (cnt == maxAllowed)
-            {
-                $('#chooseOrRemove').text('Choose');
-                $('#numberOfChoicesLabel').text(maxAllowed - cnt).prop('class','label label-warning');
-            }
-        });
 
         $("#helloUser").mouseenter(function (){
             $('#helloUserIcon').hide();
@@ -207,6 +187,70 @@
                 .filter( function(){ return $(this).val() == $option.val() } )
                 .remove()
         })
+
+        //Edit VA Form
+        $('#submitEditVAForm').click(function() {
+            $('#vaEditFormSuccess').hide();
+            $('#vaEditFormErrors').hide();
+            $('#vaEditForm').hide('slow');
+            $('#submittingAJAX').fadeIn();
+            var vaFormData;
+            vaFormData =  $("#vaEditForm").serialize();
+            $.ajax({
+                type: "POST",
+                url: "{{URL::route('ajaxVAEdit')}}",
+                data: { data: vaFormData }
+            })
+                .done(function(received) {
+                    if (received != "") {
+                        $('#submittingAJAX').hide();
+                        $('#vaEditForm').show('slow');
+                        $('#vaEditFormErrors').html(received).show('slow');
+                    }
+                    else {
+                        $('#submittingAJAX').hide();
+                        $('#vaEditFormSuccess').fadeIn('slow');
+                        $('#vaEditForm').show('slow');
+                    }
+                });
+            return false;
+        })
+
+        //Select our categories in our edit VA page
+        if (typeof vaSelectedCategories != 'undefined') {
+            vaSelectedCategories =  vaSelectedCategories.split(',');
+
+            var i;
+            for ( i=0; i < vaSelectedCategories.length; i++ ) {
+                $('.limitToFiveCategories:checkbox').each(function() {
+                    if (vaSelectedCategories[i] == $(this).val()) {
+                        $(this).prop('checked', true);
+                    }
+                });
+            }
+        }
+
+        function calculateInputCategory() {
+
+            var maxAllowed = 5;
+            var cnt = $("input[name='inputCategory[]']:checked").length;
+            if (cnt > maxAllowed) {
+                $('#chooseOrRemove').text('Remove');
+                $('#numberOfChoicesLabel').text(Math.abs(maxAllowed - cnt)).prop('class','label label-important');
+            }
+            if (cnt < maxAllowed) {
+                $('#chooseOrRemove').text('Choose');
+                $('#numberOfChoicesLabel').text(maxAllowed - cnt).prop('class','label label-success');
+            }
+            if (cnt == maxAllowed)
+            {
+                $('#chooseOrRemove').text('Choose');
+                $('#numberOfChoicesLabel').text(maxAllowed - cnt).prop('class','label label-warning');
+            }
+
+        }
+        calculateInputCategory();
+        $("input[name='inputCategory[]']").change(calculateInputCategory);
     });
 
 

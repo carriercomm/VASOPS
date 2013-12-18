@@ -374,115 +374,115 @@
     <div class="controls">
         <div class="checkbox">
             <label>
-                <input name="inputCategory[]" type="checkbox" value="1">
+                <input class="limitToFiveCategories" name="inputCategory[]" type="checkbox" data-toggle="checkbox" value="1">
                 Africa - Middle East
             </label>
         </div>
         <div class="checkbox">
             <label>
-                <input class="limitToFiveCategories" name="inputCategory[]" type="checkbox" value="2">
+                <input class="limitToFiveCategories" name="inputCategory[]" type="checkbox" data-toggle="checkbox" value="2">
                 Asia
             </label>
         </div>
         <div class="checkbox">
             <label>
-                <input class="limitToFiveCategories" name="inputCategory[]" type="checkbox" value="3">
+                <input class="limitToFiveCategories" name="inputCategory[]" type="checkbox" data-toggle="checkbox" value="3">
                 North America
             </label>
         </div>
         <div class="checkbox">
             <label>
-                <input class="limitToFiveCategories" name="inputCategory[]" type="checkbox" value="4">
+                <input class="limitToFiveCategories" name="inputCategory[]" type="checkbox" data-toggle="checkbox" value="4">
                 Europe
             </label>
         </div>
         <div class="checkbox">
             <label>
-                <input class="limitToFiveCategories" name="inputCategory[]" type="checkbox" value="5">
+                <input class="limitToFiveCategories" name="inputCategory[]" type="checkbox" data-toggle="checkbox" value="5">
                 Oceania
             </label>
         </div>
         <div class="checkbox">
             <label>
-                <input class="limitToFiveCategories" name="inputCategory[]" type="checkbox" value="6">
+                <input class="limitToFiveCategories" name="inputCategory[]" type="checkbox" data-toggle="checkbox" value="6">
                 South America
             </label>
         </div>
         <div class="checkbox">
             <label>
-                <input class="limitToFiveCategories" name="inputCategory[]" type="checkbox" value="7">
+                <input class="limitToFiveCategories" name="inputCategory[]" type="checkbox" data-toggle="checkbox" value="7">
                 Central America / Caribbean / Mexico
             </label>
         </div>
         <div class="checkbox">
             <label>
-                <input class="limitToFiveCategories" name="inputCategory[]" type="checkbox" value="8">
+                <input class="limitToFiveCategories" name="inputCategory[]" type="checkbox" data-toggle="checkbox" value="8">
                 Airline Alliances
             </label>
         </div>
         <div class="checkbox">
             <label>
-                <input class="limitToFiveCategories" name="inputCategory[]" type="checkbox" value="9">
+                <input class="limitToFiveCategories" name="inputCategory[]" type="checkbox" data-toggle="checkbox" value="9">
                 Cargo Only VAs
             </label>
         </div>
         <div class="checkbox">
             <label>
-                <input class="limitToFiveCategories" name="inputCategory[]" type="checkbox" value="10">
+                <input class="limitToFiveCategories" name="inputCategory[]" type="checkbox" data-toggle="checkbox" value="10">
                 Helicopter Only VAs
             </label>
         </div>
         <div class="checkbox">
             <label>
-                <input class="limitToFiveCategories" name="inputCategory[]" type="checkbox" value="11">
+                <input class="limitToFiveCategories" name="inputCategory[]" type="checkbox" data-toggle="checkbox" value="11">
                 Historical VAs
             </label>
         </div>
         <div class="checkbox">
             <label>
-                <input class="limitToFiveCategories" name="inputCategory[]" type="checkbox" value="12">
+                <input class="limitToFiveCategories" name="inputCategory[]" type="checkbox" data-toggle="checkbox" value="12">
                 General Aviation VAs / Flying Clubs
             </label>
         </div>
         <div class="checkbox">
             <label>
-                <input class="limitToFiveCategories" name="inputCategory[]" type="checkbox" value="13">
+                <input class="limitToFiveCategories" name="inputCategory[]" type="checkbox" data-toggle="checkbox" value="13">
                 XPlane VAs
             </label>
         </div>
         <div class="checkbox">
             <label>
-                <input class="limitToFiveCategories" name="inputCategory[]" type="checkbox" value="14">
+                <input class="limitToFiveCategories" name="inputCategory[]" type="checkbox" data-toggle="checkbox" value="14">
                 Heritage Virtual Airlines
             </label>
         </div>
         <div class="checkbox">
             <label>
-                <input class="limitToFiveCategories" name="inputCategory[]" type="checkbox" value="15">
+                <input class="limitToFiveCategories" name="inputCategory[]" type="checkbox" data-toggle="checkbox" value="15">
                 Virtual Military Flight Organizations
             </label>
         </div>
         <div class="checkbox">
             <label>
-                <input class="limitToFiveCategories" name="inputCategory[]" type="checkbox" value="16">
+                <input class="limitToFiveCategories" name="inputCategory[]" type="checkbox" data-toggle="checkbox" value="16">
                 Virtual Paramilitary Flight Organizations
             </label>
         </div>
         <div class="checkbox">
             <label>
-                <input class="limitToFiveCategories" name="inputCategory[]" type="checkbox" value="17">
+                <input class="limitToFiveCategories" name="inputCategory[]" type="checkbox" data-toggle="checkbox" value="17">
                 Virtual Civilian Government Organizations
             </label>
         </div>
         <div class="checkbox">
             <label>
-                <input class="limitToFiveCategories" name="inputCategory[]" type="checkbox" value="18">
+                <input class="limitToFiveCategories" name="inputCategory[]" type="checkbox" data-toggle="checkbox" value="18">
                 Authorized Training Organization
             </label>
         </div>
         <div class="checkbox">
             <label>
-                <input class="limitToFiveCategories" name="inputCategory[]" type="checkbox" value="19">
+                <input class="limitToFiveCategories" name="inputCategory[]" type="checkbox" data-toggle="checkbox" value="19">
                 No Experience Required to Join
             </label>
         </div>
@@ -570,7 +570,6 @@
         </div>
     </div>
 </div>
-
 
 </div>
 </div>
