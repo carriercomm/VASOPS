@@ -37,8 +37,8 @@ class AjaxController extends BaseController {
             $post['inputCategory'] = '';
         }
 
-        //      Format our URL field with the http before if it isn't there already
-        if (!strpos($post['inputUrl'],'http://') AND !strpos($post['inputUrl'],'https://')) {
+        //      Format our URL field with the http before if it isn't there already (Must evaluate with ===)
+        if (strpos($post['inputUrl'],'http://') === FALSE AND strpos($post['inputUrl'],'https://') === FALSE) {
             $post['inputUrl'] = 'http://' . $post['inputUrl'];
         }
 
