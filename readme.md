@@ -10,6 +10,6 @@ Richard Gerrish
 
 
 *** 
-###Naming Conventions
+### Naming Conventions
 
 All post AJAX data sent to a controller must be named `data`
