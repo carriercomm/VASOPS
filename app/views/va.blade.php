@@ -14,18 +14,31 @@
         <div class="tile">
             <div class="tab-content">
                 <div class="tab-pane fade in active" id="status">
+                    @if ($record->status == 1 && $record->linkbackstatus == 1)
+                    <span><img src="{{ URL::to('/') }}/images/checkbox.png" alt="Check Box"></span>
+                    @else
+                    <span><img src="{{ URL::to('/') }}/images/x.png" alt="X"></span>
+                    @endif
                     <h3>Status</h3>
-                    <div style="text-align: left;" class="span2">
-                        <h4>Active</h4>
+                    <div style="text-align: left;" class="span3">
+                        <h4><i class="fui fui-check-inverted"></i> Approved</h4>
                     </div>
                     <div class="span2 offset6">
-                        <h4><i class="fui-cross"></i></h4>
-                    </div>
-                    <div style="text-align: left;" class="span2">
-                        <h4>Image Link Back</h4>
-                    </div>
-                    <div class="span2 offset6">
+                        @if ($record->status == 1)
                         <h4><i class="fui-check"></i></h4>
+                        @else
+                        <h4><i class="fui-cross"></i></h4>
+                        @endif
+                    </div>
+                    <div style="text-align: left;" class="span3">
+                        <h4><i class="fui fui-photo"></i>  Image Link Back</h4>
+                    </div>
+                    <div class="span2 offset6">
+                        @if ($record->linkbackstatus == 1)
+                        <h4><i class="fui-check"></i></h4>
+                        @else
+                        <h4><i class="fui-cross"></i></h4>
+                        @endif
                     </div>
                 </div>
                 <div class="tab-pane fade in" id="editva">
@@ -479,11 +492,8 @@
                     <h3>Clicks</h3>
                     <div class="table-responsive">
                         <table class="table table-striped table-bordered">
-                            <tr><th>August</th><th>September</th><th>October</th><th>November</th></tr>
-                            <tr><td>203</td><td>2233</td><td>3</td><td>2803</td></tr>
-                            <tr><td>297</td><td>973</td><td>5643</td><td>8703</td></tr>
-                            <tr><td>754</td><td>2565</td><td>66</td><td>878</td></tr>
-                            <tr><td>186</td><td>3</td><td>8644</td><td>453</td></tr>
+                            <tr><th>{{ $clicks['month3before_name'] }}</th><th>{{ $clicks['month2before_name'] }}</th><th>{{ $clicks['month1before_name'] }}</th><th>{{ $clicks['month_name'] }}</th></tr>
+                            <tr><td>{{ $clicks['month3before'] }}</td><td>{{ $clicks['month2before'] }}</td><td>{{ $clicks['month1before'] }}</td><td>{{ $clicks['month'] }}</td></tr>
                         </table>
                     </div>
                 </div>
