@@ -251,10 +251,47 @@
         }
         calculateInputCategory();
         $("input[name='inputCategory[]']").change(calculateInputCategory);
+
+        $('#btnNewTicket').click(function() {
+            $('#divNewTicketForm').slideToggle();
+            $('#newTicketFormErrors').fadeOut('fast');
+        });
+
+        //AJAX Submit New Ticket
+        $('#submitNewTicketForm').click(function() {
+            $('#divNewTicketForm').hide();
+            $('#newTicketFormErrors').hide();
+            $('#submittingNewTicketAJAX').fadeIn();
+            var newTicketFormData;
+            newTicketFormData =  $("#newTicketForm").serialize();
+            $.ajax({
+                type: "POST",
+                url: "{{URL::route('ajaxNewTicket')}}",
+                data: { data: newTicketFormData }
+            })
+                .done(function(received) {
+                    if (received != "") {
+                        $('#submittingNewTicketAJAX').hide();
+                        $('#divNewTicketForm').fadeIn('slow');
+                        $('#newTicketFormErrors').html(received).fadeIn('slow');
+                    }
+                    else {
+                        $('#submittingNewTicketAJAX').hide();
+                        $('#noOpenTickets').hide();
+                        var subject = $("#inputTicketSubject").val();
+                        var description = $("#inputTicketContent").val();
+                        description = description.substring(0, 50);
+                        $("#newOpenTickets").clone().insertAfter("#newOpenTickets").html('<h6 style="text-transform: none;"><strong>' + subject + ' - Now</strong>: ' + description + '...</h6>').fadeIn();
+                        var openTicketsCount = $("#openTicketsCount").text();
+                        openTicketsCount++;
+                        $("#openTicketsCount").html(openTicketsCount).fadeOut().fadeIn();
+                        $("#newTicketForm")[0].reset();
+                    }
+                });
+            return false;
+        });
+
     });
-
-
-
 
 </script>
 </body>

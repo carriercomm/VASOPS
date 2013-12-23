@@ -10,6 +10,7 @@
             <li class="active"><a href="#status" data-toggle="tab">Status</a></li>
             <li><a href="#editva" data-toggle="tab">Edit VA</a></li>
             <li><a href="#clicks" data-toggle="tab">Clicks</a></li>
+            <li><a href="#help" data-toggle="tab">Help</a></li>
         </ul>
         <div class="tile">
             <div class="tab-content">
@@ -480,7 +481,7 @@
                     <hr />
                     <div class="control-group">
                         <div class="controls">
-                            <button id="submitEditVAForm" class="btn btn-success">Submit <i class="icon-ok icon-white"></i></button>
+                            <button id="submitEditVAForm" class="btn btn-success">Submit <i class="fui fui-check"></i></button>
                         </div>
                     </div>
                     <!--   </form> -->
@@ -495,6 +496,56 @@
                             <tr><th>{{ $clicks['month3before_name'] }}</th><th>{{ $clicks['month2before_name'] }}</th><th>{{ $clicks['month1before_name'] }}</th><th>{{ $clicks['month_name'] }}</th></tr>
                             <tr><td>{{ $clicks['month3before'] }}</td><td>{{ $clicks['month2before'] }}</td><td>{{ $clicks['month1before'] }}</td><td>{{ $clicks['month'] }}</td></tr>
                         </table>
+                    </div>
+                </div>
+                <div class="tab-pane fade in" id="help">
+                    <h3>Contact an Audit Manager</h3>
+                    <span><button id="btnNewTicket" style="width: 80%;" class="btn btn-info">New Ticket</button></span>
+                    <div id="submittingNewTicketAJAX" style="display:none;">
+
+                        <img alt="Loading..." src="{{ URL::to('/') }}/images/loader.gif">
+
+                    </div>
+                    <div style="padding-top: 5px; width: 80%; display:none; margin-left: 10%" id="newTicketFormErrors"></div>
+                    <div style="display: none; margin-top: 10px;" id="divNewTicketForm">
+                        <form id="newTicketForm" class="form-inline">
+                            <input type="hidden" name="_token" value="{{ csrf_token(); }}">
+                            <div class="control-group">
+                                <div class="controls">
+                                    <input style="width: 79%;" id="inputTicketSubject" name="inputTicketSubject" type="text" placeholder="Please enter a subject..." />
+                                </div>
+                            </div>
+                            <div class="control-group">
+                                <div class="controls">
+                                    <textarea style="width: 78%;" name="inputTicketContent" id="inputTicketContent" rows="5" placeholder="Please detail your question..."></textarea>
+                                </div>
+                            </div>
+                            <div class="control-group">
+                                <div class="form-actions">
+                                    <button id="submitNewTicketForm" class="btn btn-success">Create Ticket <i class="fui fui-check"></i></button>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                    <div style="margin-top: 40px;">
+                        <span style="text-align: left;"><h4><i class="fui fui-chat"></i>  Open Tickets - <span id="openTicketsCount" class="label label-warning">{{ $tickets['opentickets_count'] }}</span></h4></span>
+                        <p id="noOpenTickets" style="@if ($tickets['opentickets_count'] != 0) display: none; @endif">You currently have no open tickets.</p>
+                        <div id="newOpenTickets" style="text-align: left; display: none;" class="well">
+                        </div>
+                        @foreach ($tickets['opentickets'] as $ticket)
+                        <div style="text-align: left;" class="well">
+                            <h6 style="text-transform: none;"><strong>{{ $ticket->subject }} - {{ $ticket->created_at }}</strong>: {{ substr($ticket->description, 0, 50) }}...</h6>
+                        </div>
+                        @endforeach
+                    </div>
+                    <div style="margin-top: 40px;">
+                        <span style="text-align: left"><h4><i class="fui fui-time"></i>  Closed Tickets - <span id="closedTicketsCount" class="label label-warning">{{ $tickets['closedtickets_count'] }}</span></h4></span>
+                        <p id="noClosedTickets" style="@if ($tickets['closedtickets_count'] != 0) display: none; @endif">You currently have no closed tickets.</p>
+                        @foreach ($tickets['closedtickets'] as $ticket)
+                        <div style="text-align: left;" class="well">
+                            <h6 style="text-transform: none;"><strong>{{ $ticket->subject }} - {{ $ticket->created_at }}</strong>: {{ substr($ticket->description, 0, 50) }}...</h6>
+                        </div>
+                        @endforeach
                     </div>
                 </div>
             </div>

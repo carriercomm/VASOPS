@@ -492,7 +492,7 @@
 <hr />
 <div class="control-group">
     <div class="controls">
-        <button id="submitVAForm" class="btn btn-success">Submit <i class="icon-ok icon-white"></i></button>
+        <button id="submitVAForm" class="btn btn-success">Submit <i class="fui fui-check"></i></button>
     </div>
 </div>
 <!--   </form> -->

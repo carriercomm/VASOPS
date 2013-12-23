@@ -212,7 +212,53 @@ class AjaxController extends BaseController {
             //Save our data
             $vas->save();
 
+        }
 
+    }
+
+    public function post_newticket() {
+        //Pull our AJAX Post Data
+        $postStr = Input::get('data');
+        //Parse the serialized string
+        parse_str($postStr, $post);
+
+        //      Start our validator
+        $validator = Validator::make(
+            array(
+                'Subject' => $post['inputTicketSubject'],
+                'Description' => $post['inputTicketContent'],
+            ),
+            array(
+                'Subject' => 'required',
+                'Description' => 'required',
+            ),
+            array (
+                'Subject.required' => 'Please enter a subject. ',
+                'Description.required' => 'Please enter a description.',
+            )
+        );
+
+        if ($validator->fails())
+        {
+            // The given data did not pass validation
+            $messages = $validator->messages();
+            $errorStr = '';
+            foreach ($messages->all('<li>:message</li>') as $message)
+            {
+                $errorStr .= '<div class="alert alert-error">'. $message . '</div>';
+            }
+            echo $errorStr;
+
+        }
+
+        else {
+            $ticket = new Tickets;
+            $ticket->subject = $post['inputTicketSubject'];
+            $ticket->description = $post['inputTicketContent'];
+            $ticket->vid = Auth::user()->cid;
+            //Our ticket status will start as open.
+            $ticket->status = '1';
+            $ticket->save();
         }
 
     }

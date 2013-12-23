@@ -42,9 +42,21 @@ class VaController extends BaseController {
         $clicks['month2before'] = $month2before;
         $clicks['month3before'] = $month3before;
 
+        //Pull our ticket information
+        $opentickets = Tickets::where('vid', '=', Auth::user()->cid)->where('status', '=', '1')->orderBy('created_at', 'DESC')->get();
+        $openticketscount = count($opentickets);
+        $closedtickets = Tickets::where('vid', '=', Auth::user()->cid)->where('status', '=', '0')->orderBy('created_at', 'DESC')->get();
+        $closedticketscount = count($closedtickets);
+        //Create our array
+        $tickets = array();
+        $tickets['opentickets'] = $opentickets;
+        $tickets['opentickets_count'] = $openticketscount;
+        $tickets['closedtickets'] = $closedtickets;
+        $tickets['closedtickets_count'] = $closedticketscount;
 
-        //Create our view with the VA record and clicks data.
-        return View::make('va')->with(array('record' => $record, 'clicks' => $clicks));
+
+        //Create our view with the VA, clicks and tickets data.
+        return View::make('va')->with(array('record' => $record, 'clicks' => $clicks, 'tickets' => $tickets));
     }
 
 }
