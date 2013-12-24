@@ -270,7 +270,8 @@
                 data: { data: newTicketFormData }
             })
                 .done(function(received) {
-                    if (received != "") {
+                    //Verify return value is or is not an integer to decide whether to return an error or success with ticked ID to populat the close ticket button.
+                    if (!$.isNumeric(received)) {
                         $('#submittingNewTicketAJAX').hide();
                         $('#divNewTicketForm').fadeIn('slow');
                         $('#newTicketFormErrors').html(received).fadeIn('slow');
@@ -281,7 +282,9 @@
                         var subject = $("#inputTicketSubject").val();
                         var description = $("#inputTicketContent").val();
                         description = description.substring(0, 50);
-                        $("#newOpenTickets").clone().insertAfter("#newOpenTickets").html('<h6 style="text-transform: none;"><strong>' + subject + ' - Now</strong>: ' + description + '...</h6>').fadeIn();
+                        $('#containerNewOpenTickets').prepend('<div id="newOpenTickets" style="text-align: left; display: none;" class="well"><h6 style="text-transform: none;"><strong>' + subject + ' - Now</strong>: ' + description + '...</h6><span id="btnCloseTicket" style="float: right; position: relative; top: -40px;"><btn id="btnCloseTicket" class="btn btn-danger" value=""><i class="fui fui-cross"></i> Close Ticket</btn></span></div>');
+                        //Finally fade in our element
+                        $('#containerNewOpenTickets div:first-child').fadeIn();
                         var openTicketsCount = $("#openTicketsCount").text();
                         openTicketsCount++;
                         $("#openTicketsCount").html(openTicketsCount).fadeOut().fadeIn();
@@ -290,6 +293,24 @@
                 });
             return false;
         });
+
+        //Select each well for open tickets and add create the handlers for the button actions
+        function createCloseTicketBtn(removehandlers) {
+            $('#containerNewOpenTickets').children('div').each(function() {
+                //Create the event handler to listen for mouse over
+                $(this).mouseenter(function() {
+                    $(this).find('#btnCloseTicket').fadeIn('fast');
+                });
+                //Create the event handler to listen for mouse exit
+                $(this).mouseleave(function() {
+                    $(this).find('#btnCloseTicket').hide();
+                });
+
+            });
+        }
+        //Call our function
+        createCloseTicketBtn();
+
 
     });
 

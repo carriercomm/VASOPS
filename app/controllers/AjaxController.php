@@ -259,6 +259,10 @@ class AjaxController extends BaseController {
             //Our ticket status will start as open.
             $ticket->status = '1';
             $ticket->save();
+            //Pull the newly created ticket ID.
+            $ticket = Tickets::where('vid', '=', Auth::user()->cid)->orderBy('created_at', 'DESC')->first();
+            $id = $ticket->id;
+            echo $id;
         }
 
     }

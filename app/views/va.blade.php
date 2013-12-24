@@ -530,13 +530,15 @@
                     <div style="margin-top: 40px;">
                         <span style="text-align: left;"><h4><i class="fui fui-chat"></i>  Open Tickets - <span id="openTicketsCount" class="label label-warning">{{ $tickets['opentickets_count'] }}</span></h4></span>
                         <p id="noOpenTickets" style="@if ($tickets['opentickets_count'] != 0) display: none; @endif">You currently have no open tickets.</p>
-                        <div id="newOpenTickets" style="text-align: left; display: none;" class="well">
+                        <div id="newOpenTicketsTemplate" style="text-align: left; display: none;" class="well">
                         </div>
-                        @foreach ($tickets['opentickets'] as $ticket)
-                        <div style="text-align: left;" class="well">
-                            <h6 style="text-transform: none;"><strong>{{ $ticket->subject }} - {{ $ticket->created_at }}</strong>: {{ substr($ticket->description, 0, 50) }}...</h6>
+                        <div id="containerNewOpenTickets">
+                            @foreach ($tickets['opentickets'] as $ticket)
+                            <div id="newOpenTickets" style="text-align: left;" class="well">
+                                <h6 style="text-transform: none;"><strong>{{ $ticket->subject }} - {{ $ticket->created_at }}</strong>: {{ substr($ticket->description, 0, 50) }}...</h6><span id="btnCloseTicket" style="float: right; position: relative; top: -40px; display: none;"><btn class="btn btn-danger" value="{{ $ticket->id }}"><i class="fui fui-cross"></i> Close Ticket</btn></span>
+                            </div>
+                            @endforeach
                         </div>
-                        @endforeach
                     </div>
                     <div style="margin-top: 40px;">
                         <span style="text-align: left"><h4><i class="fui fui-time"></i>  Closed Tickets - <span id="closedTicketsCount" class="label label-warning">{{ $tickets['closedtickets_count'] }}</span></h4></span>
