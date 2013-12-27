@@ -282,7 +282,7 @@
                         var subject = $("#inputTicketSubject").val();
                         var description = $("#inputTicketContent").val();
                         description = description.substring(0, 50);
-                        $('#containerNewOpenTickets').prepend('<div id="newOpenTickets" style="text-align: left; display: none;" class="well"><h6 style="text-transform: none;"><strong>' + subject + ' - Now</strong>: ' + description + '...</h6><span id="btnCloseTicket" style="float: right; position: relative; top: -40px;"><btn id="btnCloseTicket" class="btn btn-danger" value=""><i class="fui fui-cross"></i> Close Ticket</btn></span></div>');
+                        $('#containerNewOpenTickets').prepend('<div id="newOpenTickets" style="text-align: left; display: none;" class="well"><h6 style="text-transform: none;"><strong>' + subject + ' - Now</strong>: ' + description + '...</h6><span id="btnCloseTicket" style="float: right; position: relative; top: -40px;"><button class="btn btn-danger" value="' + received + '"><i class="fui fui-cross"></i> Close Ticket</button></span></div>');
                         //Finally fade in our element
                         $('#containerNewOpenTickets div:first-child').fadeIn();
                         var openTicketsCount = $("#openTicketsCount").text();
@@ -311,8 +311,32 @@
         //Call our function
         createCloseTicketBtn();
 
+        //btnCloseTicket action
+        $('#btnCloseTicket > button').click(function () {
+            var ticketid = $(this).val();
+            var openTicketsCount = $("#openTicketsCount").text();
+            //Subtract one from our open tickets count.
+            openTicketsCount--;
+            $("#openTicketsCount").html(openTicketsCount).fadeOut().fadeIn();
+            //If we now have 0 open tickets let's fade in the no open tickets div
+            if (openTicketsCount == 0) {
+                $('#noOpenTickets').fadeIn();
+            }
+            //We need to update the number of closed tickets by one.
+            var closedTicketsCount = $("#closedTicketsCount").text();
+            closedTicketsCount++;
+            $("#closedTicketsCount").html(closedTicketsCount).fadeOut().fadeIn();
+            //If there were not any closed tickets before, there are now, so lets fade out the no closed ticket div.
+            $('#noClosedTickets').fadeOut();
+            //We need to remove the closed ticket button from the ticket div
+            (this).hide();
+            //Finally we need to look for the closest div up the DOM then fade it out, add it to our closed tickets container and fade it in.
+            $(this).closest('div').fadeOut().prependTo('#containedNewClosedTickets').fadeIn();
+        });
 
     });
+
+
 
 </script>
 </body>
