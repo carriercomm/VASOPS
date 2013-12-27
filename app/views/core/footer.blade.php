@@ -311,30 +311,48 @@
         //Call our function
         createCloseTicketBtn();
 
-        //btnCloseTicket action
-        $('#btnCloseTicket > button').click(function () {
-            var ticketid = $(this).val();
-            var openTicketsCount = $("#openTicketsCount").text();
-            //Subtract one from our open tickets count.
-            openTicketsCount--;
-            $("#openTicketsCount").html(openTicketsCount).fadeOut().fadeIn();
-            //If we now have 0 open tickets let's fade in the no open tickets div
-            if (openTicketsCount == 0) {
-                $('#noOpenTickets').fadeIn();
-            }
-            //We need to update the number of closed tickets by one.
-            var closedTicketsCount = $("#closedTicketsCount").text();
-            closedTicketsCount++;
-            $("#closedTicketsCount").html(closedTicketsCount).fadeOut().fadeIn();
-            //If there were not any closed tickets before, there are now, so lets fade out the no closed ticket div.
-            $('#noClosedTickets').fadeOut();
-            //We need to remove the closed ticket button from the ticket div
-            (this).hide();
-            //Finally we need to look for the closest div up the DOM then fade it out, add it to our closed tickets container and fade it in.
-            $(this).closest('div').fadeOut().prependTo('#containedNewClosedTickets').fadeIn();
-        });
+        //btnCloseTicket action -- use live because some buttons may have been added after the page load
+        $('#btnCloseTicket > button').live('click', function () {
+            var btn = $(this);
+            btn.html('<img height="77px" width="77px" alt="Loading..." src="{{ URL::to('/') }}/images/loader.gif">')
+            //Make the AJAX call
+                var ticketid = $(this).val();
+                $.ajax({
+                    type: "POST",
+                    url: "{{URL::route('ajaxCloseTicket')}}",
+                    data: { data: ticketid }
+                })
+                    .done(function(received) {
+                        if (received == "") {
+                            //Well crap that's an error
+                            console.log('Error closing ticket');
+                        }
+                        else if (received == "1") {
+                            //Update the page
+                            var openTicketsCount = $("#openTicketsCount").text();
+                            //Subtract one from our open tickets count.
+                            openTicketsCount--;
+                            $("#openTicketsCount").html(openTicketsCount).fadeOut().fadeIn();
+                            //If we now have 0 open tickets let's fade in the no open tickets div
+                            if (openTicketsCount == 0) {
+                                $('#noOpenTickets').fadeIn();
+                            }
+                            //We need to update the number of closed tickets by one.
+                            var closedTicketsCount = $("#closedTicketsCount").text();
+                            closedTicketsCount++;
+                            $("#closedTicketsCount").html(closedTicketsCount).fadeOut().fadeIn();
+                            //If there were not any closed tickets before, there are now, so lets fade out the no closed ticket div.
+                            $('#noClosedTickets').fadeOut();
+                            //We need to remove the closed ticket button from the ticket div and for good measure we will add back the original text.
+                            btn.html('<i class="fui fui-cross"></i> Close Ticket').hide();
+                            //Finally we need to look for the closest div up the DOM then fade it out, add it to our closed tickets container and fade it in.
+                            btn.closest('div').prependTo('#containerNewClosedTickets').fadeIn();
+                        }
+                    });
+                return false;
+            });
 
-    });
+        });
 
 
 

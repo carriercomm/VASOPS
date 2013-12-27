@@ -543,7 +543,7 @@
                     <div style="margin-top: 40px;">
                         <span style="text-align: left"><h4><i class="fui fui-time"></i>  Closed Tickets - <span id="closedTicketsCount" class="label label-warning">{{ $tickets['closedtickets_count'] }}</span></h4></span>
                         <p id="noClosedTickets" style="@if ($tickets['closedtickets_count'] != 0) display: none; @endif">You currently have no closed tickets.</p>
-                        <div id="containedNewClosedTickets">
+                        <div id="containerNewClosedTickets">
                             @foreach ($tickets['closedtickets'] as $ticket)
                             <div id="newClosedTickets" style="text-align: left;" class="well">
                                 <h6 style="text-transform: none;"><strong>{{ $ticket->subject }} - {{ $ticket->created_at }}</strong>: {{ substr($ticket->description, 0, 50) }}...</h6>

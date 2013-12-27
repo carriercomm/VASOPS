@@ -216,6 +216,21 @@ class AjaxController extends BaseController {
 
     }
 
+    public function post_closeticket() {
+        //Pull our AJAX data
+        $ticketid = Input::get('data');
+        //Pull our ticket
+        $ticket = Tickets::where('id', '=', $ticketid)->where('vid', '=', Auth::user()->cid)->first();
+        //Does this user own this ticket?
+        if (count($ticket) == 1) {
+            //Set our ticket status to 0 or closed
+            $ticket->status = 0;
+            //Save our update
+            $ticket->save();
+            echo "1";
+        }
+    }
+
     public function post_newticket() {
         //Pull our AJAX Post Data
         $postStr = Input::get('data');
@@ -260,7 +275,7 @@ class AjaxController extends BaseController {
             $ticket->status = '1';
             $ticket->save();
             //Pull the newly created ticket ID.
-            $ticket = Tickets::where('vid', '=', Auth::user()->cid)->orderBy('created_at', 'DESC')->first();
+            $ticket = Tickets::where('vid', '=', Auth::user()->cid)->orderBy('id', 'DESC')->first();
             $id = $ticket->id;
             echo $id;
         }
