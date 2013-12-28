@@ -1,4 +1,4 @@
-<?php
+ <?php
 class AjaxController extends BaseController {
 
     public function post_logout() {
@@ -220,7 +220,7 @@ class AjaxController extends BaseController {
         //Pull our AJAX data
         $ticketid = Input::get('data');
         //Pull our ticket
-        $ticket = Tickets::where('id', '=', $ticketid)->where('vid', '=', Auth::user()->cid)->first();
+        $ticket = Ticket::where('id', '=', $ticketid)->where('vid', '=', Auth::user()->cid)->first();
         //Does this user own this ticket?
         if (count($ticket) == 1) {
             //Set our ticket status to 0 or closed
@@ -235,7 +235,7 @@ class AjaxController extends BaseController {
         //Pull our AJAX data
         $ticketid = Input::get('data');
         //Pull our ticket
-        $ticket = Tickets::where('id', '=', $ticketid)->where('vid', '=', Auth::user()->cid)->first();
+        $ticket = Ticket::where('id', '=', $ticketid)->where('vid', '=', Auth::user()->cid)->first();
         //Does this user own this ticket?
         if (count($ticket) == 1) {
             //Set our ticket status to 1 or open
@@ -282,7 +282,7 @@ class AjaxController extends BaseController {
         }
 
         else {
-            $ticket = new Tickets;
+            $ticket = new Ticket;
             $ticket->subject = $post['inputTicketSubject'];
             $ticket->description = $post['inputTicketContent'];
             $ticket->vid = Auth::user()->cid;

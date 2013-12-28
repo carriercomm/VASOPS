@@ -1,4 +1,4 @@
-<?php
+ <?php
 class VaController extends BaseController {
 
     public function get_va() {
@@ -53,11 +53,19 @@ class VaController extends BaseController {
         $tickets['opentickets_count'] = $openticketscount;
         $tickets['closedtickets'] = $closedtickets;
         $tickets['closedtickets_count'] = $closedticketscount;
-        //Pull our ticket_reply information using the relationship defined in the model
-        $cid = Auth::user()->cid;
-        $replies = TicketReply::whereHas('ticket', function($q) use ($cid) {
-            $q->where('vid', '=', $cid);
-        })->get();
+        //Pull our ticket_reply information using the inverse relationship defined in the model
+        $tickets_result = Ticket::where('vid', '=', Auth::user()->cid)->get();
+        $tickedids = array();
+        foreach ($tickets_result as $ticket) {
+            $ticketid = $ticket->id;
+            $ticketids['$tickedid'] = $ticketid;
+        }
+        $replies = TicketReply::whereIn('id', $ticketids)->get();
+
+//        **Not permissible as of now because of belongTo relationship**
+//        $replies = TicketReply::whereHas('ticket', function($q) use ($cid) {
+//            $q->where('vid', '=', $cid);
+//        })->get();
         $tickets['replies'] = $replies;
 
         //Create our view with the VA, clicks and tickets data.
