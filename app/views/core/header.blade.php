@@ -6,6 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     {{ HTML::style('bootstrap/css/bootstrap.css') }}
     {{ HTML::style('css/flat-ui.css') }}
+    {{ HTML::style('css/custom.css') }}
     <!-- Vatsim Favicon -->
     <link rel="shortcut icon" href="images/favicon.ico">
 
