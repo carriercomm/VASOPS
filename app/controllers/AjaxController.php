@@ -231,6 +231,21 @@ class AjaxController extends BaseController {
         }
     }
 
+    public function post_reopenticket() {
+        //Pull our AJAX data
+        $ticketid = Input::get('data');
+        //Pull our ticket
+        $ticket = Tickets::where('id', '=', $ticketid)->where('vid', '=', Auth::user()->cid)->first();
+        //Does this user own this ticket?
+        if (count($ticket) == 1) {
+            //Set our ticket status to 1 or open
+            $ticket->status = 1;
+            //Save our update
+            $ticket->save();
+            echo "1";
+        }
+    }
+
     public function post_newticket() {
         //Pull our AJAX Post Data
         $postStr = Input::get('data');

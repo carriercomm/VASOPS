@@ -282,7 +282,7 @@
                         var subject = $("#inputTicketSubject").val();
                         var description = $("#inputTicketContent").val();
                         description = description.substring(0, 50);
-                        $('#containerNewOpenTickets').prepend('<div id="newOpenTickets" style="text-align: left; display: none;" class="well"><h6 style="text-transform: none;"><strong>' + subject + ' - Now</strong>: ' + description + '...</h6><span id="btnCloseTicket" style="float: right; position: relative; top: -40px;"><button class="btn btn-danger" value="' + received + '"><i class="fui fui-cross"></i> Close Ticket</button></span></div>');
+                        $('#containerNewOpenTickets').prepend('<div id="newOpenTickets" style="text-align: left; display: none;" class="well"><h6 style="text-transform: none;"><strong>' + subject + ' - Now</strong>: ' + description + '...</h6><span id="btnReopenTicket" style="float: right; position: relative; top: -40px; display: none;"><button class="btn btn-success" value="' + received + '"><i class="fui fui-plus"></i> Reopen Ticket</button></span><span id="btnCloseTicket" style="float: right; position: relative; top: -40px;"><button class="btn btn-danger" value="' + received + '"><i class="fui fui-cross"></i> Close Ticket</button></span></div>');
                         //Finally fade in our element
                         $('#containerNewOpenTickets div:first-child').fadeIn();
                         var openTicketsCount = $("#openTicketsCount").text();
@@ -294,8 +294,8 @@
             return false;
         });
 
-        //Select each well for open tickets and add create the handlers for the button actions
-        function createCloseTicketBtn(removehandlers) {
+        //Select each well for **open tickets** and add create the handlers for the button actions
+        function createCloseTicketBtn() {
             $('#containerNewOpenTickets').children('div').each(function() {
                 //Create the event handler to listen for mouse over
                 $(this).mouseenter(function() {
@@ -311,8 +311,25 @@
         //Call our function
         createCloseTicketBtn();
 
-        //btnCloseTicket action -- use live because some buttons may have been added after the page load
-        $('#btnCloseTicket > button').live('click', function () {
+        //Select each well for **closed tickets** and add create the handlers for the button actions
+        function createReopenTicketBtn() {
+            $('#containerNewClosedTickets').children('div').each(function() {
+                //Create the event handler to listen for mouse over
+                $(this).on('mouseenter', '', function() {
+                    $(this).find('#btnReopenTicket').fadeIn('fast');
+                });
+                //Create the event handler to listen for mouse exit
+                $(this).on('mouseleave', '', function() {
+                    $(this).find('#btnReopenTicket').hide();
+                });
+
+            });
+        }
+        //Call our function
+        createReopenTicketBtn();
+
+        //btnCloseTicket action -- use on because some buttons may have been added after the page load
+        $(document).on('click', '#btnCloseTicket > button', function () {
             var btn = $(this);
             btn.html('<img height="77px" width="77px" alt="Loading..." src="{{ URL::to('/') }}/images/loader.gif">')
             //Make the AJAX call
@@ -345,12 +362,58 @@
                             $('#noClosedTickets').fadeOut();
                             //We need to remove the closed ticket button from the ticket div and for good measure we will add back the original text.
                             btn.html('<i class="fui fui-cross"></i> Close Ticket').hide();
+                            //Now lets ensure our reopen ticket button is visible. Look up the DOM until we find the btnCloseTicket span then look across for the btnReopenTicket sibling.
+                            btn.closest('#btnCloseTicket').siblings('#btnReopenTicket').show();
                             //Finally we need to look for the closest div up the DOM then fade it out, add it to our closed tickets container and fade it in.
                             btn.closest('div').prependTo('#containerNewClosedTickets').fadeIn();
                         }
                     });
                 return false;
             });
+
+
+        //btnReopenTicket action -- use on because some buttons may have been added after the page load
+        $(document).on('click', '#btnReopenTicket > button', function () {
+            var btn = $(this);
+            btn.html('<img height="77px" width="77px" alt="Loading..." src="{{ URL::to('/') }}/images/loader.gif">')
+            //Make the AJAX call
+            var ticketid = $(this).val();
+            $.ajax({
+                type: "POST",
+                url: "{{URL::route('ajaxReopenTicket')}}",
+                data: { data: ticketid }
+            })
+                .done(function(received) {
+                    if (received == "") {
+                        //Well crap that's an error
+                        console.log('Error reopening ticket');
+                    }
+                    else if (received == "1") {
+                        //Update the page
+                        var closedTicketsCount = $("#closedTicketsCount").text();
+                        //Subtract one from our closed tickets count.
+                        closedTicketsCount--;
+                        $("#closedTicketsCount").html(closedTicketsCount).fadeOut().fadeIn();
+                        //If we now have 0 closed tickets let's fade in the no open tickets div
+                        if (closedTicketsCount == 0) {
+                            $('#noClosedTickets').fadeIn();
+                        }
+                        //We need to update the number of open tickets by one.
+                        var openTicketsCount = $("#openTicketsCount").text();
+                        openTicketsCount++;
+                        $("#openTicketsCount").html(openTicketsCount).fadeOut().fadeIn();
+                        //If there were not any open tickets before, there are now, so lets fade out the no open ticket div.
+                        $('#noOpenTickets').fadeOut();
+                        //We need to remove the reopen ticket button from the ticket div and for good measure we will add back the original text.
+                        btn.html('<i class="fui fui-plus"></i> Reopen Ticket').hide();
+                        //Now lets ensure our closed ticket button is visible. Look up the DOM until we find the btnCloseTicket span then look across for the btnReopenTicket sibling.
+                        btn.closest('#btnReopenTicket').siblings('#btnCloseTicket').show();
+                        //Finally we need to look for the closest div up the DOM then fade it out, add it to our closed tickets container and fade it in.
+                        btn.closest('div').prependTo('#containerNewOpenTickets').fadeIn();
+                    }
+                });
+            return false;
+        });
 
         });
 
