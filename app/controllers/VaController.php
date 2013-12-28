@@ -30,12 +30,12 @@ class VaController extends BaseController {
 
         //Count the data in the DB
         //Where data is greater than the first of this month and is associated with our logged in user.
-        $month = Clicks::where('created_at', '>=', $month)->where('vid', '=', Auth::user()->cid)->count();
+        $month = Click::where('created_at', '>=', $month)->where('vid', '=', Auth::user()->cid)->count();
         //Where data is greater than the first of last month, but less than the first of this month and is associated with our logged in user.
-        $month1before = Clicks::where('created_at', '>=', $month1before)->where('created_at', '<', $month)->where('vid', '=', Auth::user()->cid)->count();
+        $month1before = Click::where('created_at', '>=', $month1before)->where('created_at', '<', $month)->where('vid', '=', Auth::user()->cid)->count();
         //You get the point :)
-        $month2before = Clicks::where('created_at', '>=', $month2before)->where('created_at', '<', $month1before)->where('vid', '=', Auth::user()->cid)->count();
-        $month3before = Clicks::where('created_at', '>=', $month3before)->where('created_at', '<', $month2before)->where('vid', '=', Auth::user()->cid)->count();
+        $month2before = Click::where('created_at', '>=', $month2before)->where('created_at', '<', $month1before)->where('vid', '=', Auth::user()->cid)->count();
+        $month3before = Click::where('created_at', '>=', $month3before)->where('created_at', '<', $month2before)->where('vid', '=', Auth::user()->cid)->count();
         //Add to our clicks array.
         $clicks['month'] = $month;
         $clicks['month1before'] = $month1before;
@@ -43,9 +43,9 @@ class VaController extends BaseController {
         $clicks['month3before'] = $month3before;
 
         //Pull our ticket information
-        $opentickets = Tickets::where('vid', '=', Auth::user()->cid)->where('status', '=', '1')->orderBy('created_at', 'DESC')->get();
+        $opentickets = Ticket::where('vid', '=', Auth::user()->cid)->where('status', '=', '1')->orderBy('created_at', 'DESC')->get();
         $openticketscount = count($opentickets);
-        $closedtickets = Tickets::where('vid', '=', Auth::user()->cid)->where('status', '=', '0')->orderBy('created_at', 'DESC')->get();
+        $closedtickets = Ticket::where('vid', '=', Auth::user()->cid)->where('status', '=', '0')->orderBy('created_at', 'DESC')->get();
         $closedticketscount = count($closedtickets);
         //Create our array
         $tickets = array();
@@ -53,7 +53,12 @@ class VaController extends BaseController {
         $tickets['opentickets_count'] = $openticketscount;
         $tickets['closedtickets'] = $closedtickets;
         $tickets['closedtickets_count'] = $closedticketscount;
-
+        //Pull our ticket_reply information using the relationship defined in the model
+        $cid = Auth::user()->cid;
+        $replies = TicketReply::whereHas('ticket', function($q) use ($cid) {
+            $q->where('vid', '=', $cid);
+        })->get();
+        $tickets['replies'] = $replies;
 
         //Create our view with the VA, clicks and tickets data.
         return View::make('va')->with(array('record' => $record, 'clicks' => $clicks, 'tickets' => $tickets));

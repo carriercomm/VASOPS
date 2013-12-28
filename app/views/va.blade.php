@@ -536,6 +536,10 @@
                             @foreach ($tickets['opentickets'] as $ticket)
                             <div id="newOpenTickets" style="text-align: left;" class="well">
                                 <h6 style="text-transform: none;"><strong>{{ $ticket->subject }} - {{ $ticket->created_at }}</strong>: {{ substr($ticket->description, 0, 50) }}...</h6><span id="btnReopenTicket" style="float: right; position: relative; top: -40px; display: none;"><button class="btn btn-success" value="{{ $ticket->id }}"><i class="fui fui-plus"></i> Reopen Ticket</button></span><span id="btnCloseTicket" style="float: right; position: relative; top: -40px; display: none;"><button class="btn btn-danger" value="{{ $ticket->id }}"><i class="fui fui-cross"></i> Close Ticket</button></span>
+                                <div style="display: none;" id="newOpenTickets_expanded">
+                                    {{ var_dump($tickets['replies']) }}
+
+                                </div>
                             </div>
                             @endforeach
                         </div>
@@ -547,6 +551,9 @@
                             @foreach ($tickets['closedtickets'] as $ticket)
                             <div id="newClosedTickets" style="text-align: left;" class="well">
                                 <h6 style="text-transform: none;"><strong>{{ $ticket->subject }} - {{ $ticket->created_at }}</strong>: {{ substr($ticket->description, 0, 50) }}...</h6><span id="btnReopenTicket" style="float: right; position: relative; top: -40px; display: none;"><button class="btn btn-success" value="{{ $ticket->id }}"><i class="fui fui-plus"></i> Reopen Ticket</button></span><span id="btnCloseTicket" style="float: right; position: relative; top: -40px; display: none;"><button class="btn btn-danger" value="{{ $ticket->id }}"><i class="fui fui-cross"></i> Close Ticket</button></span>
+                                <div style="display: none;" id="newClosedTickets_expanded">
+
+                                </div>
                             </div>
                             @endforeach
                         </div>

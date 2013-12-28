@@ -303,7 +303,7 @@
                 });
                 //Create the event handler to listen for mouse exit
                 $(this).mouseleave(function() {
-                    $(this).find('#btnCloseTicket').hide();
+                    $(this).find('#btnCloseTicket').fadeOut('fast');
                 });
 
             });
@@ -320,7 +320,7 @@
                 });
                 //Create the event handler to listen for mouse exit
                 $(this).on('mouseleave', '', function() {
-                    $(this).find('#btnReopenTicket').hide();
+                    $(this).find('#btnReopenTicket').fadeOut('fast');
                 });
 
             });
@@ -415,7 +415,12 @@
             return false;
         });
 
+        //Expand tickets action
+        $(document).on('click', '#newOpenTickets, #newClosedTickets', function() {
+
         });
+
+    });
 
 
 
