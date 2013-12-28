@@ -1,4 +1,4 @@
- <?php
+<?php
 class AjaxController extends BaseController {
 
     public function post_logout() {
@@ -290,7 +290,7 @@ class AjaxController extends BaseController {
             $ticket->status = '1';
             $ticket->save();
             //Pull the newly created ticket ID.
-            $ticket = Tickets::where('vid', '=', Auth::user()->cid)->orderBy('id', 'DESC')->first();
+            $ticket = Ticket::where('vid', '=', Auth::user()->cid)->orderBy('id', 'DESC')->first();
             $id = $ticket->id;
             echo $id;
         }
