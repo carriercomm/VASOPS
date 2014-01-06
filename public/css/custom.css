@@ -12,3 +12,10 @@
     -moz-transition: box-shadow .5s;
     transition: box-shadow .5s;
 }
+.ticketActionButton {
+    float: right;
+    position: relative;
+    top: -25px;
+    right: -145px;
+    display: none;
+}

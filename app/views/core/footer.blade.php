@@ -55,24 +55,54 @@
         });
     @if (Route::currentRouteName() == "index")
         $('#findBtn').click(function () {
+            moduleFind();
+            return false;
+        });
+        $('#currentBtn').click(function () {
+            moduleCurrent();
+            return false;
+        });
+        $('#applyBtn').click(function () {
+            moduleApply();
+            return false;
+        });
+    @endif
+
+        var hash = window.location.hash;
+        switch (hash) {
+            case '#moduleFind':
+                moduleFind();
+                break;
+            case '#moduleCurrent':
+                moduleCurrent();
+                break;
+            case '#moduleApply':
+                moduleApply();
+                break;
+        }
+
+        function moduleFind() {
             $('#moduleCurrent').hide();
             $('#moduleApply').hide();
             $('#moduleFind').fadeIn();
             return false;
-        });
-        $('#currentBtn').click(function () {
+        }
+
+        function moduleCurrent() {
             $('#moduleApply').hide();
             $('#moduleFind').hide();
             $('#moduleCurrent').fadeIn();
             return false;
-        });
-        $('#applyBtn').click(function () {
+        }
+
+        function moduleApply() {
             $('#moduleFind').hide();
             $('#moduleCurrent').hide();
             $('#moduleApply').fadeIn();
             return false;
-        });
-    @endif
+        }
+
+
 
         $('#q1').click(function () {
             $('#progressBar').animate({width: '15%'});
@@ -270,7 +300,7 @@
                 data: { data: newTicketFormData }
             })
                 .done(function(received) {
-                    //Verify return value is or is not an integer to decide whether to return an error or success with ticked ID to populat the close ticket button.
+                    //Verify return value is or is not an integer to decide whether to return an error or success with ticked ID to populate the close ticket button.
                     if (!$.isNumeric(received)) {
                         $('#submittingNewTicketAJAX').hide();
                         $('#divNewTicketForm').fadeIn('slow');
@@ -281,8 +311,7 @@
                         $('#noOpenTickets').hide();
                         var subject = $("#inputTicketSubject").val();
                         var description = $("#inputTicketContent").val();
-                        description = description.substring(0, 50);
-                        $('#containerNewOpenTickets').prepend('<div id="newOpenTickets" style="text-align: left; display: none;" class="well"><h6 style="text-transform: none;"><strong>' + subject + ' - Now</strong>: ' + description + '...</h6><span id="btnReopenTicket" style="float: right; position: relative; top: -40px; display: none;"><button class="btn btn-success" value="' + received + '"><i class="fui fui-plus"></i> Reopen Ticket</button></span><span id="btnCloseTicket" style="float: right; position: relative; top: -40px;"><button class="btn btn-danger" value="' + received + '"><i class="fui fui-cross"></i> Close Ticket</button></span></div>');
+                        $('#containerNewOpenTickets').prepend('<div id="newOpenTickets" style="text-align: left; padding-right: 150px; display: none;" class="well"><h6 style="text-transform: none;"><strong>' + subject + ' - Now</strong>: ' + description + '</h6><span id="btnReopenTicket" style="float: right; position: relative; top: -25px; right: -145px; display: none;"><button class="btn btn-success" value="' + received + '"><i class="fui fui-plus"></i> Reopen Ticket</button></span><span id="btnCloseTicket" style="float: right; position: relative; top: -25px; right: -145px;"><button class="btn btn-danger" value="' + received + '"><i class="fui fui-cross"></i> Close Ticket</button></span></div>');
                         //Finally fade in our element
                         $('#containerNewOpenTickets div:first-child').fadeIn();
                         var openTicketsCount = $("#openTicketsCount").text();
@@ -416,8 +445,11 @@
         });
 
         //Expand tickets action
-        $(document).on('click', '#newOpenTickets, #newClosedTickets', function() {
-
+        $(document).on('click', '#newOpenTickets', function(e) {
+            if (e.target == e.currentTarget) {
+                var replyTicketForm = $(this).children('#replyTicketForm');
+                $(this).children('#newOpenTickets_expanded').slideToggle();
+            }
         });
 
     });

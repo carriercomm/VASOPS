@@ -534,11 +534,32 @@
                         </div>
                         <div id="containerNewOpenTickets">
                             @foreach ($tickets['opentickets'] as $ticket)
-                            <div id="newOpenTickets" style="text-align: left;" class="well">
-                                <h6 style="text-transform: none;"><strong>{{ $ticket->subject }} - {{ $ticket->created_at }}</strong>: {{ substr($ticket->description, 0, 50) }}...</h6><span id="btnReopenTicket" style="float: right; position: relative; top: -40px; display: none;"><button class="btn btn-success" value="{{ $ticket->id }}"><i class="fui fui-plus"></i> Reopen Ticket</button></span><span id="btnCloseTicket" style="float: right; position: relative; top: -40px; display: none;"><button class="btn btn-danger" value="{{ $ticket->id }}"><i class="fui fui-cross"></i> Close Ticket</button></span>
+                            <div id="newOpenTickets" style="text-align: left; padding-right: 150px;" class="well">
+                                <h6 style="font-style: italic; text-transform: none;"><strong>{{ $ticket->subject }} - {{ $ticket->created_at }}</strong>: {{ $ticket->description }}</h6><span id="btnReopenTicket" style="float: right; position: relative; top: -25px; right: -145px; display: none;"><button class="btn btn-success" value="{{ $ticket->id }}"><i class="fui fui-plus"></i> Reopen Ticket</button></span><span id="btnCloseTicket" style="float: right; position: relative; top: -25px; right: -145px; display: none;"><button class="btn btn-danger" value="{{ $ticket->id }}"><i class="fui fui-cross"></i> Close Ticket</button></span>
                                 <div style="display: none;" id="newOpenTickets_expanded">
+                                    @foreach ($tickets['replies'] as $reply)
+                                    @if ($reply->tid == $ticket->id)
+                                    <hr style="width: 80%" />
+                                    <div><span style="text-align: left; margin-right: 20px;"><strong>{{ $reply->author }}</strong></span><span style="">{{ $reply->content }}</span></div>
+                                    @endif
+                                    @endforeach
 
-
+                                    <div>
+                                        <hr style="width: 80%;" />
+                                        <form id="replyTicketForm" class="form-inline">
+                                            <input type="hidden" name="_token" value="{{ csrf_token(); }}" />
+                                            <div class="control-group">
+                                                <div class="controls">
+                                                    <textarea style="width: 80%;" id="inputReplyTicket" name="inputReplyTicket" placeholder="Please detail your reply"></textarea>
+                                                </div>
+                                            </div>
+                                            <div class="control-group">
+                                                <div style="width: 80%" class="form-actions">
+                                                    <button id="replyTicketSubmitBtn" class="btn btn-success">Submit Reply</button>
+                                                </div>
+                                            </div>
+                                        </form>
+                                    </div>
                                 </div>
                             </div>
                             @endforeach
@@ -549,8 +570,8 @@
                         <p id="noClosedTickets" style="@if ($tickets['closedtickets_count'] != 0) display: none; @endif">You currently have no closed tickets.</p>
                         <div id="containerNewClosedTickets">
                             @foreach ($tickets['closedtickets'] as $ticket)
-                            <div id="newClosedTickets" style="text-align: left;" class="well">
-                                <h6 style="text-transform: none;"><strong>{{ $ticket->subject }} - {{ $ticket->created_at }}</strong>: {{ substr($ticket->description, 0, 50) }}...</h6><span id="btnReopenTicket" style="float: right; position: relative; top: -40px; display: none;"><button class="btn btn-success" value="{{ $ticket->id }}"><i class="fui fui-plus"></i> Reopen Ticket</button></span><span id="btnCloseTicket" style="float: right; position: relative; top: -40px; display: none;"><button class="btn btn-danger" value="{{ $ticket->id }}"><i class="fui fui-cross"></i> Close Ticket</button></span>
+                            <div id="newClosedTickets" style="text-align: left; padding-right: 150px;" class="well">
+                                <h6 style="text-transform: none;"><strong>{{ $ticket->subject }} - {{ $ticket->created_at }}</strong>: {{ $ticket->description }}</h6><span id="btnReopenTicket" style="float: right; position: relative; top: -25px; right: -145px; display: none;"><button class="btn btn-success" value="{{ $ticket->id }}"><i class="fui fui-plus"></i> Reopen Ticket</button></span><span id="btnCloseTicket" style="float: right; position: relative; top: -25px; right: -145px; display: none;"><button class="btn btn-danger" value="{{ $ticket->id }}"><i class="fui fui-cross"></i> Close Ticket</button></span>
                                 <div style="display: none;" id="newClosedTickets_expanded">
 
                                 </div>
@@ -560,7 +581,6 @@
                     </div>
                 </div>
             </div>
-
         </div>
     </div>
 </div>

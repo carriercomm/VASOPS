@@ -54,6 +54,16 @@ class VaController extends BaseController {
         $tickets['closedtickets'] = $closedtickets;
         $tickets['closedtickets_count'] = $closedticketscount;
 
+        //Pull our replies
+        $tickets_request = Ticket::where('vid', '=', Auth::user()->cid)->get();
+        $tids = array();
+        foreach ($tickets_request as $ticket_request) {
+            $tid = $ticket_request->id;
+            $tids[$tid] = $tid;
+        }
+        $replies = TicketReply::whereIn('tid', $tids)->orderBy('created_at', 'DESC')->get();
+        $tickets['replies'] = $replies;
+
         //Create our view with the VA, clicks and tickets data.
         return View::make('va')->with(array('record' => $record, 'clicks' => $clicks, 'tickets' => $tickets));
     }

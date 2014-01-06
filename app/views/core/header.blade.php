@@ -40,10 +40,10 @@
                     @endif
                     @else
                     @if(!Auth::check())
-                    <a id="applyBtn" class="btn btn-success" href="{{URL::to('/')}}">Apply to be a VA Partner</a>
+                    <a id="applyBtn" class="btn btn-success" href="{{URL::to('/')}}/#moduleApply">Apply to be a VA Partner</a>
                     @endif
-                    <a id="currentBtn" class="btn btn-success" href="{{URL::to('/')}}">Current VAs</a>
-                    <a id="findBtn" class="btn btn-success" href="{{URL::to('/')}}">Find Your VA</a>
+                    <a id="currentBtn" class="btn btn-success" href="{{URL::to('/')}}/#moduleCurrent">Current VAs</a>
+                    <a id="findBtn" class="btn btn-success" href="{{URL::to('/')}}/#moduleFind">Find Your VA</a>
                     @if(Auth::check())
                     <a class="btn" href="{{URL::to('va')}}">Manage VA</a>
                     @endif
