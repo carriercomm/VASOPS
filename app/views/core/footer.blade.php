@@ -360,7 +360,7 @@
         //btnCloseTicket action -- use on because some buttons may have been added after the page load
         $(document).on('click', '#btnCloseTicket > button', function () {
             var btn = $(this);
-            btn.html('<img height="77px" width="77px" alt="Loading..." src="{{ URL::to('/') }}/images/loader.gif">')
+            btn.html('<img height="77px" width="77px" alt="Loading..." src="{{ URL::to('/') }}/images/loader.gif">');
             //Make the AJAX call
                 var ticketid = $(this).val();
                 $.ajax({
@@ -451,6 +451,39 @@
                 $(this).children('#newOpenTickets_expanded').slideToggle();
             }
         });
+
+        //Submit ticket reply
+        $(document).on('click', '#replyTicketSubmitBtn', function() {
+            var btn = $(this);
+            var errors = btn.closest('form').siblings('#replyTicketErrors');
+            //It isn't clearing the error.
+            errors.hide().html('');
+            //Put the loading icon in the button
+            $(this).html('<img height="77px" width="77px" alt="Loading..." src="{{ URL::to('/') }}/images/loader.gif">');
+            var replyTicketForm;
+            replyTicketForm =  $("#replyTicketForm").serialize();
+            $.ajax({
+                type: "POST",
+                url: "{{URL::route('ajaxReplyTicket')}}",
+                data: { data: replyTicketForm }
+            })
+                .done(function(received) {
+                    if (received != "1") {
+                        console.log('Error');
+                        //Well crap that's an error. We will advise the user
+                        errors.html(received).fadeIn();
+                        btn.html('Submit Reply');
+                    }
+                    else if (received == "1") {
+                        //Success - now Update the page
+
+                    }
+                });
+            return false;
+        });
+
+
+
 
     });
 

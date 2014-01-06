@@ -22,6 +22,7 @@ Route::post('/ajax/vaedit', array('as' => 'ajaxVAEdit', 'uses' => 'AjaxControlle
 Route::post('/ajax/newticket', array('as' => 'ajaxNewTicket', 'uses' => 'AjaxController@post_newticket', 'before' =>'auth|csrf'));
 Route::post('/ajax/closeticket', array('as' => 'ajaxCloseTicket', 'uses' => 'AjaxController@post_closeticket', 'before' =>'auth'));
 Route::post('/ajax/reopenticket', array('as' => 'ajaxReopenTicket', 'uses' => 'AjaxController@post_reopenticket', 'before' =>'auth'));
+Route::post('/ajax/replyticket', array('as' => 'ajaxReplyTicket', 'uses' => 'AjaxController@post_replyticket', 'before' =>'auth|csrf'));
 
 
 

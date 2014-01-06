@@ -297,4 +297,46 @@ class AjaxController extends BaseController {
 
     }
 
+    public function post_replyticket() {
+        $postStr = Input::get('data');
+        parse_str($postStr, $post);
+
+        $validator = Validator::make(
+           array (
+               'Reply' => $post['inputReplyTicket'],
+               'tid' => $post['tid'],
+           ),
+           array (
+              'Reply' => 'required',
+              'tid' => 'required|integer',
+           ),
+           array (
+               'Reply.required' => 'Please enter a reply.',
+               'tid.required' => 'The system cannot find a ticket to reply to.',
+               'tid.integer' => 'The system has been sent an invalid ticket id to reply to.',
+           )
+        );
+
+        if ($validator->fails()) {
+            $messages = $validator->messages();
+            $errorStr = '';
+            foreach ($messages->all('<li>:message</li>') as $message)
+            {
+                $errorStr .= '<div class="alert alert-error">'. $message . '</div>';
+            }
+            echo $errorStr;
+        }
+
+        //Verify some smart ass didn't try to change the hidden input field.
+        $count = Ticket::where('id', '=', $post['tid'])->where('vid', '=', Auth::user()->cid)->count();
+        if ($count == 0) {
+            //Damn them.
+            echo '<div class="alert alert-error"><li>Seriously? Nice try.</li></div>';
+        }
+        else {
+
+        }
+
+    }
+
 }

@@ -38,7 +38,7 @@
                         @if ($record->linkbackstatus == 1)
                         <h4><i class="fui-check"></i></h4>
                         @else
-                        <h4><i class="fui-cross"></i></h4>
+                        <h4><i class="fui-cross"></i></h4><button style="float: right; position: absolute; right: 30px; top: 130px;" class="btn"><i class="fui-eye"></i></button>
                         @endif
                     </div>
                 </div>
@@ -544,17 +544,19 @@
                                     @endif
                                     @endforeach
 
-                                    <div>
-                                        <hr style="width: 80%;" />
+                                    <div style="width: 80%">
+                                        <hr />
+                                        <div id="replyTicketErrors" style="display: none;"></div>
                                         <form id="replyTicketForm" class="form-inline">
                                             <input type="hidden" name="_token" value="{{ csrf_token(); }}" />
-                                            <div class="control-group">
+                                            <input type="hidden" name="tid" value="{{ $ticket->id }}" />
+                                            <div id="inputReplyTicketControlGroup" class="control-group">
                                                 <div class="controls">
-                                                    <textarea style="width: 80%;" id="inputReplyTicket" name="inputReplyTicket" placeholder="Please detail your reply"></textarea>
+                                                    <textarea style="width: 95%;" id="inputReplyTicket" name="inputReplyTicket" placeholder="Please detail your reply..."></textarea>
                                                 </div>
                                             </div>
                                             <div class="control-group">
-                                                <div style="width: 80%" class="form-actions">
+                                                <div class="form-actions">
                                                     <button id="replyTicketSubmitBtn" class="btn btn-success">Submit Reply</button>
                                                 </div>
                                             </div>

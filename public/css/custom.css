@@ -19,3 +19,7 @@
     right: -145px;
     display: none;
 }
+.has-error {
+    color: #e74c3c;
+    border-color: #e74c3c;
+}
