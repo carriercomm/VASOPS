@@ -334,7 +334,14 @@ class AjaxController extends BaseController {
             echo '<div class="alert alert-error"><li>Seriously? Nice try.</li></div>';
         }
         else {
-
+            $reply = new Reply;
+            $reply->tid = $post['tid'];
+            $reply->author = Auth::user()->cid;
+            $reply->content = $post['inputReplyTicket'];
+            //Save our ticket update
+            $reply->save();
+            //Return 1 to inform the client this was successful.
+            echo '1';
         }
 
     }

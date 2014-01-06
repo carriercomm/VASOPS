@@ -461,11 +461,12 @@
             //Put the loading icon in the button
             $(this).html('<img height="77px" width="77px" alt="Loading..." src="{{ URL::to('/') }}/images/loader.gif">');
             var replyTicketForm;
-            replyTicketForm =  $("#replyTicketForm").serialize();
+            replyTicketForm =  btn.closest("#replyTicketForm");
+            var replyTicketForm_serialized = replyTicketForm.serialize();
             $.ajax({
                 type: "POST",
                 url: "{{URL::route('ajaxReplyTicket')}}",
-                data: { data: replyTicketForm }
+                data: { data: replyTicketForm_serialized }
             })
                 .done(function(received) {
                     if (received != "1") {
@@ -476,7 +477,15 @@
                     }
                     else if (received == "1") {
                         //Success - now Update the page
-
+                        var content = replyTicketForm.find('#inputReplyTicket').val();
+                        //Possible error here.
+                        content.replace('/(<([^>]+)>)/ig',"");
+                        //Fix this line
+                        btn.closest('newOpenTickets_expanded').append('<hr style="width: 80%" /><div><span style="text-align: left; margin-right: 20px;"><strong>{{ Auth::user()->name; }}</strong></span><span style="">' + content + '</span></div>');
+                        //Edit our button content from the ajax loader.
+                        btn.html('Submit Reply');
+                        //Reset our form.
+                        replyTicketForm[0].reset();
                     }
                 });
             return false;
