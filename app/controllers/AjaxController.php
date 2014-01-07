@@ -317,6 +317,14 @@ class AjaxController extends BaseController {
            )
         );
 
+        //Verify some smart ass didn't try to change the hidden input field (tid) or reply to a closed ticket.
+        $count = Ticket::where('id', '=', $post['tid'])->where('vid', '=', Auth::user()->cid)->where('status', '=', '1')->count();
+        if ($count == 0) {
+            //Damn them.
+            echo '<div class="alert alert-error"><li>Seriously? Nice try.</li></div>';
+        }
+
+
         if ($validator->fails()) {
             $messages = $validator->messages();
             $errorStr = '';
@@ -327,12 +335,6 @@ class AjaxController extends BaseController {
             echo $errorStr;
         }
 
-        //Verify some smart ass didn't try to change the hidden input field.
-        $count = Ticket::where('id', '=', $post['tid'])->where('vid', '=', Auth::user()->cid)->count();
-        if ($count == 0) {
-            //Damn them.
-            echo '<div class="alert alert-error"><li>Seriously? Nice try.</li></div>';
-        }
         else {
             $reply = new Reply;
             $reply->tid = $post['tid'];

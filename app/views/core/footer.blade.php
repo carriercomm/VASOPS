@@ -188,6 +188,8 @@
             return false;
         });
 
+        //Require auth
+        @if (Auth::check())
 
         $("#helloUser").mouseenter(function (){
             $('#helloUserIcon').hide();
@@ -311,7 +313,9 @@
                         $('#noOpenTickets').hide();
                         var subject = $("#inputTicketSubject").val();
                         var description = $("#inputTicketContent").val();
-                        $('#containerNewOpenTickets').prepend('<div id="newOpenTickets" style="text-align: left; padding-right: 150px; display: none;" class="well"><h6 style="text-transform: none;"><strong>' + subject + ' - Now</strong>: ' + description + '</h6><span id="btnReopenTicket" style="float: right; position: relative; top: -25px; right: -145px; display: none;"><button class="btn btn-success" value="' + received + '"><i class="fui fui-plus"></i> Reopen Ticket</button></span><span id="btnCloseTicket" style="float: right; position: relative; top: -25px; right: -145px;"><button class="btn btn-danger" value="' + received + '"><i class="fui fui-cross"></i> Close Ticket</button></span></div>');
+                        $('#containerNewOpenTickets').prepend('<div id="newOpenTickets" style="text-align: left; padding-right: 150px; display: none;" class="well"><h6 style="text-transform: none;"><span class="label">Now</span>  <strong>' + subject + '</strong>: ' + description + '</h6><span id="btnReopenTicket" style="float: right; position: relative; top: -25px; right: -145px; display: none;"><button class="btn btn-success" value="' + received + '"><i class="fui fui-plus"></i> Reopen Ticket</button></span><span id="btnCloseTicket" style="float: right; position: relative; top: -25px; right: -145px;"><button class="btn btn-danger" value="' + received + '"><i class="fui fui-cross"></i> Close Ticket</button></span></div>');
+                        var replyTicketDivTemplate = $('#replyTicketDivTemplate').clone().attr('id', 'replyTicketDiv')
+                        $('#containerNewOpenTickets').find('#newOpenTickets').append(replyTicketDivTemplate).find('#replyTicketDiv').fadeIn();
                         //Finally fade in our element
                         $('#containerNewOpenTickets div:first-child').fadeIn();
                         var openTicketsCount = $("#openTicketsCount").text();
@@ -323,39 +327,32 @@
             return false;
         });
 
-        //Select each well for **open tickets** and add create the handlers for the button actions
-        function createCloseTicketBtn() {
-            $('#containerNewOpenTickets').children('div').each(function() {
-                //Create the event handler to listen for mouse over
-                $(this).mouseenter(function() {
-                    $(this).find('#btnCloseTicket').fadeIn('fast');
-                });
-                //Create the event handler to listen for mouse exit
-                $(this).mouseleave(function() {
-                    $(this).find('#btnCloseTicket').fadeOut('fast');
-                });
-
-            });
-        }
-        //Call our function
-        createCloseTicketBtn();
-
-        //Select each well for **closed tickets** and add create the handlers for the button actions
-        function createReopenTicketBtn() {
-            $('#containerNewClosedTickets').children('div').each(function() {
+        //Select each well for **closed tickets** and **open tickets** and add create the handlers for the button actions
+        function createTicketBtn() {
+            $('#containerNewClosedTickets, #containerNewOpenTickets').children('div').each(function() {
                 //Create the event handler to listen for mouse over
                 $(this).on('mouseenter', '', function() {
-                    $(this).find('#btnReopenTicket').fadeIn('fast');
+                    if ($(this).attr('id') == 'newClosedTickets') {
+                        $(this).find('#btnReopenTicket').fadeIn('fast');
+                    }
+                    if ($(this).attr('id') == 'newOpenTickets') {
+                        $(this).find('#btnCloseTicket').fadeIn('fast');
+                    }
                 });
                 //Create the event handler to listen for mouse exit
                 $(this).on('mouseleave', '', function() {
-                    $(this).find('#btnReopenTicket').fadeOut('fast');
+                    if ($(this).attr('id') == 'newClosedTickets') {
+                        $(this).find('#btnReopenTicket').fadeOut('fast');
+                    }
+                    if ($(this).attr('id') == 'newOpenTickets') {
+                        $(this).find('#btnCloseTicket').fadeOut('fast');
+                    }
                 });
 
             });
         }
         //Call our function
-        createReopenTicketBtn();
+        createTicketBtn();
 
         //btnCloseTicket action -- use on because some buttons may have been added after the page load
         $(document).on('click', '#btnCloseTicket > button', function () {
@@ -390,11 +387,13 @@
                             //If there were not any closed tickets before, there are now, so lets fade out the no closed ticket div.
                             $('#noClosedTickets').fadeOut();
                             //We need to remove the closed ticket button from the ticket div and for good measure we will add back the original text.
-                            btn.html('<i class="fui fui-cross"></i> Close Ticket').hide();
+                            btn.html('<i class="fui fui-cross"></i> Close Ticket').closest('#btnCloseTicket').hide();
                             //Now lets ensure our reopen ticket button is visible. Look up the DOM until we find the btnCloseTicket span then look across for the btnReopenTicket sibling.
-                            btn.closest('#btnCloseTicket').siblings('#btnReopenTicket').show();
+                            btn.closest('#btnCloseTicket').siblings('#btnReopenTicket').find('btn').show();
                             //Finally we need to look for the closest div up the DOM then fade it out, add it to our closed tickets container and fade it in.
                             btn.closest('div').prependTo('#containerNewClosedTickets').fadeIn();
+                            //Now let's update our ids and remove the reply ticket form
+                            btn.closest('#newOpenTickets').attr('id', 'newClosedTickets').find('#newOpenTickets_expanded').attr('id', 'newClosedTickets_expanded').find('#replyTicketDiv').remove();
                         }
                     });
                 return false;
@@ -434,22 +433,31 @@
                         //If there were not any open tickets before, there are now, so lets fade out the no open ticket div.
                         $('#noOpenTickets').fadeOut();
                         //We need to remove the reopen ticket button from the ticket div and for good measure we will add back the original text.
-                        btn.html('<i class="fui fui-plus"></i> Reopen Ticket').hide();
+                        btn.html('<i class="fui fui-plus"></i> Reopen Ticket').closest('#btnReopenTicket').hide();
                         //Now lets ensure our closed ticket button is visible. Look up the DOM until we find the btnCloseTicket span then look across for the btnReopenTicket sibling.
-                        btn.closest('#btnReopenTicket').siblings('#btnCloseTicket').show();
+                        btn.closest('#btnReopenTicket').siblings('#btnCloseTicket').find('btn').show();
                         //Finally we need to look for the closest div up the DOM then fade it out, add it to our closed tickets container and fade it in.
                         btn.closest('div').prependTo('#containerNewOpenTickets').fadeIn();
+                        //Clone our replyTicketDivTemplate
+                        var replyTicketDivTemplateClone = $('#replyTicketDivTemplate').clone().attr('id', 'replyTicketDiv').show();
+                        //Now we will change the id of container and add the expanded div
+                        btn.closest('#newClosedTickets').attr('id', 'newOpenTickets').find('#newClosedTickets_expanded').attr('id', 'newOpenTickets_expanded').append(replyTicketDivTemplateClone);
                     }
                 });
             return false;
         });
 
-        //Expand tickets action
+        //Expand open tickets action
         $(document).on('click', '#newOpenTickets', function(e) {
-            if (e.target == e.currentTarget) {
-                var replyTicketForm = $(this).children('#replyTicketForm');
+            //We want to make sure that we are not triggering this with clicking on the text box or the submit button.
+            if (e.target.id != 'inputReplyTicket' && e.target.id != 'replyTicketSubmitBtn') {
                 $(this).children('#newOpenTickets_expanded').slideToggle();
             }
+        });
+
+        //Expand closed tickets action
+        $(document).on('click', '#newClosedTickets, #newClosedTickets > h6', function() {
+                $(this).children('#newClosedTickets_expanded').slideToggle();
         });
 
         //Submit ticket reply
@@ -470,7 +478,6 @@
             })
                 .done(function(received) {
                     if (received != "1") {
-                        console.log('Error');
                         //Well crap that's an error. We will advise the user
                         errors.html(received).fadeIn();
                         btn.html('Submit Reply');
@@ -481,7 +488,7 @@
                         //Possible error here.
                         content.replace('/(<([^>]+)>)/ig',"");
                         //Fix this line
-                        btn.closest('newOpenTickets_expanded').append('<hr style="width: 80%" /><div><span style="text-align: left; margin-right: 20px;"><strong>{{ Auth::user()->name; }}</strong></span><span style="">' + content + '</span></div>');
+                        btn.closest('#replyTicketDiv').before('<hr style="width: 80%" /><div><span style="text-align: left; margin-right: 20px;"><strong>{{ Auth::user()->name; }}</strong></span><span style="">' + content + '</span></div>');
                         //Edit our button content from the ajax loader.
                         btn.html('Submit Reply');
                         //Reset our form.
@@ -492,6 +499,7 @@
         });
 
 
+        @endif
 
 
     });

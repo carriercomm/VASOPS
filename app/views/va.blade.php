@@ -535,16 +535,16 @@
                         <div id="containerNewOpenTickets">
                             @foreach ($tickets['opentickets'] as $ticket)
                             <div id="newOpenTickets" style="text-align: left; padding-right: 150px;" class="well">
-                                <h6 style="font-style: italic; text-transform: none;"><strong>{{ $ticket->subject }} - {{ $ticket->created_at }}</strong>: {{ $ticket->description }}</h6><span id="btnReopenTicket" style="float: right; position: relative; top: -25px; right: -145px; display: none;"><button class="btn btn-success" value="{{ $ticket->id }}"><i class="fui fui-plus"></i> Reopen Ticket</button></span><span id="btnCloseTicket" style="float: right; position: relative; top: -25px; right: -145px; display: none;"><button class="btn btn-danger" value="{{ $ticket->id }}"><i class="fui fui-cross"></i> Close Ticket</button></span>
+                                <h6 style="font-style: italic; text-transform: none;"><span class="label">{{ $ticket->created_at }}</span>  <strong>{{{ $ticket->subject }}}</strong>: {{{ $ticket->description }}}</h6><span id="btnReopenTicket" style="float: right; position: relative; top: -25px; right: -145px; display: none;"><button class="btn btn-success" value="{{ $ticket->id }}"><i class="fui fui-plus"></i> Reopen Ticket</button></span><span id="btnCloseTicket" style="float: right; position: relative; top: -25px; right: -145px; display: none;"><button class="btn btn-danger" value="{{ $ticket->id }}"><i class="fui fui-cross"></i> Close Ticket</button></span>
                                 <div style="display: none;" id="newOpenTickets_expanded">
                                     @foreach ($tickets['replies'] as $reply)
                                     @if ($reply->tid == $ticket->id)
                                     <hr style="width: 80%" />
-                                    <div><span style="text-align: left; margin-right: 20px;"><strong>{{ $reply->author }}</strong></span><span style="">{{ $reply->content }}</span></div>
+                                    <div><span style="text-align: left; margin-right: 20px;"><strong>{{{ User::getFullName($reply->author) }}}</strong></span><span style="">{{{ $reply->content }}}</span></div>
                                     @endif
                                     @endforeach
 
-                                    <div style="width: 80%">
+                                    <div id="replyTicketDiv" style="width: 80%">
                                         <hr />
                                         <div id="replyTicketErrors" style="display: none;"></div>
                                         <form id="replyTicketForm" class="form-inline">
@@ -565,6 +565,25 @@
                                 </div>
                             </div>
                             @endforeach
+
+                            <div id="replyTicketDivTemplate" style="width: 80%; display: none;">
+                                <hr />
+                                <div id="replyTicketErrors" style="display: none;"></div>
+                                <form id="replyTicketForm" class="form-inline">
+                                    <input type="hidden" name="_token" value="{{ csrf_token(); }}" />
+                                    <input type="hidden" name="tid" value="{{ $ticket->id }}" />
+                                    <div id="inputReplyTicketControlGroup" class="control-group">
+                                        <div class="controls">
+                                            <textarea style="width: 95%;" id="inputReplyTicket" name="inputReplyTicket" placeholder="Please detail your reply..."></textarea>
+                                        </div>
+                                    </div>
+                                    <div class="control-group">
+                                        <div class="form-actions">
+                                            <button id="replyTicketSubmitBtn" class="btn btn-success">Submit Reply</button>
+                                        </div>
+                                    </div>
+                                </form>
+                            </div>
                         </div>
                     </div>
                     <div style="margin-top: 40px;">
@@ -573,9 +592,14 @@
                         <div id="containerNewClosedTickets">
                             @foreach ($tickets['closedtickets'] as $ticket)
                             <div id="newClosedTickets" style="text-align: left; padding-right: 150px;" class="well">
-                                <h6 style="text-transform: none;"><strong>{{ $ticket->subject }} - {{ $ticket->created_at }}</strong>: {{ $ticket->description }}</h6><span id="btnReopenTicket" style="float: right; position: relative; top: -25px; right: -145px; display: none;"><button class="btn btn-success" value="{{ $ticket->id }}"><i class="fui fui-plus"></i> Reopen Ticket</button></span><span id="btnCloseTicket" style="float: right; position: relative; top: -25px; right: -145px; display: none;"><button class="btn btn-danger" value="{{ $ticket->id }}"><i class="fui fui-cross"></i> Close Ticket</button></span>
+                                <h6 style="text-transform: none;"><span class="label">{{ $ticket->created_at }}</span>  <strong>{{{ $ticket->subject }}}</strong>: {{{ $ticket->description }}}</h6><span id="btnReopenTicket" style="float: right; position: relative; top: -25px; right: -145px; display: none;"><button class="btn btn-success" value="{{ $ticket->id }}"><i class="fui fui-plus"></i> Reopen Ticket</button></span><span id="btnCloseTicket" style="float: right; position: relative; top: -25px; right: -145px; display: none;"><button class="btn btn-danger" value="{{ $ticket->id }}"><i class="fui fui-cross"></i> Close Ticket</button></span>
                                 <div style="display: none;" id="newClosedTickets_expanded">
-
+                                    @foreach ($tickets['replies'] as $reply)
+                                    @if ($reply->tid == $ticket->id)
+                                    <hr style="width: 80%" />
+                                    <div><span style="text-align: left; margin-right: 20px;"><strong>{{{ User::getFullName($reply->author) }}}</strong></span><span style="">{{{ $reply->content }}}</span></div>
+                                    @endif
+                                    @endforeach
                                 </div>
                             </div>
                             @endforeach
