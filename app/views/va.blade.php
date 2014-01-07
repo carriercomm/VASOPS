@@ -38,7 +38,7 @@
                         @if ($record->linkbackstatus == 1)
                         <h4><i class="fui-check"></i></h4>
                         @else
-                        <h4><i class="fui-cross"></i></h4><button id="btnRefreshImageLinkBack" style="float: right; position: absolute; right: 30px; top: 130px;" class="btn"><i class="fui-eye"></i></button>
+                        <h4><i id="imageLinkBackError" class="fui-cross"></i><span style="display: none;" id="imageLinkBackLoader"><img width="24px" height="24px" src="{{ URL::to('/') }}/images/circularloader.gif" alt="Loading..." /></span></h4><button id="btnRefreshImageLinkBack" style="float: right; position: absolute; right: 30px; top: 130px;" class="btn"><i class="fui-eye"></i></button>
                         @endif
                     </div>
                 </div>

@@ -498,6 +498,25 @@
             return false;
         });
 
+        //Refresh image link back status.
+        $(document).on('click', '#btnRefreshImageLinkBack', function() {
+            $('#imageLinkBackError').hide();
+            $('#imageLinkBackLoader').show();
+            $.ajax({
+                type: "POST",
+                url: "{{URL::route('ajaxCheckImageLinkBack')}}"
+            })
+                .done(function(received) {
+                    if (received != "1") {
+                        //Well crap that's an error. We will advise the user
+
+                    }
+                    else if (received == "1") {
+
+                    }
+                });
+        });
+
 
         @endif
 
