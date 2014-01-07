@@ -507,12 +507,19 @@
                 url: "{{URL::route('ajaxCheckImageLinkBack')}}"
             })
                 .done(function(received) {
-                    if (received != "1") {
-                        //Well crap that's an error. We will advise the user
-
+                    if (received == "1") {
+                        //Great the link appears to exist, let's update the field
+                        $('#imageLinkBackLoader').hide();
+                        $('#imageLinkBackError').attr('class', 'fui-check').fadeIn();
                     }
-                    else if (received == "1") {
-
+                    else if (received == "0") {
+                        //No luck
+                        $('#imageLinkBackLoader').hide();
+                        $('#imageLinkBackError').fadeIn();
+                    }
+                    else {
+                        //Well crap that's an error. We will advise the user
+                        console.log('Error processing the link back request');
                     }
                 });
         });

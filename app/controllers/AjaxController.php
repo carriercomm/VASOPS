@@ -357,8 +357,16 @@ class AjaxController extends BaseController {
         curl_setopt($ch, CURLOPT_CONNECTTIMEOUT, $timeout);
         $content = curl_exec($ch);
         curl_close($ch);
-
-        //Todo process content to verify links
+        //Todo fix curl
+        $needle = 'vatsim.net';
+        if (strpos($content, $needle) !== FALSE) {
+            //The content was found return 0 to the client.
+            echo '1';
+        }
+        else {
+            //The content was not found return 0 to the client.
+            echo '0';
+        }
     }
 
 }
