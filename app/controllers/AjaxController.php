@@ -378,4 +378,25 @@ class AjaxController extends BaseController {
         }
     }
 
+    public function post_getvasbycategory() {
+        $categoryName = Input::get('data');
+        $category = Category::where('name', '=', $categoryName)->first();
+        $categoryId = $category->id;
+        $vas = User::where('categories', 'like','%' . $categoryId . ',%')->where('status', '=', '1')->where('linkbackstatus', '=', '1')->get();
+        if (count($vas) == 0) {
+            echo '<h4>No Virtual Airlines Found.</h4>';
+        }
+        else {
+            $output = '';
+            foreach ($vas as $va) {
+                $va->description = html_entity_decode($va->description);
+                $va->vaname = html_entity_decode($va->vaname);
+                $va->url = html_entity_decode($va->url);
+                $output .= '<div class="well"><a target="_blank" href="' . $va->url . '"><h4>' . $va->vaname . '</h4></a><blockquote style="margin-top: 4px;">'. $va->description . '</blockquote></div>';
+            }
+            echo $output;
+        }
+
+    }
+
 }

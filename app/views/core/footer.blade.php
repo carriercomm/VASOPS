@@ -210,8 +210,25 @@
         calculateInputCategory();
         $("input[name='inputCategory[]']").change(calculateInputCategory);
 
-        $(document).on('click', '#btnVaCategory', function() {
+        $(document).on('click', '#btnVaCategoryParent', function() {
             $(this).siblings("#selectedVaInformation").slideToggle('fast');
+        });
+
+        $(document).on('click', '#btnSelectVaCategory', function() {
+            $('#vaCategoryLoader').fadeIn();
+            var categoryName = $(this).text();
+            //Make the ajax call to fetch the data
+            $.ajax({
+                type: "POST",
+                url: "{{URL::route('ajaxGetVasByCategory')}}",
+                data: { data: categoryName }
+            })
+                .done(function(received) {
+                    //Update the container and remove the loader
+                    $('#vaCategoryLoader').hide();
+                    $('#vaCategoryAjaxData').html(received).fadeIn();
+                });
+
         });
 
 

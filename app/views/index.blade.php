@@ -411,22 +411,33 @@
     </div>
     <div style="margin: 0 auto;" class="row">
         <div class="span12">
+            <hr />
             @foreach($categories as $category)
             @if (array_key_exists($category->id, $categoryChildren) && Category::countChildren($category->id) > 0)
             <span>
-                <button id="btnVaCategory" style="margin-bottom: 25px;" class="btn btn-info">{{{ $category->name }}}  <i class="fui fui-plus"></i></button>
+                <button id="btnVaCategoryParent" style="margin-bottom: 25px;" class="btn btn-info">{{{ $category->name }}}  <i class="fui fui-plus"></i></button>
                 <div id="selectedVaInformation" style="display: none; margin-bottom: 10px;">
-                    @foreach ($categoryChildren[$category->id] as $child)
-                    <button style="margin-bottom: 5px;" class="btn btn-success">{{ $child }}</button>
-                    @endforeach
+                    <blockquote>
+                        @foreach ($categoryChildren[$category->id] as $child)
+                        <button id="btnSelectVaCategory" style="margin-bottom: 5px;" class="btn btn-success">{{ $child }}</button>
+                        @endforeach
+                    </blockquote>
                 </div>
             </span>
             @elseif (array_key_exists($category->id, $categoryChildren) && Category::countChildren($category->id) == 0)
             <span>
-                <button id="btnVaCategory" style="margin-bottom: 25px;" class="btn btn-info">{{{ $category->name }}}</button>
+                <button id="btnSelectVaCategory" style="margin-bottom: 25px;" class="btn btn-info">{{{ $category->name }}}</button>
             </span>
             @endif
             @endforeach
+            <hr />
+        </div>
+    </div>
+    <div class="row">
+        <div class="span12">
+            <span id="vaCategoryLoader" style="text-align: center; display: none;"><img alt="Loading..." src="{{ URL::to('/') }}/images/loader.gif"></span>
+            <div id="vaCategoryAjaxData" style="display: none;">
+            </div>
         </div>
     </div>
 </div>
