@@ -16,9 +16,11 @@
             <div class="tab-content">
                 <div class="tab-pane fade in active" id="status">
                     @if ($record->status == 1 && $record->linkbackstatus == 1)
-                    <span><img src="{{ URL::to('/') }}/images/checkbox.png" alt="Check Box"></span>
+                    <span id="statusEnabled"><img src="{{ URL::to('/') }}/images/checkbox.png" alt="Check Box"></span>
+                    <span id="statusDisabled" style="display: none;"><img src="{{ URL::to('/') }}/images/x.png" alt="X"></span>
                     @else
-                    <span><img src="{{ URL::to('/') }}/images/x.png" alt="X"></span>
+                    <span id="statusEnabled" style="display: none;"><img src="{{ URL::to('/') }}/images/checkbox.png" alt="Check Box"></span>
+                    <span id="statusDisabled"><img src="{{ URL::to('/') }}/images/x.png" alt="X"></span>
                     @endif
                     <h3>Status</h3>
                     <div style="text-align: left;" class="span3">

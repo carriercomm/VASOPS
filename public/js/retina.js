@@ -133,8 +133,9 @@
       if (! that.el.complete) {
         setTimeout(load, 5);
       } else {
-        that.el.setAttribute('width', that.el.offsetWidth);
-        that.el.setAttribute('height', that.el.offsetHeight);
+        //Fix to use the natural height of the images.
+        that.el.setAttribute('width', that.el.naturalWidth);
+        that.el.setAttribute('height', that.el.naturalHeight);
         that.el.setAttribute('src', path);
       }
     }

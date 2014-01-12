@@ -357,15 +357,24 @@ class AjaxController extends BaseController {
         curl_setopt($ch, CURLOPT_CONNECTTIMEOUT, $timeout);
         $content = curl_exec($ch);
         curl_close($ch);
-        //Todo fix curl
         $needle = 'vatsim.net';
-        if (strpos($content, $needle) !== FALSE) {
-            //The content was found return 0 to the client.
-            echo '1';
+        if (stripos($content, $needle) !== FALSE) {
+            //The content was found update the database and return 1 to the client
+            $va = User::where('cid', '=', Auth::user()->cid)->first();
+            $va->linkbackstatus = 1;
+            $va->save();
+            if ($va->status == 1) {
+                //We will echo 1! to tell the client to replace the module icon to a check instead of the red X because there VA is now approved
+                echo '1!';
+            }
+            else {
+                echo '1';
+            }
+
         }
         else {
             //The content was not found return 0 to the client.
-            echo '0';
+             echo '0';
         }
     }
 
