@@ -364,120 +364,14 @@
                     <div class="control-group">
                         <label class="control-label" for="inputCategory"><span id="chooseOrRemove">Choose</span> <span id="numberOfChoicesLabel" class="label label-success">5</span> categories</label>
                         <div style="text-align: left; width: 30%; margin-left: 45%;" class="controls">
+                            @foreach ($categories as $category)
                             <div class="checkbox">
                                 <label>
-                                    <input class="limitToFiveCategories" name="inputCategory[]" type="checkbox" data-toggle="checkbox" value="1">
-                                    Africa - Middle East
+                                    <input class="limitToFiveCategories" name="inputCategory[]" type="checkbox" data-toggle="checkbox" value="{{ $category->id }}">
+                                        {{ $category->name }}
                                 </label>
                             </div>
-                            <div class="checkbox">
-                                <label>
-                                    <input class="limitToFiveCategories" name="inputCategory[]" type="checkbox" data-toggle="checkbox" value="2">
-                                    Asia
-                                </label>
-                            </div>
-                            <div class="checkbox">
-                                <label>
-                                    <input class="limitToFiveCategories" name="inputCategory[]" type="checkbox" data-toggle="checkbox" value="3">
-                                    North America
-                                </label>
-                            </div>
-                            <div class="checkbox">
-                                <label>
-                                    <input class="limitToFiveCategories" name="inputCategory[]" type="checkbox" data-toggle="checkbox" value="4">
-                                    Europe
-                                </label>
-                            </div>
-                            <div class="checkbox">
-                                <label>
-                                    <input class="limitToFiveCategories" name="inputCategory[]" type="checkbox" data-toggle="checkbox" value="5">
-                                    Oceania
-                                </label>
-                            </div>
-                            <div class="checkbox">
-                                <label>
-                                    <input class="limitToFiveCategories" name="inputCategory[]" type="checkbox" data-toggle="checkbox" value="6">
-                                    South America
-                                </label>
-                            </div>
-                            <div class="checkbox">
-                                <label>
-                                    <input class="limitToFiveCategories" name="inputCategory[]" type="checkbox" data-toggle="checkbox" value="7">
-                                    Central America / Caribbean / Mexico
-                                </label>
-                            </div>
-                            <div class="checkbox">
-                                <label>
-                                    <input class="limitToFiveCategories" name="inputCategory[]" data-toggle="checkbox" type="checkbox" value="8">
-                                    Airline Alliances
-                                </label>
-                            </div>
-                            <div class="checkbox">
-                                <label>
-                                    <input class="limitToFiveCategories" name="inputCategory[]" data-toggle="checkbox" type="checkbox" value="9">
-                                    Cargo Only VAs
-                                </label>
-                            </div>
-                            <div class="checkbox">
-                                <label>
-                                    <input class="limitToFiveCategories" name="inputCategory[]" data-toggle="checkbox" type="checkbox" value="10">
-                                    Helicopter Only VAs
-                                </label>
-                            </div>
-                            <div class="checkbox">
-                                <label>
-                                    <input class="limitToFiveCategories" name="inputCategory[]" data-toggle="checkbox" type="checkbox" value="11">
-                                    Historical VAs
-                                </label>
-                            </div>
-                            <div class="checkbox">
-                                <label>
-                                    <input class="limitToFiveCategories" name="inputCategory[]" data-toggle="checkbox" type="checkbox" value="12">
-                                    General Aviation VAs / Flying Clubs
-                                </label>
-                            </div>
-                            <div class="checkbox">
-                                <label>
-                                    <input class="limitToFiveCategories" name="inputCategory[]" data-toggle="checkbox" type="checkbox" value="13">
-                                    XPlane VAs
-                                </label>
-                            </div>
-                            <div class="checkbox">
-                                <label>
-                                    <input class="limitToFiveCategories" name="inputCategory[]" data-toggle="checkbox" type="checkbox" value="14">
-                                    Heritage Virtual Airlines
-                                </label>
-                            </div>
-                            <div class="checkbox">
-                                <label>
-                                    <input class="limitToFiveCategories" name="inputCategory[]" data-toggle="checkbox" type="checkbox" value="15">
-                                    Virtual Military Flight Organizations
-                                </label>
-                            </div>
-                            <div class="checkbox">
-                                <label>
-                                    <input class="limitToFiveCategories" name="inputCategory[]" data-toggle="checkbox" type="checkbox" value="16">
-                                    Virtual Paramilitary Flight Organizations
-                                </label>
-                            </div>
-                            <div class="checkbox">
-                                <label>
-                                    <input class="limitToFiveCategories" name="inputCategory[]" data-toggle="checkbox" type="checkbox" value="17">
-                                    Virtual Civilian Government Organizations
-                                </label>
-                            </div>
-                            <div class="checkbox">
-                                <label>
-                                    <input class="limitToFiveCategories" name="inputCategory[]" data-toggle="checkbox" type="checkbox" value="18">
-                                    Authorized Training Organization
-                                </label>
-                            </div>
-                            <div class="checkbox">
-                                <label>
-                                    <input class="limitToFiveCategories" name="inputCategory[]" data-toggle="checkbox" type="checkbox" value="19">
-                                    No Experience Required to Join
-                                </label>
-                            </div>
+                            @endforeach
                         </div>
                     </div>
                     <hr />

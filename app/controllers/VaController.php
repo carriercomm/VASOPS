@@ -64,8 +64,11 @@ class VaController extends BaseController {
         $replies = TicketReply::whereIn('tid', $tids)->orderBy('created_at', 'DESC')->get();
         $tickets['replies'] = $replies;
 
+        //Pull our Category data
+        $categories = Category::get();
+
         //Create our view with the VA, clicks and tickets data.
-        return View::make('va')->with(array('record' => $record, 'clicks' => $clicks, 'tickets' => $tickets));
+        return View::make('va')->with(array('record' => $record, 'clicks' => $clicks, 'tickets' => $tickets, 'categories' => $categories));
     }
 
 }
