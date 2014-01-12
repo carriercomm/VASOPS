@@ -188,7 +188,37 @@
             return false;
         });
 
-        //Require auth
+        function calculateInputCategory() {
+
+            var maxAllowed = 5;
+            var cnt = $("input[name='inputCategory[]']:checked").length;
+            if (cnt > maxAllowed) {
+                $('#chooseOrRemove').text('Remove');
+                $('#numberOfChoicesLabel').text(Math.abs(maxAllowed - cnt)).prop('class','label label-important');
+            }
+            if (cnt < maxAllowed) {
+                $('#chooseOrRemove').text('Choose');
+                $('#numberOfChoicesLabel').text(maxAllowed - cnt).prop('class','label label-success');
+            }
+            if (cnt == maxAllowed)
+            {
+                $('#chooseOrRemove').text('Choose');
+                $('#numberOfChoicesLabel').text(maxAllowed - cnt).prop('class','label label-warning');
+            }
+
+        }
+        calculateInputCategory();
+        $("input[name='inputCategory[]']").change(calculateInputCategory);
+
+//      ***********************************************************************************
+//        *************************** Require auth **************************************
+//           ***********************************************************************
+//              ****************************************************************
+//                       *******************************************
+//                              **************************
+//                                      **********
+//                                          ***
+//                                           *
         @if (Auth::check())
 
         $("#helloUser").mouseenter(function (){
@@ -261,28 +291,6 @@
                 });
             }
         }
-
-        function calculateInputCategory() {
-
-            var maxAllowed = 5;
-            var cnt = $("input[name='inputCategory[]']:checked").length;
-            if (cnt > maxAllowed) {
-                $('#chooseOrRemove').text('Remove');
-                $('#numberOfChoicesLabel').text(Math.abs(maxAllowed - cnt)).prop('class','label label-important');
-            }
-            if (cnt < maxAllowed) {
-                $('#chooseOrRemove').text('Choose');
-                $('#numberOfChoicesLabel').text(maxAllowed - cnt).prop('class','label label-success');
-            }
-            if (cnt == maxAllowed)
-            {
-                $('#chooseOrRemove').text('Choose');
-                $('#numberOfChoicesLabel').text(maxAllowed - cnt).prop('class','label label-warning');
-            }
-
-        }
-        calculateInputCategory();
-        $("input[name='inputCategory[]']").change(calculateInputCategory);
 
         $('#btnNewTicket').click(function() {
             $('#divNewTicketForm').slideToggle();
