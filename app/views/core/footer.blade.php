@@ -226,7 +226,7 @@
                 .done(function(received) {
                     //Update the container and remove the loader
                     $('#vaCategoryLoader').hide();
-                    $('#vaCategoryAjaxData').html(received).fadeIn();
+                    $('#vaCategoryAjaxData').hide().html(received).fadeIn();
                 });
 
         });
