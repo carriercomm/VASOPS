@@ -210,6 +210,13 @@
         calculateInputCategory();
         $("input[name='inputCategory[]']").change(calculateInputCategory);
 
+        $(document).on('click', '#btnVaCategory', function() {
+            $(this).siblings("#selectedVaInformation").slideToggle('fast');
+        });
+
+
+
+
 //      ***********************************************************************************
 //        *************************** Require auth **************************************
 //           ***********************************************************************
@@ -219,6 +226,11 @@
 //                                      **********
 //                                          ***
 //                                           *
+
+
+
+
+
         @if (Auth::check())
 
         $("#helloUser").mouseenter(function (){

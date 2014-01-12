@@ -373,120 +373,14 @@
 <div class="control-group">
     <label><span id="chooseOrRemove">Choose</span> <span id="numberOfChoicesLabel" class="label label-success">5</span> categories</label>
     <div class="controls">
+        @foreach ($categories as $category)
         <div class="checkbox">
             <label>
-                <input class="limitToFiveCategories" name="inputCategory[]" type="checkbox" data-toggle="checkbox" value="1">
-                Africa - Middle East
+                <input class="limitToFiveCategories" name="inputCategory[]" type="checkbox" data-toggle="checkbox" value="{{ $category->id }}">
+                {{ $category->name }}
             </label>
         </div>
-        <div class="checkbox">
-            <label>
-                <input class="limitToFiveCategories" name="inputCategory[]" type="checkbox" data-toggle="checkbox" value="2">
-                Asia
-            </label>
-        </div>
-        <div class="checkbox">
-            <label>
-                <input class="limitToFiveCategories" name="inputCategory[]" type="checkbox" data-toggle="checkbox" value="3">
-                North America
-            </label>
-        </div>
-        <div class="checkbox">
-            <label>
-                <input class="limitToFiveCategories" name="inputCategory[]" type="checkbox" data-toggle="checkbox" value="4">
-                Europe
-            </label>
-        </div>
-        <div class="checkbox">
-            <label>
-                <input class="limitToFiveCategories" name="inputCategory[]" type="checkbox" data-toggle="checkbox" value="5">
-                Oceania
-            </label>
-        </div>
-        <div class="checkbox">
-            <label>
-                <input class="limitToFiveCategories" name="inputCategory[]" type="checkbox" data-toggle="checkbox" value="6">
-                South America
-            </label>
-        </div>
-        <div class="checkbox">
-            <label>
-                <input class="limitToFiveCategories" name="inputCategory[]" type="checkbox" data-toggle="checkbox" value="7">
-                Central America / Caribbean / Mexico
-            </label>
-        </div>
-        <div class="checkbox">
-            <label>
-                <input class="limitToFiveCategories" name="inputCategory[]" type="checkbox" data-toggle="checkbox" value="8">
-                Airline Alliances
-            </label>
-        </div>
-        <div class="checkbox">
-            <label>
-                <input class="limitToFiveCategories" name="inputCategory[]" type="checkbox" data-toggle="checkbox" value="9">
-                Cargo Only VAs
-            </label>
-        </div>
-        <div class="checkbox">
-            <label>
-                <input class="limitToFiveCategories" name="inputCategory[]" type="checkbox" data-toggle="checkbox" value="10">
-                Helicopter Only VAs
-            </label>
-        </div>
-        <div class="checkbox">
-            <label>
-                <input class="limitToFiveCategories" name="inputCategory[]" type="checkbox" data-toggle="checkbox" value="11">
-                Historical VAs
-            </label>
-        </div>
-        <div class="checkbox">
-            <label>
-                <input class="limitToFiveCategories" name="inputCategory[]" type="checkbox" data-toggle="checkbox" value="12">
-                General Aviation VAs / Flying Clubs
-            </label>
-        </div>
-        <div class="checkbox">
-            <label>
-                <input class="limitToFiveCategories" name="inputCategory[]" type="checkbox" data-toggle="checkbox" value="13">
-                XPlane VAs
-            </label>
-        </div>
-        <div class="checkbox">
-            <label>
-                <input class="limitToFiveCategories" name="inputCategory[]" type="checkbox" data-toggle="checkbox" value="14">
-                Heritage Virtual Airlines
-            </label>
-        </div>
-        <div class="checkbox">
-            <label>
-                <input class="limitToFiveCategories" name="inputCategory[]" type="checkbox" data-toggle="checkbox" value="15">
-                Virtual Military Flight Organizations
-            </label>
-        </div>
-        <div class="checkbox">
-            <label>
-                <input class="limitToFiveCategories" name="inputCategory[]" type="checkbox" data-toggle="checkbox" value="16">
-                Virtual Paramilitary Flight Organizations
-            </label>
-        </div>
-        <div class="checkbox">
-            <label>
-                <input class="limitToFiveCategories" name="inputCategory[]" type="checkbox" data-toggle="checkbox" value="17">
-                Virtual Civilian Government Organizations
-            </label>
-        </div>
-        <div class="checkbox">
-            <label>
-                <input class="limitToFiveCategories" name="inputCategory[]" type="checkbox" data-toggle="checkbox" value="18">
-                Authorized Training Organization
-            </label>
-        </div>
-        <div class="checkbox">
-            <label>
-                <input class="limitToFiveCategories" name="inputCategory[]" type="checkbox" data-toggle="checkbox" value="19">
-                No Experience Required to Join
-            </label>
-        </div>
+        @endforeach
     </div>
 </div>
 <hr />
@@ -513,32 +407,26 @@
                 <div class="tooltip-arrow"></div>
                 <div class="tooltip-inner">Select a Virtual Airline Category</div>
             </div>
-            <!-- /row -->
         </div>
     </div>
     <div style="margin: 0 auto;" class="row">
-        <div id="currentSelects" class="span2">
-            <select name="herolist" value="Virtual Airlines" class="select-block span2">
-                <option value="">VAs</option>
-                <option value="0">Africa</option>
-                <option value="1">Asia</option>
-                <option value="2">North America</option>
-                <option value="3">Europe</option>
-                <option value="4">Oceania</option>
-            </select>
-        </div>
-        <div class="span4">
-            <select name="herolist" value="Virtual Airlines" class="select-block span4">
-                <option value="">Virtual Military Flight Organizations</option>
-                <option value="">Virtual Paramilitary Flight Organizations</option>
-                <option value="">Virtual Civilian Government Organizations</option>
-            </select>
-        </div>
-        <div style="width: 190px;" class="span3">
-            <btn class="btn btn-info">New Vatsim VA Partners</btn>
-        </div>
-        <div style="width: 190px;" class="span3">
-            <btn class="btn btn-info">No Experience Required</btn>
+        <div class="span12">
+            @foreach($categories as $category)
+            @if (array_key_exists($category->id, $categoryChildren) && Category::countChildren($category->id) > 0)
+            <span>
+                <button id="btnVaCategory" style="margin-bottom: 25px;" class="btn btn-info">{{{ $category->name }}}  <i class="fui fui-plus"></i></button>
+                <div id="selectedVaInformation" style="display: none; margin-bottom: 10px;">
+                    @foreach ($categoryChildren[$category->id] as $child)
+                    <button style="margin-bottom: 5px;" class="btn btn-success">{{ $child }}</button>
+                    @endforeach
+                </div>
+            </span>
+            @elseif (array_key_exists($category->id, $categoryChildren) && Category::countChildren($category->id) == 0)
+            <span>
+                <button id="btnVaCategory" style="margin-bottom: 25px;" class="btn btn-info">{{{ $category->name }}}</button>
+            </span>
+            @endif
+            @endforeach
         </div>
     </div>
 </div>
