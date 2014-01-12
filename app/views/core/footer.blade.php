@@ -511,6 +511,7 @@
                         //Great the link appears to exist, let's update the field
                         $('#imageLinkBackLoader').hide();
                         $('#imageLinkBackError').attr('class', 'fui-check').fadeIn();
+                        $('#btnRefreshImageLinkBack').fadeOut();
                     }
                     else if (received == "1!") {
                         //Great the link appears to exist as well as their status is active so we can update the field and the change the red X to a check at the top.
@@ -518,6 +519,7 @@
                         $('#imageLinkBackError').attr('class', 'fui-check').fadeIn();
                         $('#statusDisabled').hide();
                         $('#statusEnabled').fadeIn();
+                        $('#btnRefreshImageLinkBack').fadeOut();
 
                     }
                     else if (received == "0") {
