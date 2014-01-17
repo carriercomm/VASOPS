@@ -51,8 +51,13 @@
     $(document).ready(function () {
         $('#top-right').click(function () {
             $('#vatsimparagraph').fadeOut('slow');
+            localStorage.setItem('vatsimparagraph', 1);
             return false;
         });
+
+        if (localStorage.getItem('vatsimparagraph') != 1)
+            $('#vatsimparagraph').fadeIn();
+
     @if (Route::currentRouteName() == "index")
         $('#findBtn').click(function () {
             moduleFind();

@@ -6,7 +6,7 @@
 
 <div style="margin-bottom: 20px;" class="row">
     <div class="span12">
-        <div class="well" id="vatsimparagraph" style="position: relative;"><span id="top-right" class="fui-cross"></span>VATSIM is an online community created for enthusiasts of flight simulation and air traffic control. One of the main goals of VATSIM is to create an environment which is fun and, at the same time, an educational and realistic simulation of procedures followed by pilots and air traffic controllers everyday around the world. We recognize the contributions of virtual airlines as significant and integral parts of the flight simulation community which allows many online pilots to experience the unique characteristics of the airline industry combined with authentic live air traffic control.  </div>
+        <div class="well" id="vatsimparagraph" style="display: none; position: relative;"><span id="top-right" class="fui-cross"></span>VATSIM is an online community created for enthusiasts of flight simulation and air traffic control. One of the main goals of VATSIM is to create an environment which is fun and, at the same time, an educational and realistic simulation of procedures followed by pilots and air traffic controllers everyday around the world. We recognize the contributions of virtual airlines as significant and integral parts of the flight simulation community which allows many online pilots to experience the unique characteristics of the airline industry combined with authentic live air traffic control.  </div>
 
     </div>
 </div>
