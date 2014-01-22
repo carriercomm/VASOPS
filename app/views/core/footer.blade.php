@@ -356,8 +356,8 @@
                         var subject = $("#inputTicketSubject").val();
                         var description = $("#inputTicketContent").val();
                         $('#containerNewOpenTickets').prepend('<div id="newOpenTickets" style="text-align: left; padding-right: 150px; display: none;" class="well"><h6 style="text-transform: none;"><span class="label">Now</span>  <strong>' + subject + '</strong>: ' + description + '</h6><span id="btnReopenTicket" style="float: right; position: relative; top: -25px; right: -145px; display: none;"><button class="btn btn-success" value="' + received + '"><i class="fui fui-plus"></i> Reopen Ticket</button></span><span id="btnCloseTicket" style="float: right; position: relative; top: -25px; right: -145px;"><button class="btn btn-danger" value="' + received + '"><i class="fui fui-cross"></i> Close Ticket</button></span></div>');
-                        var replyTicketDivTemplate = $('#replyTicketDivTemplate').clone().attr('id', 'replyTicketDiv')
-                        $('#containerNewOpenTickets').find('#newOpenTickets').append(replyTicketDivTemplate).find('#replyTicketDiv').fadeIn();
+                        var replyTicketDivTemplate = $('#replyTicketDivTemplate').clone().attr('id', 'replyTicketDiv');
+                        $('#containerNewOpenTickets').find('#newOpenTickets').append(replyTicketDivTemplate).find('#replyTicketDiv').fadeIn().find("input[name='tid']").attr('value', received);
                         //Finally fade in our element
                         $('#containerNewOpenTickets div:first-child').fadeIn();
                         var openTicketsCount = $("#openTicketsCount").text();

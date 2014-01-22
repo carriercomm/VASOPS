@@ -467,7 +467,7 @@
                                 <div id="replyTicketErrors" style="display: none;"></div>
                                 <form id="replyTicketForm" class="form-inline">
                                     <input type="hidden" name="_token" value="{{ csrf_token(); }}" />
-                                    <input type="hidden" name="tid" value="{{ $ticket->id }}" />
+                                    <input type="hidden" name="tid" value="" />
                                     <div id="inputReplyTicketControlGroup" class="control-group">
                                         <div class="controls">
                                             <textarea style="width: 95%;" id="inputReplyTicket" name="inputReplyTicket" placeholder="Please detail your reply..."></textarea>
