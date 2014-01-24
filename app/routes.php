@@ -31,4 +31,8 @@ Route::post('/ajax/getvasbycategory', array('as' => 'ajaxGetVasByCategory', 'use
 Route::get('/va', array('as' => 'va', 'uses' => 'VaController@get_va', 'before' => 'auth'));
 
 //Console
+Route::filter('/console/*', function ()
+{
+    Config::set('auth.model', 'ConsoleUser');
+});
 Route::get('/console', array('as' => 'console', 'uses' => 'ConsoleController@get_login'));

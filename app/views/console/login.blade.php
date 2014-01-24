@@ -1,7 +1,7 @@
 @include('console.core.header')
 <div class="row">
     <div class="col-md-8 col-md-offset-3">
-        <h1><strong>VATSIM VA Auditor Console</strong></h1>
+        <h1><strong>VATSIM VA Auditor Console - {{ Auth::user()->name; }}</strong></h1>
     </div>
 </div>
 <div class="row">

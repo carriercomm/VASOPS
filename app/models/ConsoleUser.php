@@ -2,6 +2,6 @@
 
 class ConsoleUser extends Eloquent {
 
-    public $table = 'consoleuser';
+    public $table = 'consoleusers';
 
 }
