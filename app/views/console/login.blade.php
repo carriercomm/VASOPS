@@ -1,7 +1,7 @@
 @include('console.core.header')
 <div class="row">
-    <div style="text-align: center;" class="col-md-7 col-md-offset-3">
-        <h1>VATSIM VA Auditor Console</h1>
+    <div class="col-md-8 col-md-offset-3">
+        <h1><strong>VATSIM VA Auditor Console</strong></h1>
     </div>
 </div>
 <div class="row">
@@ -14,7 +14,7 @@
                 <form role="form">
                     <fieldset>
                         <div class="form-group">
-                            <input class="form-control" placeholder="E-mail" name="email" type="email" autofocus>
+                            <input class="form-control" placeholder="CID" name="cid" autofocus>
                         </div>
                         <div class="form-group">
                             <input class="form-control" placeholder="Password" name="password" type="password" value="">
