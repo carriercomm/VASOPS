@@ -1,6 +1,13 @@
 <?php
 class ConsoleController extends BaseController {
 
+    public function get_logout() {
+        //Log the user out
+        Auth::consoleuser()->logout();
+        //Redirect to the login page with a message
+        return Redirect::route('consolelogin')->with('message', 'You have been successfully logged out.');
+    }
+
     public function get_login()
 
     {
