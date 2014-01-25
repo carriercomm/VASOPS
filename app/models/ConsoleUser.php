@@ -45,4 +45,10 @@ class ConsoleUser extends Eloquent implements UserInterface, RemindableInterface
         return $this->email;
     }
 
+    public static function getName($cid) {
+        $record = ConsoleUser::find($cid);
+        $name = $record->name;
+        return $name;
+    }
+
 }

@@ -50,26 +50,41 @@
         <div class="col-lg-8">
             <div class="panel panel-default">
                 <div class="panel-heading">
-                    <i class="fa fa-bullhorn fa-fw"></i> Administrator Broadcasts <span style="float: right;" class="label label-warning">2</span>
+                    <i class="fa fa-comments fa-fw"></i> HelpDesk Updates <span style="float: right;" class="label label-warning">2</span>
                 </div>
                 <div class="panel-body">
                     <div class="panel-group">
                         <div class="panel panel-info">
                             <div class="panel-heading">
-                               <span style="margin-right: 5px;" class="label label-primary">Roger Curtiss</span> Audits Schedule <span style="float:right;" class="label label-info">2013-12-03 18:12:02</span>
+                                <span style="margin-right: 5px;" class="label label-primary">{{{ ConsoleUser::getName($broadcast->author) }}}</span> {{{ $broadcast->subject }}} <span style="float:right;" class="broadcast-date label label-info">{{{ $broadcast->created_at }}}</span>
                             </div>
                             <div class="panel-body">
                                 Please ensure that you have completed all of the assigned audits within the next two weeks.
                             </div>
                         </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-lg-8">
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    <i class="fa fa-bullhorn fa-fw"></i> Administrator Broadcasts <span style="float: right;" class="label label-warning">{{ count($activeBroadcasts) }}</span>
+                </div>
+                <div class="panel-body">
+                    <div class="panel-group">
+                        @foreach ($activeBroadcasts as $broadcast)
                         <div class="panel panel-info">
                             <div class="panel-heading">
-                                <span style="margin-right: 5px;" class="label label-primary">Romana Lara</span> Logging <span style="float:right;" class="label label-info">2013-12-05 18:11:08</span>
+                               <span style="margin-right: 5px;" class="label label-primary">{{{ ConsoleUser::getName($broadcast->author) }}}</span> {{{ $broadcast->subject }}} <span style="float:right;" class="broadcast-date label label-info">{{{ $broadcast->created_at }}}</span>
                             </div>
                             <div class="panel-body">
-                                Audit managers, ensure that you properly log all of your edits within the console.
+                                Please ensure that you have completed all of the assigned audits within the next two weeks.
                             </div>
                         </div>
+                        @endforeach
                     </div>
                     </div>
             </div>

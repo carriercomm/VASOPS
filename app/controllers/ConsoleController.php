@@ -78,7 +78,18 @@ class ConsoleController extends BaseController {
     }
 
     public function get_index() {
+
+        //Determine and fetch unread helpdesk updates to be displayed in the dashboard.
+        $cid = Auth::consoleuser()->get('cid');
+        $unreadTickets = Ticket::where('status', '=', '1')->where('seen_by', 'not like', '%' . $cid . ',%')->get();
+        //Pull a list of our Ticket IDs
+        //Now that we have the list of tickets, let's pull the latest reply if there is one.
+        $unreadReplies = array();
+        foreach ($unreadTickets as $unreadTicket) {
+            $unreadReplies[$unreadTicket->id] = TicketReply::where('tid', '=', $unreadTicket->id)->orderBy('created_at', 'ASC')->first();
+        }
         $pendingVAs = User::where('status', '=', '0')->orderBy('created_at', 'ASC')->get();
-        return View::make('console.index')->with(array('pendingVAs' => $pendingVAs));
+        $activeBroadcasts = Broadcast::where('status', '=', '1')->orderBy('created_at', 'DESC')->get();
+        return View::make('console.index')->with(array('pendingVAs' => $pendingVAs, 'activeBroadcasts' => $activeBroadcasts));
     }
 }
