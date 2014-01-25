@@ -78,6 +78,7 @@ class ConsoleController extends BaseController {
     }
 
     public function get_index() {
-        return View::make('console.index');
+        $pendingVAs = User::where('status', '=', '0')->orderBy('created_at', 'ASC')->get();
+        return View::make('console.index')->with(array('pendingVAs' => $pendingVAs));
     }
 }

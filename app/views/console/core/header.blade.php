@@ -7,6 +7,7 @@
     {{ HTML::style('bootstrap/css/sb-bootstrap.min.css') }}
     {{ HTML::style('css/sb-admin.css') }}
     {{ HTML::style('css/consolecustom.css') }}
+    {{ HTML::style('css/plugins/font-awesome/css/font-awesome.css') }}
+    {{ HTML::style('css/plugins/morris/morris-0.4.3.min.css') }}
 </head>
 <body>
-    <div class="container">
