@@ -8,7 +8,7 @@ public function get_index()
 {
     $fname = "";
     if (Auth::check()) {
-        $fname = User::getFirstName(Auth::user()->cid);
+        $fname = User::getFirstName(Auth::user()->get()->cid);
     }
 
     //Pull category data

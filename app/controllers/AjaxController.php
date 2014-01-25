@@ -2,7 +2,7 @@
 class AjaxController extends BaseController {
 
     public function post_logout() {
-        Auth::logout();
+        Auth::user()->logout();
     }
 
     public function post_login() {
@@ -13,8 +13,8 @@ class AjaxController extends BaseController {
         $user = User::where('cid', '=', $cid)->first();
         if (!empty($user)) {
            if (Hash::check($password, $user->password)) {
-               Auth::loginUsingId($cid);
-               $fname = User::getFirstName(Auth::user()->cid);
+               Auth::user()->loginUsingId($cid);
+               $fname = User::getFirstName(Auth::user()->get()->cid);
                Session::put('fname', $fname);
                echo $fname;
             }
@@ -95,7 +95,7 @@ class AjaxController extends BaseController {
         else {
 
             //Pull our current VA record
-            $vas = User::find(Auth::user()->cid);
+            $vas = User::find(Auth::user()->get()->cid);
             //Map our fields
             //Hash our password if one is inputted
             if (!empty($post['inputPassword'])) {
@@ -220,7 +220,7 @@ class AjaxController extends BaseController {
         //Pull our AJAX data
         $ticketid = Input::get('data');
         //Pull our ticket
-        $ticket = Ticket::where('id', '=', $ticketid)->where('vid', '=', Auth::user()->cid)->first();
+        $ticket = Ticket::where('id', '=', $ticketid)->where('vid', '=', Auth::user()->get()->cid)->first();
         //Does this user own this ticket?
         if (count($ticket) == 1) {
             //Set our ticket status to 0 or closed
@@ -235,7 +235,7 @@ class AjaxController extends BaseController {
         //Pull our AJAX data
         $ticketid = Input::get('data');
         //Pull our ticket
-        $ticket = Ticket::where('id', '=', $ticketid)->where('vid', '=', Auth::user()->cid)->first();
+        $ticket = Ticket::where('id', '=', $ticketid)->where('vid', '=', Auth::user()->get()->cid)->first();
         //Does this user own this ticket?
         if (count($ticket) == 1) {
             //Set our ticket status to 1 or open
@@ -285,12 +285,12 @@ class AjaxController extends BaseController {
             $ticket = new Ticket;
             $ticket->subject = $post['inputTicketSubject'];
             $ticket->description = $post['inputTicketContent'];
-            $ticket->vid = Auth::user()->cid;
+            $ticket->vid = Auth::user()->get()->cid;
             //Our ticket status will start as open.
             $ticket->status = '1';
             $ticket->save();
             //Pull the newly created ticket ID.
-            $ticket = Ticket::where('vid', '=', Auth::user()->cid)->orderBy('id', 'DESC')->first();
+            $ticket = Ticket::where('vid', '=', Auth::user()->get()->cid)->orderBy('id', 'DESC')->first();
             $id = $ticket->id;
             echo $id;
         }
@@ -318,7 +318,7 @@ class AjaxController extends BaseController {
         );
 
         //Verify some smart ass didn't try to change the hidden input field (tid) or reply to a closed ticket.
-        $count = Ticket::where('id', '=', $post['tid'])->where('vid', '=', Auth::user()->cid)->where('status', '=', '1')->count();
+        $count = Ticket::where('id', '=', $post['tid'])->where('vid', '=', Auth::user()->get()->cid)->where('status', '=', '1')->count();
         if ($count == 0) {
             //Damn them.
             echo '<div class="alert alert-error"><li>Seriously? Nice try.</li></div>';
@@ -338,7 +338,7 @@ class AjaxController extends BaseController {
         else {
             $reply = new Reply;
             $reply->tid = $post['tid'];
-            $reply->author = Auth::user()->cid;
+            $reply->author = Auth::user()->get()->cid;
             $reply->content = $post['inputReplyTicket'];
             //Save our ticket update
             $reply->save();
@@ -349,7 +349,7 @@ class AjaxController extends BaseController {
     }
 
     public function post_checkimagelinkback() {
-        $url = Auth::user()->vatsimimagepagelink;
+        $url = Auth::user()->get()->vatsimimagepagelink;
         $ch = curl_init();
         $timeout = 5;
         curl_setopt($ch, CURLOPT_URL, $url);
@@ -360,7 +360,7 @@ class AjaxController extends BaseController {
         $needle = 'vatsim.net';
         if (stripos($content, $needle) !== FALSE) {
             //The content was found update the database and return 1 to the client
-            $va = User::where('cid', '=', Auth::user()->cid)->first();
+            $va = User::where('cid', '=', Auth::user()->get()->cid)->first();
             $va->linkbackstatus = 1;
             $va->save();
             if ($va->status == 1) {

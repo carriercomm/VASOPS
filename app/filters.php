@@ -35,8 +35,15 @@ App::after(function($request, $response)
 
 Route::filter('auth', function()
 {
-	if (Auth::guest()) return Redirect::to(URL::to('/'));
+	if (!Auth::user()->check()) return Redirect::to(URL::to('/'));
 });
+
+//Add our console auth filter
+Route::filter('consoleauth', function()
+{
+    if (!Auth::consoleuser()->check()) return Redirect::route('consolelogin');
+});
+
 
 
 Route::filter('auth.basic', function()

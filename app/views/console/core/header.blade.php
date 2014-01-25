@@ -6,6 +6,7 @@
     <title>VATSIM VA Console</title>
     {{ HTML::style('bootstrap/css/sb-bootstrap.min.css') }}
     {{ HTML::style('css/sb-admin.css') }}
+    {{ HTML::style('css/consolecustom.css') }}
 </head>
 <body>
     <div class="container">

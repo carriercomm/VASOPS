@@ -253,7 +253,7 @@
 
 
 
-        @if (Auth::check())
+        @if (Auth::user()->check())
 
         $("#helloUser").mouseenter(function (){
             $('#helloUserIcon').hide();
@@ -530,7 +530,7 @@
                         //Possible error here.
                         content.replace('/(<([^>]+)>)/ig',"");
                         //Fix this line
-                        btn.closest('#replyTicketDiv').before('<hr style="width: 80%" /><div><span style="text-align: left; margin-right: 20px;"><strong>{{ Auth::user()->name; }}</strong></span><span style="">' + content + '</span></div>');
+                        btn.closest('#replyTicketDiv').before('<hr style="width: 80%" /><div><span style="text-align: left; margin-right: 20px;"><strong>{{ Auth::user()->get()->name; }}</strong></span><span style="">' + content + '</span></div>');
                         //Edit our button content from the ajax loader.
                         btn.html('Submit Reply');
                         //Reset our form.

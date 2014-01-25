@@ -30,21 +30,21 @@
             <div class="btn-toolbar">
                 <div class="btn-group">
                     @if (Route::currentRouteName() == "index")
-                    @if(!Auth::check())
+                    @if(!Auth::user()->check())
                     <a id="applyBtn" class="btn btn-success" href="#">Apply to be a VA Partner</a>
                     @endif
                     <a id="currentBtn" class="btn btn-success" href="#">Current VAs</a>
                     <a id="findBtn" class="btn btn-success" href="#">Find Your VA</a>
-                    @if(Auth::check())
+                    @if(Auth::user()->check())
                     <a class="btn" href="{{URL::to('va')}}">Manage VA</a>
                     @endif
                     @else
-                    @if(!Auth::check())
+                    @if(!Auth::user()->check())
                     <a id="applyBtn" class="btn btn-success" href="{{URL::to('/')}}/#moduleApply">Apply to be a VA Partner</a>
                     @endif
                     <a id="currentBtn" class="btn btn-success" href="{{URL::to('/')}}/#moduleCurrent">Current VAs</a>
                     <a id="findBtn" class="btn btn-success" href="{{URL::to('/')}}/#moduleFind">Find Your VA</a>
-                    @if(Auth::check())
+                    @if(Auth::user()->check())
                     <a class="btn" href="{{URL::to('va')}}">Manage VA</a>
                     @endif
                     @endif
@@ -53,7 +53,7 @@
             </div>
         </div>
         <!--<div class="span6 offset5">-->
-        @if (Auth::check())
+        @if (Auth::user()->check())
         <div style="margin-top: 10px; position: relative;" id="helloUser" class="span2 offset7">
             <a id="helloUser" class="btn btn-inverse"><i id="helloUserIcon" class="fui-user"></i>Hello, <span id="helloUserName">{{Session::get('fname');}}</span></a>
         </div>
@@ -71,7 +71,7 @@
         <div style="margin-top: -15px; display: none;" id="loginErrorPassword" class="span2 offset4">
             <span class="label label-important">Invalid VATSIM Password. Please try again.</span>
         </div>
-        @if (!Auth::check())
+        @if (!Auth::user()->check())
         <p class="span3 offset1">
         <form id="loginForm" style=" margin-top: 10px;" class="form-inline">
             <div class="controls controls-row">

@@ -31,8 +31,20 @@ Route::post('/ajax/getvasbycategory', array('as' => 'ajaxGetVasByCategory', 'use
 Route::get('/va', array('as' => 'va', 'uses' => 'VaController@get_va', 'before' => 'auth'));
 
 //Console
-Route::filter('/console/*', function ()
+Route::filter('authconsole', function ()
 {
-    Config::set('auth.model', 'ConsoleUser');
+    //Change auth to use our ConsoleUser model not our VA model.
+
+    //Check if this user is logged in as a VA account and if so log them out
+//    if (!empty(Auth::user()->vaname)) {
+//        Auth::logout();
+//    }
+//
+//    Config::set('auth.model', 'ConsoleUser');
+
 });
-Route::get('/console', array('as' => 'console', 'uses' => 'ConsoleController@get_login'));
+Route::when('console*', 'authconsole');
+
+Route::get('/console', array('as' => 'console', 'uses' => 'ConsoleController@get_index', 'before' => 'consoleauth'));
+Route::get('/console/login', array('as' => 'consolelogin', 'uses' => 'ConsoleController@get_login'));
+Route::post('/console/login', array('as' => 'postconsolelogin', 'uses' => 'ConsoleController@post_login'));
