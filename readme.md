@@ -6,8 +6,6 @@
 
 Colin Schoen
 
-Richard Gerrish
-
 
 *** 
 ### Naming Conventions
