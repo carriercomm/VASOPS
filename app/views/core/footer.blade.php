@@ -482,6 +482,12 @@
                         btn.closest('div').prependTo('#containerNewOpenTickets').fadeIn();
                         //Clone our replyTicketDivTemplate
                         var replyTicketDivTemplateClone = $('#replyTicketDivTemplate').clone().attr('id', 'replyTicketDiv').show();
+                        //Change the hidden input ticket id with the ticket_id element
+                        var inputTid = replyTicketDivTemplateClone.find("input[name='tid']");
+                        if (inputTid.val() == '') {
+                            var ticket_id = btn.closest('#newClosedTickets').find("input[name='ticket_id']").val();
+                            inputTid.val(ticket_id);
+                        }
                         //Now we will change the id of container and add the expanded div
                         btn.closest('#newClosedTickets').attr('id', 'newOpenTickets').find('#newClosedTickets_expanded').attr('id', 'newOpenTickets_expanded').append(replyTicketDivTemplateClone);
                     }

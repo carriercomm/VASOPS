@@ -488,6 +488,7 @@
                         <div id="containerNewClosedTickets">
                             @foreach ($tickets['closedtickets'] as $ticket)
                             <div id="newClosedTickets" style="text-align: left; padding-right: 150px;" class="well">
+                                <input type="hidden" name="ticket_id" value="{{ $ticket->id }}" />
                                 <h6 style="text-transform: none;"><span class="label">{{ $ticket->created_at }}</span>  <strong>{{{ $ticket->subject }}}</strong>: {{{ $ticket->description }}}</h6><span id="btnReopenTicket" style="float: right; position: relative; top: -25px; right: -145px; display: none;"><button class="btn btn-success" value="{{ $ticket->id }}"><i class="fui fui-plus"></i> Reopen Ticket</button></span><span id="btnCloseTicket" style="float: right; position: relative; top: -25px; right: -145px; display: none;"><button class="btn btn-danger" value="{{ $ticket->id }}"><i class="fui fui-cross"></i> Close Ticket</button></span>
                                 <div style="display: none;" id="newClosedTickets_expanded">
                                     @foreach ($tickets['replies'] as $reply)
