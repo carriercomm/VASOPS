@@ -84,12 +84,24 @@ class ConsoleController extends BaseController {
         $unreadTickets = Ticket::where('status', '=', '1')->where('seen_by', 'not like', '%' . $cid . ',%')->get();
         //Pull a list of our Ticket IDs
         //Now that we have the list of tickets, let's pull the latest reply if there is one.
-        $unreadReplies = array();
+        $unreadHelpDesk = array();
         foreach ($unreadTickets as $unreadTicket) {
-            $unreadReplies[$unreadTicket->id] = TicketReply::where('tid', '=', $unreadTicket->id)->orderBy('created_at', 'ASC')->first();
+            $replyCount = TicketReply::where('tid', '=', $unreadTicket->id)->orderBy('created_at', 'ASC')->count();
+            if ($replyCount > 0) {
+                $unreadHelpDesk[$unreadTicket->id] = TicketReply::where('tid', '=', $unreadTicket->id)->orderBy('created_at', 'ASC')->first();
+                $unreadHelpDesk[$unreadTicket->id]['subject'] = $unreadTicket->subject;
+                $unreadHelpDesk[$unreadTicket->id]['type'] = '2';
+                $unreadHelpDesk[$unreadTicket->id]['ticket_author'] = $unreadTicket->vid;
+            }
+            else {
+                $unreadHelpDesk[$unreadTicket->id] = $unreadTicket;
+                $unreadHelpDesk[$unreadTicket->id]['type'] = '1';
+            }
         }
         $pendingVAs = User::where('status', '=', '0')->orderBy('created_at', 'ASC')->get();
         $activeBroadcasts = Broadcast::where('status', '=', '1')->orderBy('created_at', 'DESC')->get();
-        return View::make('console.index')->with(array('pendingVAs' => $pendingVAs, 'activeBroadcasts' => $activeBroadcasts));
+        return View::make('console.index')->with(array('pendingVAs' => $pendingVAs, 'activeBroadcasts' => $activeBroadcasts, 'tickets' => $unreadHelpDesk));
     }
+
+
 }
