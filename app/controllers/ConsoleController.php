@@ -108,5 +108,12 @@ class ConsoleController extends BaseController {
         return View::make('console.broadcasts')->with(array('broadcasts' => $broadcasts));
     }
 
+    public function post_broadcastsnew() {
+        $content = Input::get('inputContent');
+        $broadcast = new Broadcast;
+        $broadcast->content = $content;
+        //Todo finish this
+    }
+
 
 }

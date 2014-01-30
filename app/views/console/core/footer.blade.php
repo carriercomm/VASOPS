@@ -7,6 +7,10 @@
     <script>
         $(document).ready(function() {
             $('#page-wrapper').fadeIn();
+
+            $('#createBroadcastToggle').on('click', function() {
+                $('#createBroadcastPanelBody').slideToggle('fast');
+            });
         });
     </script>
     </body>
