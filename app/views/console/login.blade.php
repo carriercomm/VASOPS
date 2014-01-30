@@ -1,7 +1,7 @@
 @include('console.core.header')
 <div class="container">
     <div class="row" style="margin-bottom: 40px;">
-        <div class="col-md-8 col-md-offset-3">
+        <div class="col-md-5 col-md-offset-4">
             <h1><strong>VATSIM VA Auditor Console</strong></h1>
         </div>
     </div>

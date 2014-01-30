@@ -103,5 +103,10 @@ class ConsoleController extends BaseController {
         return View::make('console.index')->with(array('pendingVAs' => $pendingVAs, 'activeBroadcasts' => $activeBroadcasts, 'tickets' => $unreadHelpDesk));
     }
 
+    public function get_broadcasts() {
+        $broadcasts = Broadcast::orderBy('status', 'DESC')->orderBy('created_at', 'DESC')->get();
+        return View::make('console.broadcasts')->with(array('broadcasts' => $broadcasts));
+    }
+
 
 }

@@ -49,3 +49,6 @@ Route::get('/console', array('as' => 'console', 'uses' => 'ConsoleController@get
 Route::get('/console/login', array('as' => 'consolelogin', 'uses' => 'ConsoleController@get_login'));
 Route::post('/console/login', array('as' => 'postconsolelogin', 'uses' => 'ConsoleController@post_login'));
 Route::get('/console/logout', array('as' => 'consolelogout', 'uses' => 'ConsoleController@get_logout', 'before' => 'consoleauth'));
+
+//Console Elevated Access Routes (Level 1)
+Route::get('/console/broadcasts', array('as' => 'consolebroadcasts', 'uses' => 'ConsoleController@get_broadcasts', 'before' => 'consoleauth1'));

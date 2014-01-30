@@ -43,6 +43,13 @@ Route::filter('consoleauth', function()
 {
     if (!Auth::consoleuser()->check()) return Redirect::route('consolelogin');
 });
+//Add our console auth elevated access level 1 filter
+Route::filter('consoleauth1', function()
+{
+    if (!Auth::consoleuser()->check()) return Redirect::route('consolelogin');
+
+    if (!Auth::consoleuser()->get()->access >= 1) return Redirect::route('console');
+});
 
 
 

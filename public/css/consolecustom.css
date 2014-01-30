@@ -7,3 +7,7 @@
 .label-limegreen {
     background-color: #75D1A1;
 }
+
+#page-wrapper {
+    display: none;
+}

@@ -40,10 +40,16 @@
                 <a href="#"><i class="fa fa-bookmark fa-fw"></i> Administrator Functions<span class="fa arrow"></span></a>
                 <ul class="nav nav-second-level">
                     <li>
+                        <a href="{{ URL::route('consolebroadcasts') }}"> <i class="fa fa-bullhorn fa-fw"></i> Console Broadcasts</a>
+                    </li>
+                    <li>
                         <a href="blank.html"> <i class="fa fa-users fa-fw"></i> Manage Audit Managers</a>
                     </li>
                     <li>
                         <a href="login.html"> <i class="fa fa-exchange fa-fw"></i> Assign Auditors</a>
+                    </li>
+                    <li>
+                        <a href="login.html"> <i class="fa fa-ellipsis-h fa-fw"></i> Manage Categories</a>
                     </li>
                 </ul>
                 <!-- /.nav-second-level -->

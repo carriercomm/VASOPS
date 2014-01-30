@@ -10,7 +10,45 @@
     </div>
     <!-- /.row -->
     <div class="row">
+        <div class="col-lg-4">
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    Recent Audit Log
+                </div>
+                <div class="panel-body">
+                    <div class="well">
+                        Test Audit Log #1
+                    </div>
+                    <div class="well">
+                        Test Audit Log #2
+                    </div>
+                </div>
+            </div>
+        </div>
         <div class="col-lg-8">
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    <i class="fa fa-bullhorn fa-fw"></i> Administrator Broadcasts <span style="float: right;" class="label label-warning">{{ count($activeBroadcasts) }}</span>
+                </div>
+                <div class="panel-body">
+                    <div class="panel-group">
+                        @foreach ($activeBroadcasts as $broadcast)
+                        <div class="panel panel-info">
+                            <div class="panel-heading">
+                                <span style="margin-right: 5px;" class="label label-primary">{{{ ConsoleUser::getName($broadcast->author) }}}</span> {{{ $broadcast->subject }}} <span style="float:right;" class="broadcast-date label label-info">{{{ $broadcast->created_at }}}</span>
+                            </div>
+                            <div class="panel-body">
+                                {{{ $broadcast->content }}}
+                            </div>
+                        </div>
+                        @endforeach
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-lg-12">
             <div class="panel panel-default">
                 <div class="panel-heading">
                     <i class="fa fa-plane fa-fw"></i> Pending Virtual Airlines <span style="float: right;" class="label label-warning">{{ count($pendingVAs) }}</span>
@@ -47,7 +85,7 @@
         </div>
     </div>
     <div class="row">
-        <div class="col-lg-8">
+        <div class="col-lg-12">
             <div class="panel panel-default">
                 <div class="panel-heading">
                     <i class="fa fa-comments fa-fw"></i> HelpDesk Updates <span style="float: right;" class="label label-warning">{{ count($tickets) }}</span>
@@ -66,29 +104,6 @@
                         @endforeach
                     </div>
                 </div>
-            </div>
-        </div>
-    </div>
-    <div class="row">
-        <div class="col-lg-8">
-            <div class="panel panel-default">
-                <div class="panel-heading">
-                    <i class="fa fa-bullhorn fa-fw"></i> Administrator Broadcasts <span style="float: right;" class="label label-warning">{{ count($activeBroadcasts) }}</span>
-                </div>
-                <div class="panel-body">
-                    <div class="panel-group">
-                        @foreach ($activeBroadcasts as $broadcast)
-                        <div class="panel panel-info">
-                            <div class="panel-heading">
-                               <span style="margin-right: 5px;" class="label label-primary">{{{ ConsoleUser::getName($broadcast->author) }}}</span> {{{ $broadcast->subject }}} <span style="float:right;" class="broadcast-date label label-info">{{{ $broadcast->created_at }}}</span>
-                            </div>
-                            <div class="panel-body">
-                                Please ensure that you have completed all of the assigned audits within the next two weeks.
-                            </div>
-                        </div>
-                        @endforeach
-                    </div>
-                    </div>
             </div>
         </div>
     </div>
