@@ -140,5 +140,29 @@ class ConsoleController extends BaseController {
         return Redirect::route('consolebroadcasts')->with('message', 'Broadcast Visibility Successfully Updated');
     }
 
+    public function post_ajaxsearch() {
+        $data = Input::get('data');
+        parse_str($data, $post);
+        $query = $data['searchInput'];
+        $like = $query . '%';
+
+        if (is_Numeric($query)) {
+            //Since it is numeric we are probably sorting by a CID. Let's try to find VAs by CID with this number
+            $vas = User::where('cid', 'like', $like)->orderBy('cid', 'DESC')->get();
+        }
+        else {
+            //Hmm maybe they are trying to find a VA by name or by the name of the owner
+            $vas = User::where('name', 'like', $like)->orWhere('vaname', 'like', $like)->orderBy('vaname', 'ASC')->get();
+        }
+
+        if (count($vas) > 0) {
+            $send = json_encode($vas);
+        }
+        else {
+            $send = '0';
+        }
+        echo $send;
+    }
+
 
 }

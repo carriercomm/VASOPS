@@ -2,7 +2,7 @@
 <div class="container">
     <div class="row" style="margin-bottom: 40px;">
         <div class="col-md-5 col-md-offset-4">
-            <h1><strong>VATSIM VA Auditor Console</strong></h1>
+            <h1><strong>VA Auditor Console</strong></h1>
         </div>
     </div>
     <div class="row">

@@ -8,7 +8,6 @@ $(function() {
 $(function() {
 
     $(window).bind("load", function() {
-        console.log($(this).width())
         if ($(this).width() < 768) {
             $('div.sidebar-collapse').addClass('collapse')
         } else {
@@ -21,7 +20,6 @@ $(function() {
 $(function() {
 
     $(window).bind("resize", function() {
-        console.log($(this).width())
         if ($(this).width() < 768) {
             $('div.sidebar-collapse').addClass('collapse')
         } else {

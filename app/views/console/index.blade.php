@@ -31,6 +31,7 @@
                     <i class="fa fa-bullhorn fa-fw"></i> Administrator Broadcasts <span style="float: right;" class="label label-warning">{{ count($activeBroadcasts) }}</span>
                 </div>
                 <div class="panel-body">
+                    @if (count($activeBroadcasts) > 0)
                     <div class="panel-group">
                         @foreach ($activeBroadcasts as $broadcast)
                         <div class="panel panel-info">
@@ -43,6 +44,9 @@
                         </div>
                         @endforeach
                     </div>
+                    @else
+                    There are no active broadcasts.
+                    @endif
                 </div>
             </div>
         </div>

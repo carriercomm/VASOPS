@@ -2,14 +2,18 @@
     <div class="sidebar-collapse">
         <ul class="nav" id="side-menu">
             <li class="sidebar-search">
-                <div class="input-group custom-search-form">
-                    <input type="text" class="form-control" placeholder="Search for a VA...">
-                            <span class="input-group-btn">
-                                <button class="btn btn-default" type="button">
-                                    <i class="fa fa-search"></i>
-                                </button>
-                            </span>
-                </div>
+                <form id="searchForm">
+                    <div class="input-group custom-search-form">
+                        <input type="hidden" name="_token" value="{{ csrf_token() }}" />
+                        <input name="searchInput" id="searchInput" type="text" class="form-control" placeholder="Search for a VA...">
+                                <span class="input-group-btn">
+                                    <button id="searchBtn" class="btn btn-default" type="button">
+                                        <i class="fa fa-search"></i>
+                                    </button>
+                                </span>
+
+                    </div>
+                </form>
                 <!-- /input-group -->
             </li>
             <li>
@@ -36,6 +40,7 @@
             <li>
                 <a href="#"><i class="fa fa-bar-chart-o fa-fw"></i> Global Statistics</a>
             </li>
+            @if (Auth::consoleuser()->get()->access > 0)
             <li>
                 <a href="#"><i class="fa fa-bookmark fa-fw"></i> Administrator Functions<span class="fa arrow"></span></a>
                 <ul class="nav nav-second-level">
@@ -43,17 +48,18 @@
                         <a href="{{ URL::route('consolebroadcasts') }}"> <i class="fa fa-bullhorn fa-fw"></i> Console Broadcasts</a>
                     </li>
                     <li>
-                        <a href="blank.html"> <i class="fa fa-users fa-fw"></i> Manage Audit Managers</a>
+                        <a href="#"> <i class="fa fa-users fa-fw"></i> Manage Audit Managers</a>
                     </li>
                     <li>
-                        <a href="login.html"> <i class="fa fa-exchange fa-fw"></i> Assign Auditors</a>
+                        <a href="#"> <i class="fa fa-exchange fa-fw"></i> Assign Auditors</a>
                     </li>
                     <li>
-                        <a href="login.html"> <i class="fa fa-ellipsis-h fa-fw"></i> Manage Categories</a>
+                        <a href="#"> <i class="fa fa-ellipsis-h fa-fw"></i> Manage Categories</a>
                     </li>
                 </ul>
                 <!-- /.nav-second-level -->
             </li>
+            @endif
         </ul>
         <!-- /#side-menu -->
     </div>
