@@ -11,6 +11,7 @@
             $('#createBroadcastToggle').on('click', function() {
                 $('#createBroadcastPanelBody').slideToggle('fast');
             });
+
         });
     </script>
     </body>

@@ -31,18 +31,7 @@ Route::post('/ajax/getvasbycategory', array('as' => 'ajaxGetVasByCategory', 'use
 Route::get('/va', array('as' => 'va', 'uses' => 'VaController@get_va', 'before' => 'auth'));
 
 //Console
-Route::filter('authconsole', function ()
-{
-    //Change auth to use our ConsoleUser model not our VA model.
 
-    //Check if this user is logged in as a VA account and if so log them out
-//    if (!empty(Auth::user()->vaname)) {
-//        Auth::logout();
-//    }
-//
-//    Config::set('auth.model', 'ConsoleUser');
-
-});
 Route::when('console*', 'authconsole');
 
 Route::get('/console', array('as' => 'console', 'uses' => 'ConsoleController@get_index', 'before' => 'consoleauth'));
@@ -52,4 +41,6 @@ Route::get('/console/logout', array('as' => 'consolelogout', 'uses' => 'ConsoleC
 
 //Console Elevated Access Routes (Level 1)
 Route::get('/console/broadcasts', array('as' => 'consolebroadcasts', 'uses' => 'ConsoleController@get_broadcasts', 'before' => 'consoleauth1'));
-Route::get('/console/broadcasts/new', array('as' => 'consolebroadcastsnew', 'uses' => 'ConsoleController@post_broadcastsnew', 'before' => 'consoleauth1'));
+Route::post('/console/broadcasts/new', array('as' => 'consolebroadcastsnew', 'uses' => 'ConsoleController@post_broadcastsnew', 'before' => 'consoleauth1'));
+Route::get('/console/broadcasts/remove/{id}', array('as' => 'consolebroadcastsremove', 'uses' => 'ConsoleController@get_broadcastsremove', 'before' => 'consoleauth1'));
+Route::get('/console/broadcasts/vis/{id}', array('as' => 'consolebroadcastsvis', 'uses' => 'ConsoleController@get_broadcastsvis', 'before' => 'consoleauth1'));

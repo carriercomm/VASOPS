@@ -110,9 +110,34 @@ class ConsoleController extends BaseController {
 
     public function post_broadcastsnew() {
         $content = Input::get('inputContent');
+        $subject = Input::get('inputSubject');
         $broadcast = new Broadcast;
         $broadcast->content = $content;
+        $broadcast->subject = $subject;
         //Todo finish this
+        $broadcast->author = Auth::consoleuser()->get()->cid;
+        //Make this broadcast active
+        $broadcast->status = '1';
+        $broadcast->save();
+
+        return Redirect::route('consolebroadcasts')->with('message', 'New Broadcast Created Successfully.');
+    }
+
+    public function get_broadcastsremove($id) {
+        Broadcast::destroy($id);
+        return Redirect::route('consolebroadcasts')->with('message', 'Broadcast Removed Successfully.');
+    }
+
+    public function get_broadcastsvis($id) {
+        $broadcast = Broadcast::find($id);
+        if ($broadcast->status == 0) {
+            $broadcast->status = 1;
+        }
+        else {
+            $broadcast->status = 0;
+        }
+        $broadcast->save();
+        return Redirect::route('consolebroadcasts')->with('message', 'Broadcast Visibility Successfully Updated');
     }
 
 
