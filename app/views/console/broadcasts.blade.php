@@ -54,9 +54,9 @@
                         <div class="panel panel-default">
                         @endif
                             <div class="panel-heading">
-                                <span style="margin-right: 5px;" @if ($broadcast->status == 1) class="label label-primary" @else class="label label-default" @endif>{{{ ConsoleUser::getName($broadcast->author) }}}</span> {{{ $broadcast->subject }}}
+                                @if ($broadcast->status == 1) <i class="fa fa-eye fa-fw"></i> @else <i class="fa fa-eye-slash fa-fw"></i> @endif<span style="margin-right: 5px;" @if ($broadcast->status == 1) class="label label-primary" @else class="label label-default" @endif>{{{ ConsoleUser::getName($broadcast->author) }}}</span> {{{ $broadcast->subject }}}
                                 <span style="float: right; width: 180px;">
-                                    <span class="broadcast-date label label-info">{{{ $broadcast->created_at }}}</span> | <a href="{{ URL::route('consolebroadcasts') }}/vis/{{ $broadcast->id }}"><span class="label label-primary"><i class="fa fa-eye fa-fw"></i></span></a>  <a href="{{ URL::route('consolebroadcasts') }}/remove/{{ $broadcast->id }}"><span class="label label-primary"><i class="fa fa-times fa-fw"></i></span></a>
+                                    <span class="broadcast-date label label-info">{{{ $broadcast->created_at }}}</span> | <a href="{{ URL::route('consolebroadcasts') }}/vis/{{ $broadcast->id }}"><span class="label label-primary"><i @if ($broadcast->status == 1) class="fa fa-eye-slash" fa-fw @else class="fa fa-eye @endif"></i></span></a>  <a href="{{ URL::route('consolebroadcasts') }}/remove/{{ $broadcast->id }}"><span class="label label-primary"><i class="fa fa-times fa-fw"></i></span></a>
                                 </span>
                             </div>
                             <div class="panel-body">

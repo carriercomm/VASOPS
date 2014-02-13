@@ -143,12 +143,12 @@ class ConsoleController extends BaseController {
     public function post_ajaxsearch() {
         $data = Input::get('data');
         parse_str($data, $post);
-        $query = $data['searchInput'];
-        $like = $query . '%';
+        $query = $post['searchInput'];
+        $like = '%' . $query . '%';
 
         if (is_Numeric($query)) {
             //Since it is numeric we are probably sorting by a CID. Let's try to find VAs by CID with this number
-            $vas = User::where('cid', 'like', $like)->orderBy('cid', 'DESC')->get();
+            $vas = User::where('cid', 'like', $like)->orderBy('cid', 'ASC')->get();
         }
         else {
             //Hmm maybe they are trying to find a VA by name or by the name of the owner
@@ -156,7 +156,11 @@ class ConsoleController extends BaseController {
         }
 
         if (count($vas) > 0) {
-            $send = json_encode($vas);
+            //Format our output
+            $send = '';
+            foreach ($vas as $va) {
+                $send .= "<tr><td>$va->vaname</td><td>$va->url</td><td>$va->cid</td><td>$va->name</td><td>$va->created_at</td><td><a href=\"$va->url\"><i class=\"fa fa-edit fa-fw\"</a></td></tr>";
+            }
         }
         else {
             $send = '0';

@@ -1,37 +1,26 @@
     <div id="ajaxSearchResults" style="display: none;">
-        <div class="row">
-            <div class="col-lg-12">
-                <h1 class="page-header"><i class="fa fa-search fa-fw"></i> Search Results/h1>
+        <div class="page-wrapper" style="display: block;">
+            <div class="row">
+                <div class="col-lg-12">
+                    <h1 class="page-header"><i class="fa fa-search fa-fw"></i> Search Results <img style="display: none;" id="searchLoader" alt="loading..." src="{{ URL::to('/') }}/images/loader.gif" /></h1>
+                </div>
             </div>
-        </div>
-        <div class="row">
-            <div class="table-responsive">
-                <table class="table table-hover">
-                    <thead>
-                    <tr>
-                        <th>VA Name</th>
-                        <th>URL</th>
-                        <th>CID</th>
-                        <th>Name</th>
-                        <th>Date</th>
-                        <th><i class="fa fa-edit fa-fw"></i></th>
-                    </tr>
-                    </thead>
-                    <tbody>
-
-
-                    <tr>
-                        <td>VA NAME HERE</td>
-                        <td><a href="VA URL HERE" target="_blank">VA URL HERE</a></td>
-                        <td>VA CID</td>
-                        <td>VA NAME</td>
-                        <td>CREATED AT</td>
-                        <td><a href="#"><i class="fa fa-edit fa-fw"</a></td>
-                    </tr>
-
-
-                    </tbody>
-                </table>
+            <div class="row">
+                <div class="table-responsive">
+                    <table class="table table-bordered table-hover table-responsive">
+                        <thead>
+                        <tr>
+                            <th>VA Name</th>
+                            <th>URL</th>
+                            <th>CID</th>
+                            <th>Name</th>
+                            <th>Date</th>
+                            <th><i class="fa fa-edit fa-fw"></i></th>
+                        </tr>
+                        </thead>
+                        <tbody id="searchTableBody"></tbody>
+                    </table>
+                </div>
             </div>
         </div>
     </div>
@@ -51,25 +40,26 @@
             });
 
             function ajaxSearch() {
-                if ($('#searchInput').val != '') {
+                if ($('#searchInput').val() != '') {
+                    $('#page-wrapper').hide();
+                    $('#ajaxSearchResults').fadeIn();
+                    $('#searchLoader').fadeIn();
 
                     var form = $('#searchForm');
                     var form_serialized = form.serialize();
                     $.ajax({
                         type: "POST",
                         url: "{{URL::route('consoleajaxsearch')}}",
-                        data: { data: form_serialized },
-                        dataType: 'json'
+                        data: { data: form_serialized }
                     })
                         .done(function(received) {
+                            $('#searchLoader').hide();
 
                             if (received == '0') {
-                                console.log('No Records Found');
+                                $('#searchTableBody').empty().prepend('<tr><td colspan="6">No Virtual Airline Records Located...</td></tr>');
                             }
                             else {
-                                $(received).each(function () {
-                                    console.log($(this).name);
-                                });
+                                $('#searchTableBody').empty().prepend(received);
                             }
                         });
                     return false;
@@ -77,7 +67,7 @@
                 }
                 else {
 
-                    $('#ajaxSearchResultsActive').hide();
+                    $('#ajaxSearchResults').hide();
                     $('#page-wrapper').fadeIn();
 
                 }
