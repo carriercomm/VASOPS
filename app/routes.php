@@ -30,6 +30,7 @@ Route::post('/ajax/getvasbycategory', array('as' => 'ajaxGetVasByCategory', 'use
 
 //Pages
 Route::get('/va', array('as' => 'va', 'uses' => 'VaController@get_va', 'before' => 'auth'));
+Route::get('/click/{id}', array('as' => 'click', 'uses' => 'ClickController@get_click'));;
 //-----------------------------------------------------------------
 
 //-

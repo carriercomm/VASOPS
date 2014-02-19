@@ -392,7 +392,7 @@ class AjaxController extends BaseController {
                 $va->description = html_entity_decode($va->description);
                 $va->vaname = html_entity_decode($va->vaname);
                 $va->url = html_entity_decode($va->url);
-                $output .= '<div class="well"><a target="_blank" href="' . $va->url . '"><h4>' . $va->vaname . '</h4></a><blockquote style="margin-top: 4px;">'. $va->description . '</blockquote></div>';
+                $output .= '<div class="well"><a target="_blank" href="' . URL::to('/click') . '/' .  $va->cid . '"><h4>' . $va->vaname . '</h4></a><blockquote style="margin-top: 4px;">'. $va->description . '</blockquote></div>';
             }
             echo $output;
         }
