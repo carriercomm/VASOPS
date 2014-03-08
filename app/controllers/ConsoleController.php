@@ -168,5 +168,14 @@ class ConsoleController extends BaseController {
         echo $send;
     }
 
+    public function get_va($id) {
+        //Is someone trying to pass something other than an integer?
+        if (!is_numeric($id)) {
+            return Redirect::route('console');
+        }
+        $va = User::findOrFail($id);
+        return View::make('console.va')->with(array('va' => $va));
+    }
+
 
 }
