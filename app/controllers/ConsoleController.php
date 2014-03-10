@@ -159,7 +159,7 @@ class ConsoleController extends BaseController {
             //Format our output
             $send = '';
             foreach ($vas as $va) {
-                $send .= "<tr><td>$va->vaname</td><td>$va->url</td><td>$va->cid</td><td>$va->name</td><td>$va->created_at</td><td><a href=\"$va->url\"><i class=\"fa fa-edit fa-fw\"</a></td></tr>";
+                $send .= "<tr><td>$va->vaname</td><td>$va->url</td><td>$va->cid</td><td>$va->name</td><td>$va->created_at</td><td><a href=\"" . URL::route('console') .  "/va/$va->cid\"><i class=\"fa fa-edit fa-fw\"</a></td></tr>";
             }
         }
         else {
