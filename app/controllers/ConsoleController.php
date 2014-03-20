@@ -177,5 +177,33 @@ class ConsoleController extends BaseController {
         return View::make('console.va')->with(array('va' => $va));
     }
 
+    public function get_helpdesk($filter) {
+        $filter = strtolower($filter);
+        //Make sure our filter is valid
+        if ($filter != "open" && $filter != "closed" && $filter != "assigned")  {
+            //Shit, that's bad. Throw a 404.
+            App::abort(404, 'Invalid helpdesk filter');
+        }
+
+        //Open Tickets
+        if ($filter == "open") {
+            $subheader = "Open Tickets";
+        }
+        //Closed Tickets
+        if ($filter == "closed") {
+            $subheader = "Closed Tickets";
+        }
+
+        if ($filter == "assigned") {
+            $subheader = "Assigned Tickets";
+        }
+
+        return View::make('console.helpdesk')->with(array('subheader' => $subheader));
+
+    }
+
+    public function get_emailtemplates() {
+        return View::make('console.emailtemplates')->with(array());
+    }
 
 }

@@ -5,7 +5,7 @@ class ClickController extends BaseController {
         //Are we even working with a number?
         if (!is_numeric($id)) {
             //Yikes let's get the hell out of here
-            App::abort(404);
+            App::abort(404, 'Invalid click link');
         }
 
         //Now to pull our VA record or fail

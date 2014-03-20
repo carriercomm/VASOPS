@@ -23,19 +23,19 @@
                 <a href="#"><i class="fa fa-comments fa-fw"></i> Help Desk <span class="fa arrow"></span></a>
                 <ul class="nav nav-second-level">
                     <li>
-                        <a href="#"> <i class="fa fa-eye fa-fw"></i> Tickets Assigned to Me</a>
+                        <a href="{{ URL::route('console') }}/helpdesk/assigned"> <i class="fa fa-eye fa-fw"></i> Tickets Assigned to Me</a>
                     </li>
                     <li>
-                        <a href="#"> <i class="fa fa-comment fa-fw"></i> Open Tickets</a>
+                        <a href="{{ URL::route('console') }}/helpdesk/open"> <i class="fa fa-comment fa-fw"></i> Open Tickets</a>
                     </li>
                     <li>
-                        <a href="#"> <i class="fa fa-clock-o fa-fw"></i> Closed Tickets</a>
+                        <a href="{{ URL::route('console') }}/helpdesk/closed"> <i class="fa fa-clock-o fa-fw"></i> Closed Tickets</a>
                     </li>
                 </ul>
                 <!-- /.nav-second-level -->
             </li>
             <li>
-                <a href="#"><i class="fa fa-envelope fa-fw"></i> Email Templates</a>
+                <a href="{{ URL::route('consoleemailtemplates') }}"><i class="fa fa-envelope fa-fw"></i> Email Templates</a>
             </li>
             <li>
                 <a href="#"><i class="fa fa-bar-chart-o fa-fw"></i> Global Statistics</a>
