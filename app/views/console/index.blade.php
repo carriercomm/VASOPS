@@ -78,7 +78,7 @@
                             <td>{{{ $pendingVA->cid }}}</td>
                             <td>{{{ $pendingVA->name }}}</td>
                             <td>{{{ $pendingVA->created_at }}}</td>
-                            <td><a href="#"><i class="fa fa-edit fa-fw"</a></td>
+                            <td><a href="{{ URL::route('console') }}/va/{{{ $pendingVA->cid }}}"><i class="fa fa-edit fa-fw"</a></td>
                         </tr>
                         @endforeach
                         </tbody>
