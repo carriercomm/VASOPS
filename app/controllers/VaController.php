@@ -71,4 +71,9 @@ class VaController extends BaseController {
         return View::make('va')->with(array('record' => $record, 'clicks' => $clicks, 'tickets' => $tickets, 'categories' => $categories));
     }
 
+    public function post_uploadbanner() {
+        //Get our file
+        $banner = Input::file('inputBanner');
+    }
+
 }

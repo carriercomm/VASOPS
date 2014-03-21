@@ -31,6 +31,7 @@ Route::post('/ajax/getvasbycategory', array('as' => 'ajaxGetVasByCategory', 'use
 //Pages
 Route::get('/va', array('as' => 'va', 'uses' => 'VaController@get_va', 'before' => 'auth'));
 Route::get('/click/{id}', array('as' => 'click', 'uses' => 'ClickController@get_click'));;
+Route::post('/va/uploadbanner', array('as' => 'uploadbanner', 'uses' => 'VaController@post_uploadbanner', 'before' => 'auth|csrf'));
 //-----------------------------------------------------------------
 
 //-

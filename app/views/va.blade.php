@@ -9,6 +9,7 @@
         <ul class="nav nav-tabs">
             <li class="active"><a href="#status" data-toggle="tab">Status</a></li>
             <li><a href="#editva" data-toggle="tab">Edit VA</a></li>
+            <li><a href="#banner" data-toggle="tab">Banner</a></li>
             <li><a href="#clicks" data-toggle="tab">Clicks</a></li>
             <li><a href="#help" data-toggle="tab">Help</a></li>
         </ul>
@@ -383,6 +384,23 @@
                     <!--   </form> -->
                 </div>
                 <div style="display: none;" id="applyClosingFormTag">
+                    </form>
+                </div>
+                <div class="tab-pane fade in" id="banner">
+                    <h3 style="margin-bottom: 15px;">Banner</h3>
+                    <form action="{{ URL::route('uploadbanner') }}" method="POST" id="banner-form" class="form-inline">
+                        <input type="hidden" name="_token" value="{{ csrf_token(); }}">
+                        <div class="control-group">
+                            <div class="controls">
+                                <input name="inputBanner" type="file" id="inputBanner" />
+                            </div>
+                        </div>
+                        <div class="control-group">
+                            <div class="form-actions">
+                                <input type="submit" class="btn btn-success" value="Upload" />
+                                <input type="reset" class="btn" value="Cancel" />
+                            </div>
+                        </div>
                     </form>
                 </div>
                 <div class="tab-pane fade in" id="clicks">

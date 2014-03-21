@@ -325,6 +325,8 @@
                 });
             }
         }
+        //Now update our count
+        calculateInputCategory();
 
         $('#btnNewTicket').click(function() {
             $('#divNewTicketForm').slideToggle();
