@@ -388,16 +388,19 @@
                 </div>
                 <div class="tab-pane fade in" id="banner">
                     <h3 style="margin-bottom: 15px;">Banner</h3>
-                    <form action="{{ URL::route('uploadbanner') }}" method="POST" id="banner-form" class="form-inline">
+                    <p id="errorBannerEmpty" style="display: none;" class="alert alert-danger">You must select an image to upload. Please try again.</p>
+                    <p id="errorBannerInvalidType" style="display: none;" class="alert alert-danger">Invalid file type. Please upload a jpg or png image only.</p>
+                    <form action="{{ URL::route('uploadbanner') }}" enctype="multipart/form-data" method="POST" id="banner-form" class="form-inline">
                         <input type="hidden" name="_token" value="{{ csrf_token(); }}">
                         <div class="control-group">
                             <div class="controls">
                                 <input name="inputBanner" type="file" id="inputBanner" />
                             </div>
                         </div>
+                        <p style="font-style: italic;">(jpg or png image only, max size 500px x 200px)</p>
                         <div class="control-group">
                             <div class="form-actions">
-                                <input type="submit" class="btn btn-success" value="Upload" />
+                                <input id="bannerUploadSubmit" type="submit" class="btn btn-success" value="Upload" />
                                 <input type="reset" class="btn" value="Cancel" />
                             </div>
                         </div>

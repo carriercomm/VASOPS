@@ -584,6 +584,44 @@
                 });
         });
 
+        $('#bannerUploadSubmit').on('click', function(e) {
+            //Hide error messages that may have been displayed previously
+            $('#errorBannerInvalidType').hide();
+            $('#errorBannerEmpty').hide();
+
+            // get the file name, possibly with path (depends on browser)
+            var filename = $('#inputBanner').val();
+            //Check and see if there is anything even submitted
+            if (filename.length < 1) {
+                e.preventDefault();
+                $('#errorBannerEmpty').fadeIn('slow');
+            }
+            else {
+                // Use a regular expression to trim everything before final dot
+                var extension = filename.replace(/^.*\./, '');
+
+                // If there is no dot anywhere in filename, we would have extension == filename,
+                // so we account for this possibility now
+                if (extension == filename) {
+                    extension = '';
+                } else {
+                    extension = extension.toLowerCase();
+                }
+
+                switch (extension) {
+                    case 'jpg':
+                    case 'jpeg':
+                    case 'png':
+                        break;
+                    default:
+                        // Cancel the form submission
+                        e.preventDefault();
+                        $('#errorBannerInvalidType').fadeIn('slow');
+
+                }
+            }
+        });
+
 
         @endif
 

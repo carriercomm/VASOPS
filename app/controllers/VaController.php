@@ -72,8 +72,22 @@ class VaController extends BaseController {
     }
 
     public function post_uploadbanner() {
-        //Get our file
-        $banner = Input::file('inputBanner');
+        //Verify we have a file
+        if (Input::hasFile('inputBanner')) {
+            //Get our file
+            $banner = Input::file('inputBanner');
+            //Create an array of acceptable mimetypes
+            $mimetypes = array('image/jpeg', 'image/png');
+            if (in_array($banner->getMimeType(), $mimetypes)) {
+                die('Passed mimetype');
+            }
+            else {
+                //Time to abort.
+                App::abort(400, 'Invalid file type.');
+            }
+
+        }
+
     }
 
 }
