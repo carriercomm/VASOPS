@@ -67,7 +67,7 @@ class VaController extends BaseController {
         //Pull our Category data
         $categories = Category::get();
 
-        //Create our view with the VA, clicks and tickets data.
+        //Create our view with the VA, clicks, categories and tickets data.
         return View::make('va')->with(array('record' => $record, 'clicks' => $clicks, 'tickets' => $tickets, 'categories' => $categories));
     }
 
@@ -79,7 +79,23 @@ class VaController extends BaseController {
             //Create an array of acceptable mimetypes
             $mimetypes = array('image/jpeg', 'image/png');
             if (in_array($banner->getMimeType(), $mimetypes)) {
-                die('Passed mimetype');
+                switch ($banner->getMimeType()) {
+                    case('image/jpeg'):
+                        $extension = ".jpg";
+                        break;
+                    case('image/png'):
+                        $extension = ".png";
+                        break;
+                }
+                //Mime check passed continue to move the image from tmp directory to /banners
+                //Todo change this from a hard coded path
+                $destinationPath = public_path() . '/banners';
+                $fileName = Auth::user()->get()->cid . $extension;
+                $banner->move($destinationPath, $fileName);
+                //Finally update the db with the new banner name.
+                $va = User::where('cid', '=', Auth::user()->get()->cid)->first();
+                $va->banner = $fileName;
+                $va->save();
             }
             else {
                 //Time to abort.

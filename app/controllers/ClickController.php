@@ -14,7 +14,7 @@ class ClickController extends BaseController {
         $existingClick = Click::where('ip', '=', Request::getClientIp())->orderBy('created_at', 'DESC')->first();
         if (!empty($existingClick)) {
             $lastClickByIp = strtotime($existingClick->created_at);
-            if (time() - $lastClickByIp >= 60) {
+            if (time() - $lastClickByIp > 60) {
                 //No click found by the same IP in the last 60 seconds thus we should add this one
                 $click = new Click;
                 $click->vid = $id;

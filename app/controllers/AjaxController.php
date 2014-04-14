@@ -342,6 +342,14 @@ class AjaxController extends BaseController {
             $reply->content = $post['inputReplyTicket'];
             //Save our ticket update
             $reply->save();
+            //Find or reply id
+            $reply = Reply::orderBy('updated_at', 'DESC')->first();
+
+            //Finally we need to update the updated_at field of our master ticket table
+            $ticket = Ticket::find($post['tid']);
+            $ticket->updated_at = $reply->updated_at;
+            //Save our ticket update
+            $ticket->save();
             //Return 1 to inform the client this was successful.
             echo '1';
         }

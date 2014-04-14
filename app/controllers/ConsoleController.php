@@ -185,20 +185,25 @@ class ConsoleController extends BaseController {
             App::abort(404, 'Invalid helpdesk filter');
         }
 
-        //Open Tickets
-        if ($filter == "open") {
-            $subheader = "Open Tickets";
-        }
-        //Closed Tickets
-        if ($filter == "closed") {
-            $subheader = "Closed Tickets";
+        //Create our subheader based on the URL parameter and fetch the relevant list of tickets
+        switch($filter){
+            case 'open':
+                $subheader = "Open Tickets";
+                $tickets = Ticket::where('status', '=', '1')->get();
+                break;
+            case 'closed':
+                $subheader = "Closed Tickets";
+                $tickets = Ticket::where('status', '=', '0')->get();
+                break;
+            case 'assigned':
+                $subheader = "Assigned Tickets";
+                $tickets = Ticket::where('assigned', '=', Auth::consoleuser()->get()->cid)->get();
+                break;
         }
 
-        if ($filter == "assigned") {
-            $subheader = "Assigned Tickets";
-        }
 
-        return View::make('console.helpdesk')->with(array('subheader' => $subheader));
+
+        return View::make('console.helpdesk')->with(array('subheader' => $subheader, 'tickets' => $tickets));
 
     }
 
