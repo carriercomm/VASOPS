@@ -87,6 +87,8 @@ class VaController extends BaseController {
                         $extension = ".png";
                         break;
                 }
+                //Todo Check for image size getimagesize()
+
                 //Mime check passed continue to move the image from tmp directory to /banners
                 //Todo change this from a hard coded path
                 $destinationPath = public_path() . '/banners';
