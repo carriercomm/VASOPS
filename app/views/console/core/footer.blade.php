@@ -77,6 +77,38 @@
             $('#searchInput').on('keyup', ajaxSearch);
             $('#searchBtn').on('click', ajaxSearch);
 
+            $('#vaEditInputSubmit').on('click', function(e) {
+                $(this).html('<img height="7px" alt="Loading..." src="{{ URL::to('/') }}/images/loader.gif">');
+                var btn = $(this);
+                e.preventDefault();
+                var _token = '{{ csrf_token(); }}';
+                //Declare our submitted field to pass via AJAX or use later
+                var field = $(this).closest('td').siblings('td').find('small').html();
+                var value = $(this).closest('span').siblings('input').val();
+                var inputdiv = $(this).closest('div');
+                var inputfield = $(this).closest('td').find('h4');
+                $.ajax({
+                    type: "POST",
+                    url: "{{ URL::route('consoleajaxvaedit') }}",
+                    data: { va: vacid, _token: _token, field: field, value: value }
+                })
+                    .done(function(received) {
+                       btn.html('Save');
+                       if (received == '1') {
+                           //Success
+                           inputdiv.hide();
+                           inputfield.html(value);
+                           //Update the default value of the input in case they happen to hit cancel. We want it to revert back to the newly saved input
+                           inputdiv.find('input').attr('val', value);
+                           inputfield.fadeIn();
+                       }
+                       else {
+                           //Alert the user of an error
+                           console.log('Error');
+                       }
+                    });
+            });
+
             $('#vaNameField').on('click', function(){
                 $('#vaNameField').hide();
                 $('#vaNameInputDiv').fadeIn('fast');
@@ -131,6 +163,15 @@
                 $('#vaZipField').fadeIn();
             })
 
+            $('#vaCountryField').on('click', function() {
+                $('#vaCountryField').hide();
+                $('#vaCountryInputDiv').fadeIn();
+            })
+            $('#vaCountryInputReset').on('click', function() {
+                $('#vaCountryInputDiv').hide();
+                $('#vaCountryField').fadeIn();
+            })
+
             $('#vaDescriptionField').on('click', function(){
                 $('#vaDescriptionField').hide();
                 $('#vaDescriptionInputDiv').fadeIn('fast');
@@ -157,6 +198,8 @@
                 $('#vaCreatedInputDiv').hide();
                 $('#vaCreatedField').fadeIn();
             })
+
+
 
 
         });

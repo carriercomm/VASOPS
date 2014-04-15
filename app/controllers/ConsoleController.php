@@ -217,4 +217,38 @@ class ConsoleController extends BaseController {
         return View::make('console.emailtemplates')->with(array());
     }
 
+    public function post_vaedit() {
+        //Declare our variables
+        $va = Input::get('va');
+        $field = Input::get('field');
+        $value = Input::get('value');
+        //Create an array of the displayed names with the current database columns to match
+        $fieldarray = array();
+        $fieldarray['cid'] = 'cid';
+        $fieldarray['name'] = 'name';
+        $fieldarray['email'] = 'email';
+        $fieldarray['url'] = 'url';
+        $fieldarray['city'] = 'city';
+        $fieldarray['state'] = 'stateprovince';
+        $fieldarray['postal'] = 'zip';
+        $fieldarray['country'] = 'country';
+        $fieldarray['description'] = 'description';
+
+        if (!array_key_exists($field, $fieldarray)) {
+            //Return 0 to the client
+            echo '0';
+        }
+        else {
+            $field = $fieldarray[$field];
+            //fetch our va
+            $va = User::findOrFail($va);
+            //update the property
+            $va->$field = $value;
+            //push to the db
+            $va->save();
+            //Return 1 to the client;
+            echo '1';
+        }
+    }
+
 }
