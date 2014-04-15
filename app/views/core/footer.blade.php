@@ -622,6 +622,59 @@
             }
         });
 
+        switch(window.location.hash) {
+            case('#status'):
+                $('#VaTabs a[href="#status"]').tab('show')
+                break;
+            case('#editva'):
+                $('#VaTabs a[href="#editva"]').tab('show')
+                break;
+            case('#banner'):
+                $('#VaTabs a[href="#banner"]').tab('show')
+                break;
+            case('#clicks'):
+                $('#VaTabs a[href="#clicks"]').tab('show')
+                break;
+            case('#help'):
+                $('#VaTabs a[href="#help"]').tab('show')
+                break;
+        }
+
+        $('#uploadNewBannerBtn').on('click', function() {
+            $('#currentBannerActions').slideUp('fast');
+            $('#uploadBannerForm').slideDown('fast');
+        });
+        $('#bannerUploadCancel').on('click', function() {
+            if ($('#currentBanner').length) {
+                $('#uploadBannerForm').slideUp('fast');
+                $('#currentBannerActions').slideDown('fast');
+                $('#errorBannerInvalidType').slideUp('fast');
+                $('#errorBannerEmpty').slideUp('fast');
+            }
+        });
+
+        $('#deleteBannerBtn').on('click', function() {
+            $(this).html('<img height="77px" width="77px" alt="Loading..." src="{{ URL::to('/') }}/images/loader.gif">');
+            $.ajax({
+                type: "POST",
+                url: "{{URL::route('ajaxDeleteBanner')}}",
+                data: { _token: "{{ csrf_token(); }}" }
+            })
+                .done(function(received) {
+                    if (received == "1") {
+                        //Great the image was deleted successfully.
+                        $('#currentBanner').slideUp('fast');
+                        $('#bannerUploadCancel').remove();
+                        $('#uploadBannerForm').slideDown('fast');
+                    }
+                    else {
+                        //Well crap that's an error. We will log it in the console and advise the user.
+                        console.log('Error deleting the image. ');
+                        $(this).html('Delete Banner');
+                    }
+                });
+
+        });
 
         @endif
 

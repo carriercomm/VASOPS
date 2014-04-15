@@ -395,16 +395,30 @@ class AjaxController extends BaseController {
             echo '<h4>No Virtual Airlines Found.</h4>';
         }
         else {
+            $maxwidth = Setting::fetch('banner_maxwidth');
             $output = '';
             foreach ($vas as $va) {
                 $va->description = html_entity_decode($va->description);
                 $va->vaname = html_entity_decode($va->vaname);
                 $va->url = html_entity_decode($va->url);
-                $output .= '<div class="well"><a target="_blank" href="' . URL::to('/click') . '/' .  $va->cid . '"><h4>' . $va->vaname . '</h4></a><blockquote style="margin-top: 4px;">'. $va->description . '</blockquote></div>';
+                $banner = '';
+                if ($va->banner) {
+                    $banner = User::getBannerUrl($va->cid);
+                }
+                $output .= '<div class="bannerbg"><a target="_blank" href="' . URL::to('/click') . '/' .  $va->cid . '"><img style="max-width:' . $maxwidth . ';" class="img-polaroid" src="' . $banner . '" alt="Banner" /></a></div><div class="well"><a target="_blank" href="' . URL::to('/click') . '/' .  $va->cid . '"><h4>' . $va->vaname . '</h4></a><blockquote style="margin-top: 4px;">'. $va->description . '</blockquote></div>';
             }
             echo $output;
         }
 
+    }
+
+    public function post_deletebanner() {
+        $user = User::find(Auth::user()->get()->cid);
+        //Update the banner field to nothing, but don't remove the actual image on the server. If they decide to upload another one, it will overwrite it.
+        $user->banner = "";
+        $user->save();
+        //Finally echo 1
+        echo 1;
     }
 
 }

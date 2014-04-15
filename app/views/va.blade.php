@@ -6,7 +6,7 @@
 </div>
 <div style="margin-top: 20px; margin-bottom: 50px;" class="row">
     <div class="span12">
-        <ul class="nav nav-tabs">
+        <ul id="VaTabs" class="nav nav-tabs">
             <li class="active"><a href="#status" data-toggle="tab">Status</a></li>
             <li><a href="#editva" data-toggle="tab">Edit VA</a></li>
             <li><a href="#banner" data-toggle="tab">Banner</a></li>
@@ -390,7 +390,16 @@
                     <h3 style="margin-bottom: 15px;">Banner</h3>
                     <p id="errorBannerEmpty" style="display: none;" class="alert alert-danger">You must select an image to upload. Please try again.</p>
                     <p id="errorBannerInvalidType" style="display: none;" class="alert alert-danger">Invalid file type. Please upload a jpg or png image only.</p>
-                    <form action="{{ URL::route('uploadbanner') }}" enctype="multipart/form-data" method="POST" id="banner-form" class="form-inline">
+                    <p id="errorBannerDelete" style="display: none;" class="alert alert-danger">Oops. Sorry about that. We had trouble deleting your banner. Please use the help desk to seek support.</p>
+                    @if ($banner)
+                    <div id="currentBanner">
+                    <img style="margin-bottom: 20px;" class="img-polaroid" src="{{{ $banner }}}" alt="banner" />
+                    <div id="currentBannerActions" class="form-actions">
+                        <button id="uploadNewBannerBtn" style="margin-right: 7px;" class="btn btn-success">Upload New Banner</button><button id="deleteBannerBtn" class="btn btn-danger">Delete Banner</button>
+                    </div>
+                    </div>
+                    @endif
+                    <form id="uploadBannerForm" style="@if ($banner) display: none; @endif" action="{{ URL::route('uploadbanner') }}" enctype="multipart/form-data" method="POST" id="banner-form" class="form-inline">
                         <input type="hidden" name="_token" value="{{ csrf_token(); }}">
                         <div class="control-group">
                             <div class="controls">
@@ -401,7 +410,7 @@
                         <div class="control-group">
                             <div class="form-actions">
                                 <input id="bannerUploadSubmit" type="submit" class="btn btn-success" value="Upload" />
-                                <input type="reset" class="btn" value="Cancel" />
+                                <input id="bannerUploadCancel" type="reset" class="btn" value="Cancel" />
                             </div>
                         </div>
                     </form>

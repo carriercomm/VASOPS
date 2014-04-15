@@ -50,13 +50,23 @@ class User extends Eloquent implements UserInterface, RemindableInterface {
 		return $this->email;
 	}
 
-    static public function getFirstName($id) {
+    public static function getFirstName($id) {
         $user = User::find($id);
         return strstr($user->name," ", true);
     }
-    static public function getFullName($id) {
+    public static function getFullName($id) {
         $user = User::find($id);
         return $user->name;
     }
+
+    public static function getBannerURL($cid) {
+        $user = User::findOrFail($cid);
+        //Remove trailing slash, if present, and readd.
+        $banner_directory = rtrim(Setting::fetch('banner_directory'), '/').'/';
+        //Add the current file update time to the end of the image link so that the browser will not cache the image if it is newer then what is previously loaded.
+        $bannerurl = URL::to('/') . $banner_directory . $user->banner . '?last_picture_update=' . filemtime(public_path() . $banner_directory . $user->banner);
+        return $bannerurl;
+    }
+
 
 }

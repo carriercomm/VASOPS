@@ -67,8 +67,18 @@ class VaController extends BaseController {
         //Pull our Category data
         $categories = Category::get();
 
+        //Check to see if there is a banner if so provide the source for it
+        if ($record->banner) {
+            $banner = User::getBannerUrl(Auth::user()->get()->cid);
+        }
+        else {
+            //No banner we will set this as false so the views no not to try and display it.
+            $banner = FALSE;
+        }
+
+
         //Create our view with the VA, clicks, categories and tickets data.
-        return View::make('va')->with(array('record' => $record, 'clicks' => $clicks, 'tickets' => $tickets, 'categories' => $categories));
+        return View::make('va')->with(array('record' => $record, 'clicks' => $clicks, 'tickets' => $tickets, 'categories' => $categories, 'banner' => $banner));
     }
 
     public function post_uploadbanner() {
@@ -87,17 +97,25 @@ class VaController extends BaseController {
                         $extension = ".png";
                         break;
                 }
-                //Todo Check for image size getimagesize()
-
+                //Get our image height min and max
+                $maxheight = Setting::fetch('banner_maxheight');
+                $maxwidth = Setting::fetch('banner_maxwidth');
+                list($width, $height) = getimagesize($banner);
+                //Is the width or height larger than the max?
+                if ($width > $maxwidth || $height > $maxheight) {
+                    App::abort(400, 'Image is larger than the max width: ' . $maxwidth . 'px or max height: ' . $maxheight . 'px');
+                }
                 //Mime check passed continue to move the image from tmp directory to /banners
-                //Todo change this from a hard coded path
-                $destinationPath = public_path() . '/banners';
+                $destinationPath = public_path() . Setting::fetch('banner_directory');
                 $fileName = Auth::user()->get()->cid . $extension;
                 $banner->move($destinationPath, $fileName);
                 //Finally update the db with the new banner name.
                 $va = User::where('cid', '=', Auth::user()->get()->cid)->first();
                 $va->banner = $fileName;
                 $va->save();
+                //Redirect the user back to the banner page
+                return Redirect::to(route('va') . '#banner');
+
             }
             else {
                 //Time to abort.
