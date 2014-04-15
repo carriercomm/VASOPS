@@ -174,7 +174,13 @@ class ConsoleController extends BaseController {
             return Redirect::route('console');
         }
         $va = User::findOrFail($id);
-        return View::make('console.va')->with(array('va' => $va));
+        //Do we have a banner?
+        //Ugh laravel gets mad when we don't so let's just set it as empty for now.
+        $banner = '';
+        if ($va->banner) {
+            $banner = User::getBannerUrl($va->cid);
+        }
+        return View::make('console.va')->with(array('va' => $va, 'banner' => $banner));
     }
 
     public function get_helpdesk($filter) {

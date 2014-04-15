@@ -84,6 +84,9 @@
             case '#moduleApply':
                 moduleApply();
                 break;
+            default:
+                moduleCurrent();
+                break;
         }
 
         function moduleFind() {
@@ -187,7 +190,7 @@
                     else {
                         $('#helloUserName').html(received);
                         $('#helloUser').fadeIn('slow');
-                        window.location.reload(true);
+                        window.location.replace('{{ URL::route('va') }}')
                     }
             });
             return false;
@@ -220,6 +223,7 @@
         });
 
         $(document).on('click', '#btnSelectVaCategory', function() {
+            $('#vaCategoryAjaxData').hide();
             $('#vaCategoryLoader').fadeIn();
             var categoryName = $(this).text();
             //Make the ajax call to fetch the data
@@ -231,7 +235,7 @@
                 .done(function(received) {
                     //Update the container and remove the loader
                     $('#vaCategoryLoader').hide();
-                    $('#vaCategoryAjaxData').hide().html(received).fadeIn();
+                    $('#vaCategoryAjaxData').html(received).fadeIn('fast');
                 });
 
         });

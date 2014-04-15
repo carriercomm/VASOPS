@@ -77,6 +77,88 @@
             $('#searchInput').on('keyup', ajaxSearch);
             $('#searchBtn').on('click', ajaxSearch);
 
+            $('#vaNameField').on('click', function(){
+                $('#vaNameField').hide();
+                $('#vaNameInputDiv').fadeIn('fast');
+            });
+            $('#vaNameInputReset').on('click', function() {
+                $('#vaNameInputDiv').hide();
+                $('#vaNameField').fadeIn();
+            })
+
+            $('#vaEmailField').on('click', function(){
+                $('#vaEmailField').hide();
+                $('#vaEmailInputDiv').fadeIn('fast');
+            });
+            $('#vaEmailInputReset').on('click', function() {
+                $('#vaEmailInputDiv').hide();
+                $('#vaEmailField').fadeIn();
+            })
+
+            $('#vaUrlField').on('click', function(){
+                $('#vaUrlField').hide();
+                $('#vaUrlInputDiv').fadeIn('fast');
+            });
+            $('#vaUrlInputReset').on('click', function() {
+                $('#vaUrlInputDiv').hide();
+                $('#vaUrlField').fadeIn();
+            })
+
+            $('#vaCityField').on('click', function(){
+                $('#vaCityField').hide();
+                $('#vaCityInputDiv').fadeIn('fast');
+            });
+            $('#vaCityInputReset').on('click', function() {
+                $('#vaCityInputDiv').hide();
+                $('#vaCityField').fadeIn();
+            })
+
+            $('#vaStateProvinceField').on('click', function(){
+                $('#vaStateProvinceField').hide();
+                $('#vaStateProvinceInputDiv').fadeIn('fast');
+            });
+            $('#vaStateProvinceInputReset').on('click', function() {
+                $('#vaStateProvinceInputDiv').hide();
+                $('#vaStateProvinceField').fadeIn();
+            })
+
+            $('#vaZipField').on('click', function(){
+                $('#vaZipField').hide();
+                $('#vaZipInputDiv').fadeIn('fast');
+            });
+            $('#vaZipInputReset').on('click', function() {
+                $('#vaZipInputDiv').hide();
+                $('#vaZipField').fadeIn();
+            })
+
+            $('#vaDescriptionField').on('click', function(){
+                $('#vaDescriptionField').hide();
+                $('#vaDescriptionInputDiv').fadeIn('fast');
+            });
+            $('#vaDescriptionInputReset').on('click', function() {
+                $('#vaDescriptionInputDiv').hide();
+                $('#vaDescriptionField').fadeIn();
+            })
+
+            $('#vaUpdatedField').on('click', function(){
+                $('#vaUpdatedField').hide();
+                $('#vaUpdatedInputDiv').fadeIn('fast');
+            });
+            $('#vaUpdatedInputReset').on('click', function() {
+                $('#vaUpdatedInputDiv').hide();
+                $('#vaUpdatedField').fadeIn();
+            })
+
+            $('#vaCreatedField').on('click', function(){
+                $('#vaCreatedField').hide();
+                $('#vaCreatedInputDiv').fadeIn('fast');
+            });
+            $('#vaCreatedInputReset').on('click', function() {
+                $('#vaCreatedInputDiv').hide();
+                $('#vaCreatedField').fadeIn();
+            })
+
+
         });
     </script>
     </body>
