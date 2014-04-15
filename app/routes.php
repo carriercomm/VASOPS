@@ -60,6 +60,9 @@ Route::get('/console/logout', array('as' => 'consolelogout', 'uses' => 'ConsoleC
 Route::get('/console/va/{id}', array('as' => 'consoleva', 'uses' => 'ConsoleController@get_va', 'before' => 'consoleauth'));
 Route::get('console/helpdesk/{filter}', array('as' => 'consolehelpdesk', 'uses' => 'ConsoleController@get_helpdesk', 'before' => 'consoleauth'));
 Route::get('console/emailtemplates', array('as' => 'consoleemailtemplates', 'uses' => 'ConsoleController@get_emailtemplates', 'before' => 'consoleauth'));
+    //------AJAX---------
+    Route::post('/console/va/{id}/edit', array('as' => 'consoleajaxvaedit', 'uses' => 'ConsoleController@post_vaedit', 'before' => 'consoleauth|csrf'));
+    //-------------------
 //-----------------------------------------------------------------------
 
 //---------------Console Elevated Access Routes (Level 1)----------------
