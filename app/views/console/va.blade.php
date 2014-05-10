@@ -452,11 +452,24 @@
                         <button class="btn btn-success" style="width: 49%; margin-right: 2px;" id="submitAuditInput">Submit</button><button class="btn" style="width: 49%; color: white;" id="cancelAuditInput">Cancel</button>
                     </div>
                     <form style="margin-top: 3px; display: none;" id="auditInputForm" class="form" action="#" method="post">
+                        <input type="hidden" id="_token" value="{{ csrf_token() }}" />
                         <div class="form-group">
-                            <textarea name="inputAuditLog" class="form-control" rows="5" placeholder="Detail your comments..."></textarea>
+                            <textarea name="inputAuditLog" id="inputAuditLog" class="form-control" rows="5" placeholder="Detail your comments..."></textarea>
                         </div>
                     </form>
-                    Existing comments....
+                    <hr />
+                    <div id="auditLogDiv">
+                        @foreach ($audit_log as $log)
+                        <div class="panel panel-default">
+                            <div class="panel-heading">
+                                <small>{{{ $log->created_at }}} - {{{ ConsoleUser::getName($log->author) }}}</small>
+                            </div>
+                            <div class="panel-body">
+                                {{{ $log->content }}}
+                            </div>
+                        </div>
+                        @endforeach
+                    </div>
                 </div>
             </div>
         </div>
@@ -465,5 +478,6 @@
 <!-- /#page-wrapper -->
 <script>
     var vacid = {{{ $va->cid }}};
+    var name = '{{{ Auth::consoleuser()->get()->name }}}';
 </script>
 @include('console.core.footer')

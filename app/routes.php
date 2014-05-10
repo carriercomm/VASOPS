@@ -62,6 +62,7 @@ Route::get('console/helpdesk/{filter}', array('as' => 'consolehelpdesk', 'uses' 
 Route::get('console/emailtemplates', array('as' => 'consoleemailtemplates', 'uses' => 'ConsoleController@get_emailtemplates', 'before' => 'consoleauth'));
     //------AJAX---------
     Route::post('/console/ajax/vaedit', array('as' => 'consoleajaxvaedit', 'uses' => 'ConsoleController@post_vaedit', 'before' => 'consoleauth|csrf'));
+    Route::post('/console/ajax/createauditlog', array('as' => 'consoleajaxcreateauditlog', 'uses' => 'ConsoleController@post_createauditlog', 'before' => 'consoleauth|csrf'));
     //-------------------
 //-----------------------------------------------------------------------
 

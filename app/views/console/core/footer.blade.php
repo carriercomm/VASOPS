@@ -212,8 +212,30 @@
             })
             $('#cancelAuditInput').on('click', function() {
                 $('#auditInputForm').slideToggle('fast');
+                $('#inputAuditLog').removeAttr('disabled');
                 $('#auditInputFormActions').hide();
                 $('#showAuditInput').fadeIn('fast');
+            })
+
+            $('#submitAuditInput').on('click', function() {
+                //Disable the input
+                $('#inputAuditLog').attr('disabled', 'disabled');
+                var content = $('#inputAuditLog').val();
+                var va = vacid;
+                var _token = $('#_token').val();
+                $.ajax ({
+                    type: "POST",
+                    url: "{{ URL::route('consoleajaxcreateauditlog') }}",
+                    data: { va: va, content: content, _token: _token }
+                })
+                    .success(function(received) {
+                            console.log('Function called');
+                            //"Undisabled" the input and reset it
+                            $('#inputAuditLog').removeAttr('disabled');
+                            $('#auditInputForm')[0].reset();
+                            //Manually add our new notation
+                            $('#auditLogDiv').before('<div class="panel panel-default"><div class="panel-heading"><small>Now - ' + name + '</small></div><div class="panel-body">' + content + '</div></div>');
+                    });
             })
 
 

@@ -180,7 +180,10 @@ class ConsoleController extends BaseController {
         if ($va->banner) {
             $banner = User::getBannerUrl($va->cid);
         }
-        return View::make('console.va')->with(array('va' => $va, 'banner' => $banner));
+
+        //Pull our audit log
+        $audit_log = AuditLog::where('va', '=', $va->cid)->orderBy('created_at', 'DESC')->get();
+        return View::make('console.va')->with(array('va' => $va, 'banner' => $banner, 'audit_log' => $audit_log));
     }
 
     public function get_helpdesk($filter) {
@@ -249,6 +252,18 @@ class ConsoleController extends BaseController {
             //Return 1 to the client;
             echo '1';
         }
+    }
+
+    public function post_createauditlog() {
+        //Get our data
+        $va = Input::get('va');
+        $content = Input::get('content');
+        //Ensure some idiot didn't try to change the va to some nonexistent VA
+        User::findOrFail($va);
+        //Create our notation
+        AuditLog::createNotation($va, $content);
+        //Return one to the client
+        echo 1;
     }
 
 }
