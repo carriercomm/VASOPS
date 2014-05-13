@@ -477,7 +477,31 @@
             </div>
         </div>
         <div id="status" class="tab-pane fade in">
-
+            <div class="row">
+                <div class="col-lg-5">
+                    <table class="table table-responsive">
+                        <tr><td>Status: </td><td>
+                                @if ($va->status == 1)
+                                <span class="label label-success">Active</span>
+                                @endif
+                                @if ($va->status == 0)
+                                <span class="label label-danger">Pending</span>
+                                @endif
+                                @if ($va->status == -1)
+                                <span class="label label-default">Removed</span>
+                                @endif
+                            </td></tr>
+                        <tr/><td>Link Back: </td><td>
+                            @if ($va->linkbackstatus == 0)
+                            <span class="label label-danger">Not Found</span>
+                            @endif
+                            @if ($va->linkbackstatus == 1)
+                            <span class="label label-success">Found</span>
+                            @endif
+                        </td></tr>
+                    </table>
+                </div>
+            </div>
         </div>
         <div id="audit" class="tab-pane fade in">
             <div class="row">
