@@ -262,12 +262,15 @@ class ConsoleController extends BaseController {
         //Get our data
         $va = Input::get('va');
         $content = Input::get('content');
-        //Ensure some idiot didn't try to change the va to some nonexistent VA
-        User::findOrFail($va);
-        //Create our notation
-        AuditLog::createNotation($va, $content);
-        //Return one to the client
-        echo 1;
+        //Ensure that some idiot didn't try to remove the clientside verification and the content is not in fact empty
+        if (!empty($content)) {
+            //Ensure some idiot didn't try to change the va to some nonexistent VA
+            User::findOrFail($va);
+            //Create our notation
+            AuditLog::createNotation($va, $content);
+            //Return one to the client
+            echo 1;
+        }
     }
 
     public function post_uploadbanner() {
