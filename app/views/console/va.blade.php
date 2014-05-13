@@ -21,6 +21,11 @@
                   </a>
                 </li>
                 <li>
+                    <a href="#status" data-toggle="tab">
+                        Status
+                    </a>
+                </li>
+                <li>
                     <a href="#audit" data-toggle="tab">
                         Audit Log
                     </a>
@@ -31,14 +36,6 @@
     </div>
     <div class="tab-content">
         <div id="profile" class="tab-pane fade in active">
-            @if (!empty($banner))
-
-            <div style="margin-bottom: 25px;" class="row">
-                <div class="col-lg-12">
-                    <img style="max-width:90%; max-height:90%;" class="img-polaroid" src="{{{ $banner }}}" alt="Banner" />
-                </div>
-            </div>
-            @endif
             <div class="row">
             <div class="col-lg-6">
             <table style="min-width: 100%; cursor: pointer;" class="table-responsive">
@@ -440,7 +437,47 @@
             </div>
         </div>
         <div id="banner" class="tab-pane fade in">
-            <strong>Banner</strong>
+            <div style="margin-top: 35px;" class="row">
+                <div class="col-lg-4">
+                    @if (empty($banner))
+                    <p id="errorBannerEmpty" style="display: none;" class="alert alert-danger">You must select an image to upload. Please try again.</p>
+                    <p id="errorBannerInvalidType" style="display: none;" class="alert alert-danger">Invalid file type. Please upload a jpg or png image only.</p>
+                    <form id="uploadBannerForm" action="{{ URL::route('consoleuploadbanner') }}" enctype="multipart/form-data" method="POST" id="banner-form" class="form-inline">
+                        <input type="hidden" name="_token" value="{{ csrf_token(); }}" />
+                        <input type="hidden" name="va" value="{{{ $va->cid }}}" />
+                        <div class="control-group">
+                            <div class="controls">
+                                <input name="inputBanner" type="file" id="inputBanner" />
+                            </div>
+                        </div>
+                        <p style="font-style: italic;">(jpg or png image only, max size {{{ $banner_maxwidth }}}px x {{{ $banner_maxheight }}}px)</p>
+                        <div class="control-group">
+                            <div class="form-actions">
+                                <input id="bannerUploadSubmit" type="submit" class="btn btn-success" value="Upload" />
+                                <input style="color: #FFFFFF;" id="bannerUploadCancel" type="reset" class="btn" value="Cancel" />
+                            </div>
+                        </div>
+                    </form>
+                    @else
+                    <p id="errorBannerDelete" style="display: none;" class="alert alert-danger">Oops. Sorry about that. We had trouble deleting the banner.</p>
+                    <span style="margin: 0 auto;">
+                        <img style="margin-bottom: 20px;" class="img-polaroid" src="{{{ $banner }}}" alt="banner" />
+                    </span>
+                    <form id="removeBannerForm" action="{{ URL::route('consoleremovebanner') }}" method="POST">
+                    <input type="hidden" name="_token" value="{{ csrf_token(); }}" />
+                    <input type="hidden" name="va" value="{{{ $va->cid }}}" />
+                    <div class="control-group">
+                        <div class="form-actions">
+                            <input style="margin-left: 25%;" type="submit" class="btn btn-danger" value="Remove Banner" />
+                        </div>
+                    </div>
+                    </form>
+                    @endif
+                </div>
+            </div>
+        </div>
+        <div id="status" class="tab-pane fade in">
+
         </div>
         <div id="audit" class="tab-pane fade in">
             <div class="row">

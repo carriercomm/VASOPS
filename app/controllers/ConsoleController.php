@@ -181,9 +181,13 @@ class ConsoleController extends BaseController {
             $banner = User::getBannerUrl($va->cid);
         }
 
+        //Pull our banner directory from settings
+        $banner_maxwidth = Setting::fetch('banner_maxwidth');
+        $banner_maxheight = Setting::fetch('banner_maxheight');
+
         //Pull our audit log
         $audit_log = AuditLog::where('va', '=', $va->cid)->orderBy('created_at', 'DESC')->get();
-        return View::make('console.va')->with(array('va' => $va, 'banner' => $banner, 'audit_log' => $audit_log));
+        return View::make('console.va')->with(array('va' => $va, 'banner' => $banner, 'audit_log' => $audit_log, 'banner_maxwidth' => $banner_maxwidth, 'banner_maxheight' => $banner_maxheight));
     }
 
     public function get_helpdesk($filter) {
@@ -264,6 +268,68 @@ class ConsoleController extends BaseController {
         AuditLog::createNotation($va, $content);
         //Return one to the client
         echo 1;
+    }
+
+    public function post_uploadbanner() {
+        //Verify we have a file
+        if (Input::hasFile('inputBanner')) {
+            //Pull our VA CID from the hidden input
+            $va = Input::get('va');
+            $cid = $va;
+            //Ensure this is a valid VA or fail with a model not found
+            User::findOrFail($va);
+            //Get our file
+            $banner = Input::file('inputBanner');
+            //Create an array of acceptable mimetypes
+            $mimetypes = array('image/jpeg', 'image/png');
+            if (in_array($banner->getMimeType(), $mimetypes)) {
+                switch ($banner->getMimeType()) {
+                    case('image/jpeg'):
+                        $extension = ".jpg";
+                        break;
+                    case('image/png'):
+                        $extension = ".png";
+                        break;
+                }
+                //Get our image height min and max
+                $maxheight = Setting::fetch('banner_maxheight');
+                $maxwidth = Setting::fetch('banner_maxwidth');
+                list($width, $height) = getimagesize($banner);
+                //Is the width or height larger than the max?
+                if ($width > $maxwidth || $height > $maxheight) {
+                    App::abort(400, 'Image is larger than the max width: ' . $maxwidth . 'px or max height: ' . $maxheight . 'px');
+                }
+                //Mime check passed continue to move the image from tmp directory to /banners
+                $destinationPath = public_path() . Setting::fetch('banner_directory');
+                $fileName = $va . $extension;
+                $banner->move($destinationPath, $fileName);
+                //Finally update the db with the new banner name.
+                $va = User::where('cid', '=', $va)->first();
+                $va->banner = $fileName;
+                $va->save();
+                //Redirect the user back to the VA Profile
+                return Redirect::to('console/va/' . $cid);
+            }
+        }
+    }
+
+    public function post_removebanner() {
+        //Get our VA
+        $cid = Input::get('va');
+        //Ensure this is a valid VA or fail with a model not found
+        $va = User::findOrFail($cid);
+        if (!$va->banner) {
+            App::abort('404');
+        }
+        $public_path = public_path();
+        $banner_directory = Setting::fetch('banner_directory');
+        $path = $public_path . $banner_directory . '/' . $va->banner;
+        //Delete the image
+        unlink($path);
+        //Update the database
+        $va->banner = '';
+        $va->save();
+        return Redirect::to('console/va/' . $cid);
     }
 
 }
