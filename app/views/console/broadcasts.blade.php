@@ -26,13 +26,13 @@
                 <div id="createBroadcastPanelBody" style="display: none;" class="panel-body">
                     <form role="form" action="{{ URL::route('consolebroadcastsnew') }}" method="POST">
                         <div class="form-group">
-                            <input type="text" class="form-control" name="inputSubject" id="inputSubject" placeholder="Subject" />
+                            <input type="text" class="form-control" name="inputSubject" id="inputBroadcastSubject" placeholder="Subject" />
                         </div>
                         <div class="form-group">
-                            <textarea class="form-control" name="inputContent" id="inputContent" placeholder="Please detail your broadcast..."></textarea>
+                            <textarea class="form-control" name="inputContent" id="inputBroadcastContent" placeholder="Please detail your broadcast..."></textarea>
                         </div>
                         <div class="form-actions">
-                            <input type="submit" class="btn btn-success" value="Create Broadcast" />
+                            <input id="createBroadcastBtn" type="submit" class="btn btn-success" value="Create Broadcast" />
                         </div>
                     </form>
                 </div>

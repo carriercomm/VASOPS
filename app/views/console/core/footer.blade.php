@@ -285,6 +285,12 @@
                 }
             });
 
+            $('#createBroadcastBtn').on('click', function(e) {
+                if ($('#inputBroadcastSubject') == '' || $('#inputBroadcastContent') == '') {
+                    e.preventDefault();
+                }
+            })
+
 
         });
     </script>
