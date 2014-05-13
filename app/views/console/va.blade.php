@@ -485,6 +485,7 @@
                     <button id="showAuditInput" style="width: 100%;" class="btn btn-info">
                         Add a notation
                     </button>
+                    <p id="errorAuditEmpty" style="display: none;" class="alert alert-danger">Please enter a notation prior to submitting the audit log.</p>
                     <div style="display: none;" id="auditInputFormActions">
                         <button class="btn btn-success" style="width: 49%; margin-right: 2px;" id="submitAuditInput">Submit</button><button class="btn" style="width: 49%; color: white;" id="cancelAuditInput">Cancel</button>
                     </div>
