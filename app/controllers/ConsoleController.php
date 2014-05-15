@@ -335,4 +335,10 @@ class ConsoleController extends BaseController {
         return Redirect::to('console/va/' . $cid);
     }
 
+    public function post_findlinkback() {
+        $va = Input::get('va');
+        $response = User::testLinkBack($va);
+        echo $response;
+    }
+
 }

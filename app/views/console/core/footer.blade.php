@@ -291,6 +291,29 @@
                 }
             })
 
+            $('#linkBackRefreshBtn').on('click', function(e) {
+                e.preventDefault();
+                var va = $('#linkBackVa').val();
+                var Iconclass = $('#linkBackRefreshIcon').attr('class');
+                $('#linkBackRefreshIcon').attr('class', Iconclass + ' fa-spin');
+                //Prepare the ajax request
+                var _token = "{{ csrf_token() }}";
+                $.ajax({
+                    type: "POST",
+                    url: "{{ URL::route('consoleajaxfindlinkback') }}",
+                    data: { va: va, _token: _token }
+                })
+                    .success(function(received) {
+                        $('#linkBackRefreshIcon').attr('class', Iconclass);
+                        if (received) {
+
+                        }
+                        else {
+
+                        }
+                    });
+            })
+
 
         });
     </script>

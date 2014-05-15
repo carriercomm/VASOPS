@@ -68,5 +68,34 @@ class User extends Eloquent implements UserInterface, RemindableInterface {
         return $bannerurl;
     }
 
+    public static function testLinkBack($va, $updateDB = TRUE){
+        $va = User::findOrFail($va);
+        $url = $va->vatsimimagepagelink;
+        $ch = curl_init();
+        $timeout = 5;
+        curl_setopt($ch, CURLOPT_URL, $url);
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+        curl_setopt($ch, CURLOPT_CONNECTTIMEOUT, $timeout);
+        $content = curl_exec($ch);
+        curl_close($ch);
+        $needle = 'vatsim.net';
+        if (stripos($content, $needle) !== FALSE) {
+            //The content was found update the database and return true
+            if ($updateDB) {
+                $va->linkbackstatus = 1;
+                $va->save();
+            }
+            return true;
+        }
+        else {
+            //The content was not found return false and update the DB
+            if ($updateDB) {
+                $va->linkbackstatus = 1;
+                $va->save();
+            }
+            return false;
+        }
+    }
+
 
 }

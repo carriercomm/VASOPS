@@ -461,7 +461,7 @@
                     @else
                     <p id="errorBannerDelete" style="display: none;" class="alert alert-danger">Oops. Sorry about that. We had trouble deleting the banner.</p>
                     <span style="margin: 0 auto;">
-                        <img style="margin-bottom: 20px;" class="img-polaroid" src="{{{ $banner }}}" alt="banner" />
+                        <img style="margin-bottom: 20px;" class="img-polaroid responsive-width" src="{{{ $banner }}}" alt="banner" />
                     </span>
                     <form id="removeBannerForm" action="{{ URL::route('consoleremovebanner') }}" method="POST">
                     <input type="hidden" name="_token" value="{{ csrf_token(); }}" />
@@ -498,6 +498,8 @@
                             @if ($va->linkbackstatus == 1)
                             <span class="label label-success">Found</span>
                             @endif
+                            <input type="hidden" id="linkBackVa" value="{{{ $va->cid }}}" />
+                            <button style="padding: 1px;" id="linkBackRefreshBtn" class="btn btn-default"><i id="linkBackRefreshIcon" class="fa fa-refresh fa-fw"></i></button>
                         </td></tr>
                     </table>
                 </div>

@@ -357,28 +357,15 @@ class AjaxController extends BaseController {
     }
 
     public function post_checkimagelinkback() {
-        $url = Auth::user()->get()->vatsimimagepagelink;
-        $ch = curl_init();
-        $timeout = 5;
-        curl_setopt($ch, CURLOPT_URL, $url);
-        curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
-        curl_setopt($ch, CURLOPT_CONNECTTIMEOUT, $timeout);
-        $content = curl_exec($ch);
-        curl_close($ch);
-        $needle = 'vatsim.net';
-        if (stripos($content, $needle) !== FALSE) {
-            //The content was found update the database and return 1 to the client
-            $va = User::where('cid', '=', Auth::user()->get()->cid)->first();
-            $va->linkbackstatus = 1;
-            $va->save();
-            if ($va->status == 1) {
-                //We will echo 1! to tell the client to replace the module icon to a check instead of the red X because there VA is now approved
-                echo '1!';
-            }
-            else {
-                echo '1';
-            }
-
+            $response = User::testLinkBack(Auth::user()->get()->cid);
+            if ($response) {
+                if (Auth::user()->get()->status == 1) {
+                    //We will echo 1! to tell the client to replace the module icon to a check instead of the red X because there VA is now approved
+                    echo '1!';
+                }
+                else {
+                    echo '1';
+                }
         }
         else {
             //The content was not found return 0 to the client.
