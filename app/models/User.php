@@ -90,7 +90,7 @@ class User extends Eloquent implements UserInterface, RemindableInterface {
         else {
             //The content was not found return false and update the DB
             if ($updateDB) {
-                $va->linkbackstatus = 1;
+                $va->linkbackstatus = 0;
                 $va->save();
             }
             return false;

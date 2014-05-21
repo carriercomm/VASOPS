@@ -508,10 +508,12 @@
                             </td></tr>
                         <tr/><td>Link Back: </td><td>
                             @if ($va->linkbackstatus == 0)
-                            <span class="label label-danger">Not Found</span>
+                            <span id="linkbackNotFoundLabel" class="label label-danger">Not Found</span>
+                            <span id="linkbackFoundLabel" style="display: none;" class="label label-success">Found</span>
                             @endif
                             @if ($va->linkbackstatus == 1)
-                            <span class="label label-success">Found</span>
+                            <span id="linkbackFoundLabel" class="label label-success">Found</span>
+                            <span id="linkbackNotFoundLabel" style="display: none;" class="label label-danger">Not Found</span>
                             @endif
                             <input type="hidden" id="linkBackVa" value="{{{ $va->cid }}}" />
                             <button style="padding: 1px;" id="linkBackRefreshBtn" class="btn btn-default"><i id="linkBackRefreshIcon" class="fa fa-refresh fa-fw"></i></button>

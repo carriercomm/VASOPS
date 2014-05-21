@@ -315,10 +315,14 @@
                     .success(function(received) {
                         $('#linkBackRefreshIcon').attr('class', Iconclass);
                         if (received == '1') {
-                            console.log('Linkback found');
+                            //Hide the not found (if present) and fade in the found label
+                            $('#linkbackNotFoundLabel').hide();
+                            $('#linkbackFoundLabel').fadeIn();
                         }
                         else {
-                            console.log('Linkback is not found');
+                            //Hide the found (if present) and fade in the not found label
+                            $('#linkbackFoundLabel').hide();
+                            $('#linkbackNotFoundLabel').fadeIn();
                         }
                     });
             })
