@@ -235,6 +235,7 @@ class ConsoleController extends BaseController {
         $fieldarray['name'] = 'name';
         $fieldarray['email'] = 'email';
         $fieldarray['url'] = 'url';
+        $fieldarray['linkback url'] = 'vatsimimagepagelink';
         $fieldarray['city'] = 'city';
         $fieldarray['state'] = 'stateprovince';
         $fieldarray['postal'] = 'zip';
@@ -338,7 +339,14 @@ class ConsoleController extends BaseController {
     public function post_findlinkback() {
         $va = Input::get('va');
         $response = User::testLinkBack($va);
-        echo $response;
+        //This will return a boolean either true or false based on if the link is found using cURL
+        if ($response) {
+            $response = 1;
+        }
+        else {
+            $response = 0;
+        }
+        return $response;
     }
 
 }

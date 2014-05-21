@@ -69,7 +69,7 @@
                                                 <button id="vaEditInputSubmit" class="btn btn-success">
                                                     Save
                                                 </button>
-                                                <input id="vaEmailInputReset" type="reset" class="btn btn-warning" value="Cancel"/>
+                                                <input id="vaEmailInputReset" type="reset" class="btn btn-warning" value="Cancel" />
                                             </span>
                         </div>
                     </form>
@@ -84,8 +84,23 @@
                                                 <button id="vaEditInputSubmit" class="btn btn-success">
                                                     Save
                                                 </button>
-                                                <input id="vaUrlInputReset" type="reset" class="btn btn-warning" value="Cancel"/>
+                                                <input id="vaUrlInputReset" type="reset" class="btn btn-warning" value="Cancel" />
                                             </span>
+                        </div>
+                    </form>
+                </td>
+            </tr>
+            <tr>
+                <td><h4><small>linkback url</small></h4></td><td><h4 id="vaVatsimImagePageLinkField">{{{ $va->vatsimimagepagelink }}}</h4>
+                    <form>
+                        <div class="input-group" style="display: none;" id="vaVatsimImagePageLinkInputDiv">
+                            <input class="form-control" id="vaVatsimImagePageLinkInput" type="text" value="{{{ $va->vatsimimagepagelink }}}" />
+                                <span class="input-group-btn">
+                                    <button id="vaEditInputSubmit" class="btn btn-success">
+                                        Save
+                                    </button>
+                                    <input id="vaVatsimImagePageLinkInputReset" type="reset" class="btn btn-warning" value="Cancel" />
+                                </span>
                         </div>
                     </form>
                 </td>

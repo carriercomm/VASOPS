@@ -142,6 +142,15 @@
                 $('#vaUrlField').fadeIn();
             })
 
+            $('#vaVatsimImagePageLinkField').on('click', function(){
+                $('#vaVatsimImagePageLinkField').hide();
+                $('#vaVatsimImagePageLinkInputDiv').fadeIn('fast');
+            });
+            $('#vaVatsimImagePageLinkInputReset').on('click', function() {
+                $('#vaVatsimImagePageLinkInputDiv').hide();
+                $('#vaVatsimImagePageLinkField').fadeIn();
+            })
+
             $('#vaCityField').on('click', function(){
                 $('#vaCityField').hide();
                 $('#vaCityInputDiv').fadeIn('fast');
@@ -305,11 +314,11 @@
                 })
                     .success(function(received) {
                         $('#linkBackRefreshIcon').attr('class', Iconclass);
-                        if (received) {
-
+                        if (received == '1') {
+                            console.log('Linkback found');
                         }
                         else {
-
+                            console.log('Linkback is not found');
                         }
                     });
             })
