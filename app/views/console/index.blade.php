@@ -16,12 +16,12 @@
                     Recent Audit Log
                 </div>
                 <div class="panel-body">
-                    <div class="well">
+                    <a class="nolinkstyle" href="{{ URL::route('console') }}/va/{{{ $auditLog1->va }}}"><div class="well">
                         {{{ $auditLog1->content }}}
-                    </div>
-                    <div class="well">
+                    </div></a>
+                    <a class="nolinkstyle" href="{{ URL::route('console') }}/va/{{{ $auditLog2->va }}}"><div class="well">
                         {{{ $auditLog2->content }}}
-                    </div>
+                    </div></a>
                 </div>
             </div>
         </div>
