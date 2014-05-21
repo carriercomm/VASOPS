@@ -98,9 +98,24 @@ class ConsoleController extends BaseController {
                 $unreadHelpDesk[$unreadTicket->id]['type'] = '1';
             }
         }
+        //Fetch our two most recent audit logs
+        $auditLogs = AuditLog::orderBy('created_at', 'DESC')->get();
+        $i = 0;
+        //Declare the two auditlog variables before in case laravel gets mad because they are not being called if there are no audit logs filed.
+        $auditLog1 = '';
+        $auditLog2 = '';
+        foreach($auditLogs as $auditLog) {
+            if ($i == 0)
+                $auditLog1 = $auditLog;
+            if ($i == 1)
+                $auditLog2 = $auditLog;
+            if ($i > 1)
+                break;
+            $i++;
+        }
         $pendingVAs = User::where('status', '=', '0')->orderBy('created_at', 'ASC')->get();
         $activeBroadcasts = Broadcast::where('status', '=', '1')->orderBy('created_at', 'DESC')->get();
-        return View::make('console.index')->with(array('pendingVAs' => $pendingVAs, 'activeBroadcasts' => $activeBroadcasts, 'tickets' => $unreadHelpDesk));
+        return View::make('console.index')->with(array('pendingVAs' => $pendingVAs, 'activeBroadcasts' => $activeBroadcasts, 'tickets' => $unreadHelpDesk, 'auditLog1' => $auditLog1, 'auditLog2' => $auditLog2));
     }
 
     public function get_broadcasts() {

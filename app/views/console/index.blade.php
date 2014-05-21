@@ -17,10 +17,10 @@
                 </div>
                 <div class="panel-body">
                     <div class="well">
-                        Test Audit Log #1
+                        {{{ $auditLog1->content }}}
                     </div>
                     <div class="well">
-                        Test Audit Log #2
+                        {{{ $auditLog2->content }}}
                     </div>
                 </div>
             </div>
