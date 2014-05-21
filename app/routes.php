@@ -66,15 +66,18 @@ Route::post('console/removebanner', array('as' => 'consoleremovebanner', 'uses' 
     Route::post('console/ajax/vaedit', array('as' => 'consoleajaxvaedit', 'uses' => 'ConsoleController@post_vaedit', 'before' => 'consoleauth|csrf'));
     Route::post('console/ajax/createauditlog', array('as' => 'consoleajaxcreateauditlog', 'uses' => 'ConsoleController@post_createauditlog', 'before' => 'consoleauth|csrf'));
     Route::post('console/ajax/findlinkback', array('as' => 'consoleajaxfindlinkback', 'uses' => 'ConsoleController@post_findlinkback', 'before' => 'consoleauth|csrf'));
+    Route::post('/console/ajax/search', array('as' => 'consoleajaxsearch', 'uses' => 'ConsoleController@post_ajaxsearch', 'before' => 'consoleauth|csrf'));
     //-------------------
 //-----------------------------------------------------------------------
 
 //---------------Console Elevated Access Routes (Level 1)----------------
-Route::get('/console/broadcasts', array('as' => 'consolebroadcasts', 'uses' => 'ConsoleController@get_broadcasts', 'before' => 'consoleauth1'));
-Route::post('/console/broadcasts/new', array('as' => 'consolebroadcastsnew', 'uses' => 'ConsoleController@post_broadcastsnew', 'before' => 'consoleauth1'));
-Route::get('/console/broadcasts/remove/{id}', array('as' => 'consolebroadcastsremove', 'uses' => 'ConsoleController@get_broadcastsremove', 'before' => 'consoleauth1'));
-Route::get('/console/broadcasts/vis/{id}', array('as' => 'consolebroadcastsvis', 'uses' => 'ConsoleController@get_broadcastsvis', 'before' => 'consoleauth1'));
+Route::get('console/broadcasts', array('as' => 'consolebroadcasts', 'uses' => 'ConsoleController@get_broadcasts', 'before' => 'consoleauth1'));
+Route::post('console/broadcasts/new', array('as' => 'consolebroadcastsnew', 'uses' => 'ConsoleController@post_broadcastsnew', 'before' => 'consoleauth1'));
+Route::get('console/broadcasts/remove/{id}', array('as' => 'consolebroadcastsremove', 'uses' => 'ConsoleController@get_broadcastsremove', 'before' => 'consoleauth1'));
+Route::get('console/broadcasts/vis/{id}', array('as' => 'consolebroadcastsvis', 'uses' => 'ConsoleController@get_broadcastsvis', 'before' => 'consoleauth1'));
+Route::get('console/categories', array('as' => 'consolecategories', 'uses' => 'ConsoleController@get_categories', 'before' => 'consoleauth1'));
+Route::get('console/categories/new', array('as' => 'consolecategoriesnew', 'uses' => 'ConsoleController@post_categoriesnew', 'before' => 'consoleauth1|csrf'));
     //------AJAX---------
-    Route::post('/console/ajax/search', array('as' => 'consoleajaxsearch', 'uses' => 'ConsoleController@post_ajaxsearch', 'before' => 'consoleauth|csrf'));
+
     //-------------------
 //----------------------------------------------------------------------

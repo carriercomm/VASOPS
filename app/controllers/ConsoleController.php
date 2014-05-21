@@ -364,4 +364,8 @@ class ConsoleController extends BaseController {
         return $response;
     }
 
+    public function get_categories() {
+        return View::make('console.categories');
+    }
+
 }

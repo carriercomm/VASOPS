@@ -54,7 +54,7 @@
                         <a href="#"> <i class="fa fa-exchange fa-fw"></i> Assign Auditors</a>
                     </li>
                     <li>
-                        <a href="#"> <i class="fa fa-ellipsis-h fa-fw"></i> Manage Categories</a>
+                        <a href="{{ URL::route('consolecategories') }}"> <i class="fa fa-ellipsis-h fa-fw"></i> Manage Categories</a>
                     </li>
                 </ul>
                 <!-- /.nav-second-level -->

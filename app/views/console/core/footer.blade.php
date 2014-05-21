@@ -327,6 +327,16 @@
                     });
             })
 
+            $('#createCategoryToggle').on('click', function() {
+               $('#createCategoryPanelBody').slideToggle('fast');
+            });
+
+            $('#createCategoryBtn').on('click', function(e) {
+                if ($('#inputCategoryName') == '') {
+                    e.preventDefault();
+                }
+            })
+
 
         });
     </script>
