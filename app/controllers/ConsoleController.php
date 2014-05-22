@@ -365,7 +365,10 @@ class ConsoleController extends BaseController {
     }
 
     public function get_categories() {
-        return View::make('console.categories');
+        //Potential parents are nonchild categories.
+        $potentialparents = Category::where('parentid', '=', '')->get();
+        $children = Category::where('parentid', '!=', '')->get();
+        return View::make('console.categories')->with(array('potentialparents' => $potentialparents, 'children' => $children));
     }
 
 }

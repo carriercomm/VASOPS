@@ -330,6 +330,10 @@
             $('#createCategoryToggle').on('click', function() {
                $('#createCategoryPanelBody').slideToggle('fast');
             });
+            $('#resetCategoryBtn').on('click', function() {
+               $('#createCategoryPanelBody').slideUp('fast');
+               $('#createCategoryForm')[0].reset();
+            });
 
             $('#createCategoryBtn').on('click', function(e) {
                 if ($('#inputCategoryName') == '') {
