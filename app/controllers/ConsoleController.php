@@ -371,4 +371,47 @@ class ConsoleController extends BaseController {
         return View::make('console.categories')->with(array('potentialparents' => $potentialparents, 'children' => $children));
     }
 
+    public function post_categoriesnew() {
+        $name = Input::get('inputCategoryName');
+        //There is front end validation that name is not empty, but let's make sure someone isn't screwing with us.
+        if (empty($name)) {
+            return Redirect::route('consolecategories')->with('message', 'Please enter a category name');
+        }
+        $parent = Input::get('inputCategoryParent');
+        if (!empty($parent)) {
+            //Fetch a list of potential parents in order to verify this input
+            $potentialparents = Category::where('parentid', '=', '');
+            $parents = array();
+            foreach($potentialparents as $potentialparent) {
+                $parents[$potentialparent->id] = $potentialparent->name;
+            }
+            //Check the array keys
+            if (!array_key_exists($parent, $parents))
+                Redirect::route('consolecategories')->with('message', 'Invalid Parent.');
+
+        }
+        //Good our validation is done let's create the new category
+        $category = new Category;
+        $category->name = $name;
+        if (!empty($parent))
+            $category->parentid = $parent;
+        //Save our data
+        $category->save();
+        return Redirect::route('consolecategories')->with('message', 'New Category Created Successfully');;
+    }
+
+    public function post_categoriesdeletechild() {
+        $id = Input::get('id');
+        //Verify this is a valid ID and is in fact a child
+        $category = Category::findOrFail($id);
+        if (empty($category->parentid)) {
+            $category->delete();
+            //Now to remove all of the VAs that currently have that category selected
+            $vas = User::where('categories', 'like', '%' . $id . '%')->get();
+            if (!empty($vas)) {
+                //Another check to verify we have the correct VAs then let's update the categories without the removed category
+            }
+        }
+    }
+
 }

@@ -76,8 +76,8 @@ Route::post('console/broadcasts/new', array('as' => 'consolebroadcastsnew', 'use
 Route::get('console/broadcasts/remove/{id}', array('as' => 'consolebroadcastsremove', 'uses' => 'ConsoleController@get_broadcastsremove', 'before' => 'consoleauth1'));
 Route::get('console/broadcasts/vis/{id}', array('as' => 'consolebroadcastsvis', 'uses' => 'ConsoleController@get_broadcastsvis', 'before' => 'consoleauth1'));
 Route::get('console/categories', array('as' => 'consolecategories', 'uses' => 'ConsoleController@get_categories', 'before' => 'consoleauth1'));
-Route::get('console/categories/new', array('as' => 'consolecategoriesnew', 'uses' => 'ConsoleController@post_categoriesnew', 'before' => 'consoleauth1|csrf'));
+Route::post('console/categories/new', array('as' => 'consolecategoriesnew', 'uses' => 'ConsoleController@post_categoriesnew', 'before' => 'consoleauth1|csrf'));
     //------AJAX---------
-
+    Route::post('console/categories/deletechild', array('as' => 'consolecategoriesdeletechild', 'uses' => 'ConsoleController@post_categoriesdeletechild', 'before' => 'consoleauth1|csrf'));
     //-------------------
 //----------------------------------------------------------------------

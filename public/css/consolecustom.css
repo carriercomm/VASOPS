@@ -50,3 +50,7 @@ a.nolinkstyle {
     -moz-transition: box-shadow .5s;
     transition: box-shadow .5s;
 }
+
+.deleteChildCategory:hover {
+    cursor: pointer;
+}

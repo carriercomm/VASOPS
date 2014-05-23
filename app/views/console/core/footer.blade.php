@@ -295,7 +295,7 @@
             });
 
             $('#createBroadcastBtn').on('click', function(e) {
-                if ($('#inputBroadcastSubject') == '' || $('#inputBroadcastContent') == '') {
+                if ($('#inputBroadcastSubject').val() == '' || $('#inputBroadcastContent').val() == '') {
                     e.preventDefault();
                 }
             })
@@ -336,9 +336,27 @@
             });
 
             $('#createCategoryBtn').on('click', function(e) {
-                if ($('#inputCategoryName') == '') {
+                if ($('#inputCategoryName').val() == '') {
                     e.preventDefault();
+                    $('#createCategoryFormGroup').attr('class', 'form-group has-error');
                 }
+
+            })
+
+            $('.deleteChildCategory').on('click', function() {
+                //Pull the category ID
+                var id = $(this).find('i').attr('id')
+                var _token = "{{ csrf_token() }}";
+                //Format the ajax request
+                $.ajax({
+                    type: "POST",
+                    url: "{{ URL::route('consolecategoriesdeletechild') }}",
+                    data: { id: id, _token: _token }
+                })
+
+                    .success(function(received) {
+                        //Remove the row
+                    });
             })
 
 

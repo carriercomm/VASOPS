@@ -2,6 +2,13 @@
 @include('console.core.navbartop')
 @include('console.core.navbarside')
 <div id="page-wrapper">
+    @if (Session::get('message') != '')
+    <div class="row">
+        <div class="col-lg-12">
+            <div style="margin-top: 20px;" class="alert alert-warning">{{ Session::get('message') }}</div>
+        </div>
+    </div>
+    @endif
     <div class="row">
         <div class="col-lg-12">
             <h1 class="page-header"><i class="fa fa-ellipsis-h fa-fw"></i> Category Manager</h1>
@@ -17,8 +24,9 @@
                 </div>
                 <div id="createCategoryPanelBody" style="display: none;" class="panel-body">
                     <form id="createCategoryForm" role="form" action="{{ URL::route('consolecategoriesnew') }}" method="POST">
-                        <div class="form-group">
-                            <input type="text" class="form-control" name="inputCategoryName" id="inputCategorySubject" placeholder="Category Name" />
+                        <input name="_token" type="hidden" value="{{ csrf_token() }}" />
+                        <div id="createCategoryFormGroup" class="form-group">
+                            <input type="text" class="form-control" name="inputCategoryName" id="inputCategoryName" placeholder="Category Name" />
                         </div>
                         <div class="form-group">
                             <label style="font-weight: normal; font-style: italic;">(Optional)</label>
@@ -43,11 +51,11 @@
             <table class="table table-bordered table-responsive table-striped">
                 <tr><th>Category Name</th><th>Actions</th></tr>
                 @foreach($potentialparents as $potentialparent)
-                <tr><td>{{{ $potentialparent->name }}}</td><td><i class="fa fa-edit fa-fw"></i> <i class="fa fa-times fa-fw"></i></td></tr>
+                <tr><td><strong>{{{ $potentialparent->name }}}</strong></td><td><i class="fa fa-edit fa-fw"></i> <i class="fa fa-times fa-fw"></i></td></tr>
                 @foreach($children as $child)
 
                 @if($child->parentid == $potentialparent->id)
-                <tr><td>--- {{{ $child->name }}}</td><td><i class="fa fa-edit fa-fw"></i> <i class="fa fa-times fa-fw"></i></td></tr>
+                <tr><td><i class="fa fa-arrow-right fa-fw"></i> {{{ $child->name }}}</td><td><i class="fa fa-edit fa-fw"></i> <span class="deleteChildCategory"><i id="{{{ $child->id }}}" class="fa fa-times fa-fw"></i></span></td></tr>
                 @endif
 
                 @endforeach
