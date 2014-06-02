@@ -421,12 +421,10 @@ class ConsoleController extends BaseController {
                         $i = 0;
                         foreach ($categoryarray as $vacategory) {
                             //Continue if we just reach a category with a value of ,
-                            if ($i > 0) {
+                            if ($i > 0)
                                 $categorylist .= $vacategory . ',';
-                            }
-                            else {
+                            else
                                 $categorylist = $vacategory . ',';
-                            }
                             $i++;
                         }
                         //Make sure our string doesn't have two commas at the end
