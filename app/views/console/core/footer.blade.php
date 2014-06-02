@@ -344,8 +344,11 @@
             })
 
             $('.deleteChildCategory').on('click', function() {
+                //Have the x spin
+                var i = $(this).find('i');
+                i.attr('class', i.attr('class') + ' fa-spin');
                 //Pull the category ID
-                var id = $(this).find('i').attr('id')
+                var id = i.attr('id')
                 var _token = "{{ csrf_token() }}";
                 //Format the ajax request
                 $.ajax({
@@ -355,7 +358,9 @@
                 })
 
                     .success(function(received) {
+                        console.log(received);
                         //Remove the row
+                        i.closest('tr').fadeOut();
                     });
             })
 

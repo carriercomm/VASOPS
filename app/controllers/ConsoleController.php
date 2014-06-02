@@ -401,17 +401,48 @@ class ConsoleController extends BaseController {
     }
 
     public function post_categoriesdeletechild() {
+        $i = 0;
         $id = Input::get('id');
         //Verify this is a valid ID and is in fact a child
-        $category = Category::findOrFail($id);
-        if (empty($category->parentid)) {
+        $category = Category::where('id', '=', $id)->firstOrFail();
+        if (!empty($category->parentid)) {
             $category->delete();
             //Now to remove all of the VAs that currently have that category selected
-            $vas = User::where('categories', 'like', '%' . $id . '%')->get();
+            $vas = User::where('categories', 'like', '%' . $id . ',%')->get();
             if (!empty($vas)) {
                 //Another check to verify we have the correct VAs then let's update the categories without the removed category
+                foreach ($vas as $va) {
+                    $categoryarray = explode(',', $va->categories);
+                    $key = array_search($id, $categoryarray);
+                    if ($key) {
+                        //Remove the array key/value pair.
+                        unset($categoryarray[$key]);
+                        //Convert the array back into a comma delimited list
+                        $i = 0;
+                        foreach ($categoryarray as $vacategory) {
+                            //Continue if we just reach a category with a value of ,
+                            if ($i > 0) {
+                                $categorylist .= $vacategory . ',';
+                            }
+                            else {
+                                $categorylist = $vacategory . ',';
+                            }
+                            $i++;
+                        }
+                        //Make sure our string doesn't have two commas at the end
+                        $categorylist = rtrim($categorylist, ',,');
+                        //Add back the one comma at the end if removed
+                        if (substr($categorylist, '-1') != ',')
+                            $categorylist = $categorylist . ',';
+                        //Finally update the va record
+                        $va->categories = $categorylist;
+                        $va->save();
+                    }
+                }
             }
         }
+
+        echo $i;
     }
 
 }

@@ -111,7 +111,7 @@ class AjaxController extends BaseController {
             $vas->zip = $post['inputZip'];
             $vas->name = $post['inputName'];
             $vas->email = $post['inputEmail'];
-            $vas->categories = implode (",", $post['inputCategory']);
+            $vas->categories = implode (",", $post['inputCategory']) . ',';
             //Save our data
             $vas->save();
 
@@ -206,7 +206,7 @@ class AjaxController extends BaseController {
             $vas->zip = $post['inputZip'];
             $vas->name = $post['inputName'];
             $vas->email = $post['inputEmail'];
-            $vas->categories = implode (",", $post['inputCategory']);
+            $vas->categories = implode (",", $post['inputCategory']) . ',';
             //All VAs must be approved first so the default status will be 0 for unapproved or not active.
             $vas->status = '0';
             //Save our data
