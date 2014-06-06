@@ -51,16 +51,35 @@
             <table class="table table-bordered table-responsive table-striped">
                 <tr><th>Category Name</th><th>Actions</th></tr>
                 @foreach($potentialparents as $potentialparent)
-                <tr><td><strong>{{{ $potentialparent->name }}}</strong></td><td><i class="fa fa-edit fa-fw"></i> <i class="fa fa-times fa-fw"></i></td></tr>
+                <tr><td><strong>{{{ $potentialparent->name }}}</strong></td><td><i class="fa fa-edit fa-fw"></i> @if (in_array($potentialparent->id, $parentsarray)) <span class="deleteParentCategory pointer"> @else <span class="deleteCategory pointer"> @endif <i id="{{{ $potentialparent->id }}}" class="fa fa-times fa-fw"></i></span></td></tr>
                 @foreach($children as $child)
 
                 @if($child->parentid == $potentialparent->id)
-                <tr><td><i class="fa fa-arrow-right fa-fw"></i> {{{ $child->name }}}</td><td><i class="fa fa-edit fa-fw"></i> <span class="deleteChildCategory"><i id="{{{ $child->id }}}" class="fa fa-times fa-fw"></i></span></td></tr>
+                <tr><td><i class="fa fa-arrow-right fa-fw"></i> {{{ $child->name }}}</td><td><i class="fa fa-edit fa-fw"></i> <span class="deleteChildCategory pointer"><i id="{{{ $child->id }}}" class="fa fa-times fa-fw"></i></span></td></tr>
                 @endif
 
                 @endforeach
                 @endforeach
             </table>
+        </div>
+    </div>
+
+    <!--/#deleteParentCategoriesModal -->
+    <div class="modal fade" id="deleteParentCategoriesModal" tabindex="-1" role="dialog" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true"><i class="fa fa-times fa-fw"></i></button>
+                    <h3 class="modal-title" id="myModalLabel">Warning</h3>
+                </div>
+                <div class="modal-body">
+                    Deleting this parent category will <strong>remove all child categories</strong>. Are you sure you want to continue?
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+                    <button id="btnDeleteCategoryConfirmed" type="button" data-dismiss="modal" class="btn btn-danger deleteParentCategory">Delete Category</button>
+                </div>
+            </div>
         </div>
     </div>
     <!-- /#page-wrapper -->

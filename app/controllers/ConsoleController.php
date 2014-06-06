@@ -368,7 +368,13 @@ class ConsoleController extends BaseController {
         //Potential parents are nonchild categories.
         $potentialparents = Category::where('parentid', '=', '')->get();
         $children = Category::where('parentid', '!=', '')->get();
-        return View::make('console.categories')->with(array('potentialparents' => $potentialparents, 'children' => $children));
+        $parentsarray = Array();
+        foreach ($children as $child) {
+            if (!in_array($child->parentid, $parentsarray))
+                //If the parent is not already in the array add it.
+                $parentsarray[$child->id] = $child->parentid;
+        }
+        return View::make('console.categories')->with(array('potentialparents' => $potentialparents, 'children' => $children, 'parentsarray' => $parentsarray));
     }
 
     public function post_categoriesnew() {
@@ -441,6 +447,89 @@ class ConsoleController extends BaseController {
         }
 
         echo $i;
+    }
+
+    public function post_categoriesdeleteparent() {
+        $id = Input::get('id');
+        //Sanitize our id (ensure a category exists with this id
+        $check = Category::findOrFail($id);
+        //Get a list of children categories
+        $childrenquery = Category::where('parentid', '=', $id)->get();
+        $children = array();
+        foreach ($childrenquery as $child) {
+            $children[] = $child->id;
+        }
+        $childrencount = count($children);
+        $vas = User::where('categories', 'like', '%' . $id . ',%')->get();
+        if (!empty($vas)) {
+            //Another check to verify we have the correct VAs then let's update the categories without the removed category
+            foreach ($vas as $va) {
+                $categoryarray = explode(',', $va->categories);
+                $key = array_search($id, $categoryarray);
+                if ($key) {
+                    //Remove the array key/value pair.
+                    unset($categoryarray[$key]);
+                    //Convert the array back into a comma delimited list
+                    $i = 0;
+                    foreach ($categoryarray as $vacategory) {
+                        //Continue if we just reach a category with a value of ,
+                        if ($i > 0)
+                            $categorylist .= $vacategory . ',';
+                        else
+                            $categorylist = $vacategory . ',';
+                        $i++;
+                    }
+                    //Make sure our string doesn't have two commas at the end
+                    $categorylist = rtrim($categorylist, ',,');
+                    //Add back the one comma at the end if removed
+                    if (substr($categorylist, '-1') != ',')
+                        $categorylist = $categorylist . ',';
+                    //Finally update the va record
+                    $va->categories = $categorylist;
+                    $va->save();
+                }
+            }
+        }
+        //Now to do the same with the children categories. It would be a really complex query to get only VAs with any of the child categories in the categories list so we will just sort through them all
+        $vas = User::get();
+        if (!empty($vas)) {
+            foreach ($vas as $va) {
+                $categoryarray = explode(',', $va->categories);
+                //For each child category id we will need to check this. Painful as hell, yeah I know
+                foreach($children as $child) {
+                    $key = array_search($child, $categoryarray);
+                    if ($key) {
+                        //Remove the array key/value pair.
+                        unset($categoryarray[$key]);
+                        //Convert the array back into a comma delimited list
+                        $i = 0;
+                        foreach ($categoryarray as $vacategory) {
+                            //Continue if we just reach a category with a value of ,
+                            if ($i > 0)
+                                $categorylist .= $vacategory . ',';
+                            else
+                                $categorylist = $vacategory . ',';
+                            $i++;
+                        }
+                        //Make sure our string doesn't have two commas at the end
+                        $categorylist = rtrim($categorylist, ',,');
+                        //Add back the one comma at the end if removed
+                        if (substr($categorylist, '-1') != ',')
+                            $categorylist = $categorylist . ',';
+                        //Finally update the va record
+                        $va->categories = $categorylist;
+                        $va->save();
+                    }
+                }
+            }
+        }
+
+        //Delete our parent category and the children. Let's start with the children first.
+        $query = Category::where('parentid', '=', $id)->delete();
+        //Finally delete our parent
+        $query2 = Category::where('id', '=', $id)->delete();
+        //Hopefully all went well. Let's echo our children count
+        echo $childrencount;
     }
 
 }

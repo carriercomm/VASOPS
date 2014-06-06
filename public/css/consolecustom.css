@@ -51,6 +51,6 @@ a.nolinkstyle {
     transition: box-shadow .5s;
 }
 
-.deleteChildCategory:hover {
+.pointer {
     cursor: pointer;
 }
