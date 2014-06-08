@@ -364,36 +364,46 @@
                     });
             })
 
-            $('.deleteParentCategory').on('click', function() {
+            $('.deleteParentCategory, .deleteCategory').on('click', function() {
                 var _token = '{{ csrf_token() }}';
-                //Figure out what our trigger is based on the element type. If it is 'span' it is our initial delete. If it is 'button' it is our confirmation
-                var trigger = $(this).get(0).tagName.toLowerCase();
-                if (trigger == 'span') {
+                //Determine what selector was triggered
+                if ($(this).is('.deleteCategory')) {
                     icon = $(this).find('i');
-                    //Store the category ID as a variable so we can use it if the user confirms the deletion
                     catid = icon.attr('id');
-                    //Warn the user that this will delete all of the child categories
-                    $('#deleteParentCategoriesModal').modal('show');
+                    //Alright this is a parent category that has no children. :) (So I guess technically it isn't a parent)
+                    var hasChildren = false;
                 }
-                if (trigger == 'button') {
-                    //Spin the X
-                    icon.attr('class', icon.attr('class') + ' fa-spin');
-                    //Format the ajax request
-                    $.ajax({
-                        type: "POST",
-                        url: "{{ URL::route('consolecategoriesdeleteparent') }}",
-                        data: { id: catid, _token: _token }
-                    })
-                        .success(function(childrencount) {
-                            var childrencount = childrencount;
-                            console.log(childrencount);
-                            //Delete the parent row and the children
-                            //The received is the number of children so that will be the subsequent sibling trs
-                            var parentrow = icon.closest('tr');
-                            parentrow.fadeOut();
-                            parentrow.nextAll(':lt(' + childrencount + ')').fadeOut();
+                else if ($(this).is('.deleteParentCategory')) {
+                    //Figure out what our trigger is based on the element type. If it is 'span' it is our initial delete. If it is 'button' it is our confirmation
+                    var trigger = $(this).get(0).tagName.toLowerCase();
+                    if (trigger == 'span') {
+                        icon = $(this).find('i');
+                        //Store the category ID as a variable so we can use it if the user confirms the deletion
+                        catid = icon.attr('id');
+                        //Warn the user that this will delete all of the child categories
+                        $('#deleteParentCategoriesModal').modal('show');
+                        var hasChildren = true;
+                    }
+                }
+                    if (trigger == 'button' || hasChildren == false ) {
+                        //Spin the X
+                        icon.attr('class', icon.attr('class') + ' fa-spin');
+                        //Format the ajax request
+                        $.ajax({
+                            type: "POST",
+                            url: "{{ URL::route('consolecategoriesdeleteparent') }}",
+                            data: { id: catid, hasChildren: hasChildren, _token: _token }
                         })
-                }
+                            .success(function(childrencount) {
+                                var childrencount = childrencount;
+                                //Delete the parent row and the children
+                                //The received is the number of children so that will be the subsequent sibling trs
+                                var parentrow = icon.closest('tr');
+                                parentrow.fadeOut();
+                                parentrow.nextAll(':lt(' + childrencount + ')').fadeOut();
+                            })
+                    }
+
 
             });
 
