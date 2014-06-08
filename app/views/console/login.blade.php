@@ -12,12 +12,18 @@
             {{ Session::get('message') }}
             </div>
             @endif
+            @if (Session::get('requesturl') != '')
+            <div class="alert alert-warning">
+                Sorry for the interruption. Please just login and we will get you right over to the console page you have requested.
+            </div>
+            @endif
             <div class="login-panel panel panel-default">
                 <div class="panel-heading">
                     <h3 class="panel-title">Please sign in</h3>
                 </div>
                 <div class="panel-body">
                     <form action="{{ URL::route('postconsolelogin') }}" method="POST" role="form">
+                        <input type="hidden" name="requesturl" value="{{ Session::get('requesturl') }}" />
                         <fieldset>
                             <div class="form-group">
                                 <input class="form-control" placeholder="CID" name="cid" value="{{ Session::get('cid') }}" autofocus>

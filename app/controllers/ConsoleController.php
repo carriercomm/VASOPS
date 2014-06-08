@@ -59,8 +59,12 @@ class ConsoleController extends BaseController {
                 if (Hash::check($password, $consoleuser->password)) {
                     //Credentials were valid. Let's login the user
                     Auth::consoleuser()->loginUsingId($cid);
-                    //We will now redirect them to the console index
-                    return Redirect::route('console');
+                    //Check if there was a request url
+                    $requesturl = Input::get('requesturl');
+                    if (!empty($requesturl))
+                        return Redirect::to($requesturl);
+                    else
+                        return Redirect::route('console');
                 }
                 else {
                     //Bad Password

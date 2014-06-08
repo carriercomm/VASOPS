@@ -41,12 +41,12 @@ Route::filter('auth', function()
 //Add our console auth filter
 Route::filter('consoleauth', function()
 {
-    if (!Auth::consoleuser()->check()) return Redirect::route('consolelogin');
+    if (!Auth::consoleuser()->check()) return Redirect::route('consolelogin')->with('requesturl', Request::path());
 });
 //Add our console auth elevated access level 1 filter
 Route::filter('consoleauth1', function()
 {
-    if (!Auth::consoleuser()->check()) return Redirect::route('consolelogin');
+    if (!Auth::consoleuser()->check()) return Redirect::route('consolelogin')->with('requesturl', Request::path());
 
     if (!Auth::consoleuser()->get()->access >= 1) return Redirect::route('console');
 });
