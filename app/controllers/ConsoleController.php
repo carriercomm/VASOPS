@@ -539,4 +539,69 @@ class ConsoleController extends BaseController {
 
     }
 
+    public function get_categoriesedit($id) {
+        if (empty($id) || is_int($id)) {
+            //Oops, no id...
+            App:abort(404, 'Category ID parameter not found');
+        }
+        //Pull the category
+        $category = Category::findOrFail($id);
+        //Get a list of potential parents (excluding this category of course)
+        $potentialParents = Category::where('parentid', '=', '')->where('id', '!=', $id)->get();
+        return View::make('console.categoriesedit')->with(array('category' => $category, 'potentialParents' => $potentialParents));
+    }
+
+    public function post_categoriesedit($id) {
+        //Get our fields
+        $name = Input::get('categoryName');
+        $parent = Input::get('categoryParent');
+
+        $validator = Validator::make(
+            array(
+                'id' => $id,
+                'name' => $name,
+                'parent' => $parent,
+            ),
+            array(
+                'id' => 'required|integer',
+                'name' => 'required',
+                'parent' => 'integer'
+            ),
+            array (
+                'id.required' => 'The category ID was not included with the request. This is an internal error. ',
+                'id.integer' => 'Invalid category ID format. This is an internal error.',
+                'name.required' => 'You forgot to enter a name. Please enter a name and try again.',
+            )
+        );
+
+        if ($validator->fails())
+        {
+            // The given data did not pass validation
+            $messages = $validator->messages();
+            $errorStr = '';
+            $count = count($messages);
+            $i = 0;
+            foreach ($messages->all(':message') as $message)
+            {
+                $i++;
+                $errorStr .= '<span>' . $message . '</span>';
+                if ($i != $count) {
+                    $errorStr .= '<br /><hr />';
+                }
+            }
+            return Redirect::to('console/categories/edit/' . $id)->with('message', $errorStr);
+
+        }
+        //Great all of our validation is done. Hey, not so fast. Let's make sure that we are in fact modifying a valid category and the parent exists
+        //Pull the category
+        $category = Category::findOrFail($id);
+        if ($parent != 0)
+            $check = Category::where('id', '=', $parent)->where('parentid', '=', '0')->firstOrFail();
+        $category->name = $name;
+        $category->parentid = $parent;
+        $category->save();
+        //Great, all done. Now to redirect the user.
+        return Redirect::route('consolecategories')->with('message', 'Category successfully updated.');
+    }
+
 }
