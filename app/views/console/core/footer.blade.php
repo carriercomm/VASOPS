@@ -407,6 +407,41 @@
 
             });
 
+            $('#createEmailTemplateToggle').on('click', function() {
+               $('#createEmailTemplatePanelBody').slideToggle('fast');
+            });
+
+            $('.variableLabels').on('click', function() {
+               var caretPos = document.getElementById('inputEmailTemplateContent').selectionStart;
+               var text = $(this).html();
+               console.log(text);
+               var currentContent = $('#inputEmailTemplateContent').val();
+               jQuery('#inputEmailTemplateContent').val(currentContent.substring(0, caretPos) + text + currentContent.substring(caretPos));
+            });
+
+            $('.emailTemplateDeleteX').on('click', function() {
+                emailtemplatesdeleterow = $(this).closest('tr');
+                emailtemplatedeleteid = emailtemplatesdeleterow.attr('data-templateid');
+                $('#deleteEmailTemplateModal').modal();
+            })
+            $('#btnDeleteEmailTemplateConfirmed').on('click', function() {
+                var _token = "{{ csrf_token() }}";
+                var previousbtnhtml = $(this).html();
+                var btn = $(this);
+                $(this).html(previousbtnhtml + ' <i class="fa fa-spinner fa-fw fa-spin"></i>');
+                $.ajax({
+                    type: "POST",
+                    url: "{{ URL::route('consoleemailtemplatedelete') }}",
+                    data: { id: emailtemplatedeleteid, _token: _token }
+                })
+                    .success(function() {
+                        btn.html(previousbtnhtml);
+                        emailtemplatesdeleterow.fadeOut();
+                        $('#deleteEmailTemplateModal').modal('hide')
+            })
+
+            })
+
 
         });
     </script>

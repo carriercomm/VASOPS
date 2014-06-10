@@ -60,13 +60,15 @@ Route::get('console/logout', array('as' => 'consolelogout', 'uses' => 'ConsoleCo
 Route::get('console/va/{id}', array('as' => 'consoleva', 'uses' => 'ConsoleController@get_va', 'before' => 'consoleauth'));
 Route::get('console/helpdesk/{filter}', array('as' => 'consolehelpdesk', 'uses' => 'ConsoleController@get_helpdesk', 'before' => 'consoleauth'));
 Route::get('console/emailtemplates', array('as' => 'consoleemailtemplates', 'uses' => 'ConsoleController@get_emailtemplates', 'before' => 'consoleauth'));
+Route::post('console/emailtemplatenew', array('as' => 'consoleemailtemplatenew', 'uses' => 'ConsoleController@post_emailtemplatenew', 'before' => 'consoleauth|csrf'));
 Route::post('console/uploadbanner', array('as' => 'consoleuploadbanner', 'uses' => 'ConsoleController@post_uploadbanner', 'before' => 'consoleauth|csrf'));
 Route::post('console/removebanner', array('as' => 'consoleremovebanner', 'uses' => 'ConsoleController@post_removebanner', 'before' => 'consoleauth|csrf'));
     //------AJAX---------
     Route::post('console/ajax/vaedit', array('as' => 'consoleajaxvaedit', 'uses' => 'ConsoleController@post_vaedit', 'before' => 'consoleauth|csrf'));
     Route::post('console/ajax/createauditlog', array('as' => 'consoleajaxcreateauditlog', 'uses' => 'ConsoleController@post_createauditlog', 'before' => 'consoleauth|csrf'));
     Route::post('console/ajax/findlinkback', array('as' => 'consoleajaxfindlinkback', 'uses' => 'ConsoleController@post_findlinkback', 'before' => 'consoleauth|csrf'));
-    Route::post('/console/ajax/search', array('as' => 'consoleajaxsearch', 'uses' => 'ConsoleController@post_ajaxsearch', 'before' => 'consoleauth|csrf'));
+    Route::post('console/ajax/search', array('as' => 'consoleajaxsearch', 'uses' => 'ConsoleController@post_ajaxsearch', 'before' => 'consoleauth|csrf'));
+    Route::post('console/ajax/emailtemplate/delete', array('as' => 'consoleemailtemplatedelete', 'uses' => 'ConsoleController@post_emailtemplatedelete', 'before' => 'consoleauth|csrf'));
     //-------------------
 //-----------------------------------------------------------------------
 

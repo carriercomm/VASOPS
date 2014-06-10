@@ -240,7 +240,49 @@ class ConsoleController extends BaseController {
     }
 
     public function get_emailtemplates() {
-        return View::make('console.emailtemplates')->with(array());
+        $myTemplates = EmailTemplate::where('author', '=', Auth::consoleuser()->get()->cid)->orderBy('name', 'ASC')->get();
+        $sharedTemplates = EmailTemplate::sharedTemplates();
+        return View::make('console.emailtemplates')->with(array('myTemplates' => $myTemplates, 'sharedTemplates' => $sharedTemplates));
+    }
+
+    public function post_emailtemplatenew() {
+        //Get our input fields
+        $name = Input::get('inputName');
+        $subject = Input::get('inputSubject');
+        $content = Input::get('inputContent');
+        $public = Input::get('inputPublic');
+        //No need to run the validator for this. Let's just check and see if the fields are empty.
+        if (empty($name))
+            return Redirect::route('consoleemailtemplates')->with(array('error' => 'Please enter a template name.', 'inputContent' => $content, 'inputSubject' => $subject));
+        if (empty($subject))
+            return Redirect::route('consoleemailtemplates')->with(array('error' => 'Please enter a subject.', 'inputContent' => $content, 'inputName' => $name));
+        if (empty($content))
+            return Redirect::route('consoleemailtemplates')->with(array('error' => 'Please compose a body.', 'inputSubject' => $subject, 'inputName' => $name));
+        //Create the record in the database
+        if ($public != 1)
+            $public = 0;
+        $template = new EmailTemplate();
+        $template->name = $name;
+        $template->author = Auth::consoleuser()->get()->cid;
+        $template->subject = $subject;
+        $template->content = $content;
+        $template->public = $public;
+        $template->save();
+        return Redirect::route('consoleemailtemplates')->with('message', 'New Template Created Successfully.');
+    }
+
+    public function post_emailtemplatedelete() {
+        //Get our id
+        $id = Input::get('id');
+        //Verify that the id is valid and the template is owned by the member trying to delete it or they are level 1 access
+        if (Auth::consoleuser()->get()->access > 0)
+            $query = EmailTemplate::where('id', '=', $id)->count();
+        else
+            $query = EmailTemplate::where('id', '=', $id)->where('author', '=', Auth::consoleuser()->get()->cid)->count();
+        if ($query > 0) {
+            //Count is greater than 0 let's delete the record;
+            EmailTemplate::where('id', '=', $id)->delete();
+        }
     }
 
     public function post_vaedit() {
