@@ -34,7 +34,7 @@
                         </div>
                         <div class="form-group">
                             <label>Reference Variables: </label>
-                            <span class="pointer"><pre class="variableLabels" style="display: inline;">[name]</pre> <pre class="variableLabels" style="display: inline;">[vaname]</pre> <pre class="variableLabels" style="display: inline;">[cid]</pre> <pre class="variableLabels" style="display: inline;">[email]</pre> <pre class="variableLabels" style="display: inline;">[auditorname]</pre></span>
+                            <span style="line-height: 40px;" class="pointer"><pre class="variableLabels">[name]</pre> <pre class="variableLabels">[vaname]</pre> <pre class="variableLabels">[cid]</pre> <pre class="variableLabels">[email]</pre> <pre class="variableLabels">[auditorname]</pre></span>
                             <textarea style="margin-top: 10px;" rows="15;" class="form-control" name="inputContent" id="inputEmailTemplateContent" placeholder="Please compose your new template...">@if (Session::get('inputContent') != '') {{{ Session::get('inputContent') }}} @endif</textarea>
                         </div>
                         <div class="checkbox">
@@ -58,7 +58,7 @@
                 <tr><td colspan="5">No templates found...</td></tr>
                 @else
                 @foreach ($myTemplates as $myTemplate)
-                <tr data-templateid="{{{ $myTemplate->id }}}"><td>{{{ $myTemplate->name }}}</td><td>{{{ $myTemplate->subject }}}</td><td>{{{ substr($myTemplate->content,0,100) }}}...</td><td>@if ($myTemplate->public == 1) <span class="label label-primary">Public</span> @else <span class="label label-default">Private</span> @endif</td><td><i class="fa fa-edit fa-fw pointer"></i><span class="emailTemplateDeleteX"><i class="fa fa-times fa-fw pointer"></i></span></td></tr>
+                <tr data-templateid="{{{ $myTemplate->id }}}"><td>{{{ $myTemplate->name }}}</td><td>{{{ $myTemplate->subject }}}</td><td>{{{ substr($myTemplate->content,0,100) }}}...</td><td>@if ($myTemplate->public == 1) <span class="label label-primary">Public</span> @else <span class="label label-default">Private</span> @endif</td><td><a href="{{ URL::route('consoleemailtemplates') }}/edit/{{{ $myTemplate->id }}}" class="nolinkstyle"><i class="fa fa-edit fa-fw pointer"></i></a><span class="emailTemplateDeleteX"><i class="fa fa-times fa-fw pointer"></i></span></td></tr>
                 @endforeach
                 @endif
             </table>
@@ -74,29 +74,28 @@
                 <tr><td @if (Auth::consoleuser()->get()->access > 0) colspan="4" @else colspan="3" @endif>No shared templates found...</td></tr>
                 @else
                 @foreach ($sharedTemplates as $sharedTemplate)
-                <tr data-templateid="{{{ $sharedTemplate->id }}}"><td>{{{ $sharedTemplate->name }}}</td><td>{{{ $sharedTemplate->subject }}}</td><td>{{{ substr($sharedTemplate->content,0,100) }}}...</td>@if (Auth::consoleuser()->get()->access > 0) <td><i class="fa fa-edit fa-fw pointer"></i><span class="emailTemplateDeleteX"><i class="fa fa-times fa-fw pointer"></i></span></td> @endif</tr>
+                <tr data-templateid="{{{ $sharedTemplate->id }}}"><td>{{{ $sharedTemplate->name }}}</td><td>{{{ $sharedTemplate->subject }}}</td><td>{{{ substr($sharedTemplate->content,0,100) }}}...</td>@if (Auth::consoleuser()->get()->access > 0) <td><a href="{{ URL::route('consoleemailtemplates') }}/edit/{{{ $sharedTemplate->id }}}"><i class="fa fa-edit fa-fw pointer"></i></a><span class="emailTemplateDeleteX"><i class="fa fa-times fa-fw pointer"></i></span></td> @endif</tr>
                 @endforeach
                 @endif
             </table>
         </div>
     </div>
 
-
-</div>
-<!--/#deleteEmailTemplateModal -->
-<div class="modal fade" id="deleteEmailTemplateModal" tabindex="-1" role="dialog" aria-hidden="true">
-    <div class="modal-dialog">
-        <div class="modal-content">
-            <div class="modal-header">
-                <button type="button" class="close" data-dismiss="modal" aria-hidden="true"><i class="fa fa-times fa-fw"></i></button>
-                <h3 class="modal-title" id="myModalLabel">Warning</h3>
-            </div>
-            <div class="modal-body">
-                Are you sure you want to <strong>permanently delete</strong> this email template?
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
-                <button id="btnDeleteEmailTemplateConfirmed" type="button" class="btn btn-danger">Delete Template</button>
+    <!--/#deleteEmailTemplateModal -->
+    <div class="modal fade" id="deleteEmailTemplateModal" tabindex="-1" role="dialog" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true"><i class="fa fa-times fa-fw"></i></button>
+                    <h3 class="modal-title" id="myModalLabel">Warning</h3>
+                </div>
+                <div class="modal-body">
+                    Are you sure you want to <strong>permanently delete</strong> this email template?
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+                    <button id="btnDeleteEmailTemplateConfirmed" type="button" class="btn btn-danger">Delete Template</button>
+                </div>
             </div>
         </div>
     </div>

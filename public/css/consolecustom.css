@@ -54,3 +54,9 @@ a.nolinkstyle {
 .pointer {
     cursor: pointer;
 }
+
+pre.variableLabels {
+    display: inline;
+    word-break: normal;
+    word-wrap: normal;
+}

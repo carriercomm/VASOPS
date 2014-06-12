@@ -271,6 +271,48 @@ class ConsoleController extends BaseController {
         return Redirect::route('consoleemailtemplates')->with('message', 'New Template Created Successfully.');
     }
 
+    public function get_emailtemplateedit($id) {
+        //Verify we are editing our own template (unless we our access level is > 0)
+        if (Auth::consoleuser()->get()->access < 1) {
+            $check = EmailTemplate::where('id', '=', $id)->where('author', '=', Auth::consoleuser()->get()->cid)->count();
+            if ($check < 1) {
+                return Redirect::route('consoleemailtemplates')->with('error', 'Unauthorized template edit');
+            }
+        }
+        //All clear let's query the db and return the view
+        $template = EmailTemplate::findOrFail($id);
+        return View::make('console.emailtemplateedit')->with(array('template' => $template));
+    }
+
+    public function post_emailtemplateedit($id) {
+        //Verify we are editing our own template (unless we our access level is > 0)
+        if (Auth::consoleuser()->get()->access < 1) {
+            $check = EmailTemplate::where('id', '=', $id)->where('author', '=', Auth::consoleuser()->get()->cid)->count();
+            if ($check < 1) {
+                return Redirect::route('consoleemailtemplates')->with('error', 'Unauthorized template edit');
+            }
+        }
+        //Pull our fields
+        $name = Input::get('inputName');
+        $subject = Input::get('inputSubject');
+        $content = Input::get('inputContent');
+        $public = Input::get('inputPublic');
+
+        if (empty($name) || empty($subject) || empty($content))
+            return Redirect::to('console/emailtemplates/edit/' . $id)->with('error', 'Please complete all of the required fields.');
+
+        if ($public != 1)
+            $public = 0;
+        //All clear let's update the db
+        $template = EmailTemplate::findOrFail($id);
+        $template->name = $name;
+        $template->subject = $subject;
+        $template->content = $content;
+        $template->public = $public;
+        $template->save();
+        return Redirect::route('consoleemailtemplates')->with('message', 'Template Updated.');
+    }
+
     public function post_emailtemplatedelete() {
         //Get our id
         $id = Input::get('id');
