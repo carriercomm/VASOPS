@@ -60,3 +60,19 @@ pre.variableLabels {
     word-break: normal;
     word-wrap: normal;
 }
+table table-borderless{
+    border: none;
+}
+div .ticket-info {
+    margin-left: -23px;
+}
+
+.float-right {
+    float: right;
+}
+
+ul.ticket-dropdown-actions {
+    right: 0;
+    left: auto;
+    margin-left: 5px;
+}

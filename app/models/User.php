@@ -59,6 +59,11 @@ class User extends Eloquent implements UserInterface, RemindableInterface {
         return $user->name;
     }
 
+    public static function getVaName($id) {
+        $user = User::find($id);
+        return $user->vaname;
+    }
+
     public static function getBannerURL($cid) {
         $user = User::findOrFail($cid);
         //Remove trailing slash, if present, and readd.

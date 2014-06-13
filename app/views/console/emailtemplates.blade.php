@@ -52,32 +52,36 @@
     <div class="row">
         <div class="col-lg-12">
             <h4>Your Templates</h4>
-            <table class="table table-bordered table-responsive table-striped">
-                <tr><th>Name</th><th>Subject</th><th>Body</th><th>Visibility</th><th>Actions</th></tr>
-                @if (count($myTemplates) < 1)
-                <tr><td colspan="5">No templates found...</td></tr>
-                @else
-                @foreach ($myTemplates as $myTemplate)
-                <tr data-templateid="{{{ $myTemplate->id }}}"><td>{{{ $myTemplate->name }}}</td><td>{{{ $myTemplate->subject }}}</td><td>{{{ substr($myTemplate->content,0,100) }}}...</td><td>@if ($myTemplate->public == 1) <span class="label label-primary">Public</span> @else <span class="label label-default">Private</span> @endif</td><td><a href="{{ URL::route('consoleemailtemplates') }}/edit/{{{ $myTemplate->id }}}" class="nolinkstyle"><i class="fa fa-edit fa-fw pointer"></i></a><span class="emailTemplateDeleteX"><i class="fa fa-times fa-fw pointer"></i></span></td></tr>
-                @endforeach
-                @endif
-            </table>
+            <div class="table-responsive">
+                <table class="table table-bordered table-responsive table-striped">
+                    <tr><th>Name</th><th>Subject</th><th>Body</th><th>Visibility</th><th>Actions</th></tr>
+                    @if (count($myTemplates) < 1)
+                    <tr><td colspan="5">No templates found...</td></tr>
+                    @else
+                    @foreach ($myTemplates as $myTemplate)
+                    <tr data-templateid="{{{ $myTemplate->id }}}"><td>{{{ $myTemplate->name }}}</td><td>{{{ $myTemplate->subject }}}</td><td>{{{ substr($myTemplate->content,0,100) }}}...</td><td>@if ($myTemplate->public == 1) <span class="label label-primary">Public</span> @else <span class="label label-default">Private</span> @endif</td><td><a href="{{ URL::route('consoleemailtemplates') }}/edit/{{{ $myTemplate->id }}}" class="nolinkstyle"><i class="fa fa-edit fa-fw pointer"></i></a><span class="emailTemplateDeleteX"><i class="fa fa-times fa-fw pointer"></i></span></td></tr>
+                    @endforeach
+                    @endif
+                </table>
+            </div>
         </div>
     </div>
 
     <div class="row">
         <div class="col-lg-12">
             <h4>Shared Templates</h4>
-            <table class="table table-bordered table-responsive table-striped">
-                <tr><th>Name</th><th>Subject</th><th>Body</th>@if (Auth::consoleuser()->get()->access > 0) <th>Actions</th> @endif</tr>
-                @if (count($sharedTemplates) < 1)
-                <tr><td @if (Auth::consoleuser()->get()->access > 0) colspan="4" @else colspan="3" @endif>No shared templates found...</td></tr>
-                @else
-                @foreach ($sharedTemplates as $sharedTemplate)
-                <tr data-templateid="{{{ $sharedTemplate->id }}}"><td>{{{ $sharedTemplate->name }}}</td><td>{{{ $sharedTemplate->subject }}}</td><td>{{{ substr($sharedTemplate->content,0,100) }}}...</td>@if (Auth::consoleuser()->get()->access > 0) <td><a href="{{ URL::route('consoleemailtemplates') }}/edit/{{{ $sharedTemplate->id }}}"><i class="fa fa-edit fa-fw pointer"></i></a><span class="emailTemplateDeleteX"><i class="fa fa-times fa-fw pointer"></i></span></td> @endif</tr>
-                @endforeach
-                @endif
-            </table>
+            <div class="table-responsive">
+                <table class="table table-bordered table-responsive table-striped">
+                    <tr><th>Name</th><th>Subject</th><th>Body</th>@if (Auth::consoleuser()->get()->access > 0) <th>Actions</th> @endif</tr>
+                    @if (count($sharedTemplates) < 1)
+                    <tr><td @if (Auth::consoleuser()->get()->access > 0) colspan="4" @else colspan="3" @endif>No shared templates found...</td></tr>
+                    @else
+                    @foreach ($sharedTemplates as $sharedTemplate)
+                    <tr data-templateid="{{{ $sharedTemplate->id }}}"><td>{{{ $sharedTemplate->name }}}</td><td>{{{ $sharedTemplate->subject }}}</td><td>{{{ substr($sharedTemplate->content,0,100) }}}...</td>@if (Auth::consoleuser()->get()->access > 0) <td><a href="{{ URL::route('consoleemailtemplates') }}/edit/{{{ $sharedTemplate->id }}}"><i class="fa fa-edit fa-fw pointer"></i></a><span class="emailTemplateDeleteX"><i class="fa fa-times fa-fw pointer"></i></span></td> @endif</tr>
+                    @endforeach
+                    @endif
+                </table>
+            </div>
         </div>
     </div>
 

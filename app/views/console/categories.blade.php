@@ -48,19 +48,21 @@
     </div>
     <div class="row">
         <div class="col-lg-12">
-            <table class="table table-bordered table-responsive table-striped">
-                <tr><th>Category Name</th><th>Actions</th></tr>
-                @foreach($potentialparents as $potentialparent)
-                <tr><td><strong>{{{ $potentialparent->name }}}</strong></td><td><a class="nolinkstyle" href="{{ URL::route('consolecategories') }}/edit/{{{ $potentialparent->id }}}"><i class="fa fa-edit fa-fw"></i></a> @if (in_array($potentialparent->id, $parentsarray)) <span class="deleteParentCategory pointer"> @else <span class="deleteCategory pointer"> @endif <i id="{{{ $potentialparent->id }}}" class="fa fa-times fa-fw"></i></span></td></tr>
-                @foreach($children as $child)
+            <div class="table-responsive">
+                <table class="table table-bordered table-responsive table-striped">
+                    <tr><th>Category Name</th><th>Actions</th></tr>
+                    @foreach($potentialparents as $potentialparent)
+                    <tr><td><strong>{{{ $potentialparent->name }}}</strong></td><td><a class="nolinkstyle" href="{{ URL::route('consolecategories') }}/edit/{{{ $potentialparent->id }}}"><i class="fa fa-edit fa-fw"></i></a> @if (in_array($potentialparent->id, $parentsarray)) <span class="deleteParentCategory pointer"> @else <span class="deleteCategory pointer"> @endif <i id="{{{ $potentialparent->id }}}" class="fa fa-times fa-fw"></i></span></td></tr>
+                    @foreach($children as $child)
 
-                @if($child->parentid == $potentialparent->id)
-                <tr><td><i class="fa fa-arrow-right fa-fw"></i> {{{ $child->name }}}</td><td><a class="nolinkstyle" href="{{ URL::route('consolecategories') }}/edit/{{{ $child->id }}}"><i class="fa fa-edit fa-fw"></i></a> <span class="deleteChildCategory pointer"><i id="{{{ $child->id }}}" class="fa fa-times fa-fw"></i></span></td></tr>
-                @endif
+                    @if($child->parentid == $potentialparent->id)
+                    <tr><td><i class="fa fa-arrow-right fa-fw"></i> {{{ $child->name }}}</td><td><a class="nolinkstyle" href="{{ URL::route('consolecategories') }}/edit/{{{ $child->id }}}"><i class="fa fa-edit fa-fw"></i></a> <span class="deleteChildCategory pointer"><i id="{{{ $child->id }}}" class="fa fa-times fa-fw"></i></span></td></tr>
+                    @endif
 
-                @endforeach
-                @endforeach
-            </table>
+                    @endforeach
+                    @endforeach
+                </table>
+            </div>
         </div>
     </div>
 

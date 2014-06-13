@@ -229,14 +229,25 @@ class ConsoleController extends BaseController {
                 break;
             case 'assigned':
                 $subheader = "Assigned Tickets";
-                $tickets = Ticket::where('assigned', '=', Auth::consoleuser()->get()->cid)->get();
+                $tickets = Ticket::where('assigned', '=', Auth::consoleuser()->get()->cid)->where('status', '=', '1')->get();
                 break;
         }
+        //Get the replies
+        $repliescount = array();
+        foreach ($tickets as $ticket) {
+            $repliescount[$ticket->id] = Ticket::find($ticket->id)->replies()->count();
+        }
+        return View::make('console.helpdesk')->with(array('subheader' => $subheader, 'tickets' => $tickets, 'repliescount' => $repliescount));
 
+    }
 
-
-        return View::make('console.helpdesk')->with(array('subheader' => $subheader, 'tickets' => $tickets));
-
+    public function get_helpdeskview($id) {
+        //Find the ticket or fail
+        $ticket = Ticket::findOrFail($id);
+        //Find the replies
+        $replies = Ticket::find($id)->replies;
+        //Make the view
+        return View::make('console.helpdeskview')->with(array('ticket' => $ticket, 'replies' => $replies));
     }
 
     public function get_emailtemplates() {
