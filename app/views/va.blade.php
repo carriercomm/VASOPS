@@ -466,7 +466,7 @@
                                     @foreach ($tickets['replies'] as $reply)
                                     @if ($reply->tid == $ticket->id)
                                     <hr style="width: 80%" />
-                                    <div><span style="text-align: left; margin-right: 20px;"><strong>{{{ User::getFullName($reply->author) }}}</strong></span><span style="">{{{ $reply->content }}}</span></div>
+                                    <div><span style="text-align: left; margin-right: 20px;">@if ($reply->staff == 1) <span class="label label-important"><i class="icon icon-bookmark icon-white"></i> {{{ ConsoleUser::getName($reply->author) }}}</span> @else <strong>{{{ User::getFullName($reply->author) }}}</strong>@endif</span><span style="">{{{ $reply->content }}}</span></div>
                                     @endif
                                     @endforeach
 

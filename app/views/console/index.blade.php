@@ -8,6 +8,13 @@
         </div>
         <!-- /.col-lg-12 -->
     </div>
+    <div class="row">
+        <div class="col-lg-12">
+            @if (Session::get('message') != '')
+            <div class="alert alert-warning">{{{ Session::get('message') }}}</div>
+            @endif
+        </div>
+    </div>
     <!-- /.row -->
     <div class="row">
         <div class="col-lg-4">
@@ -92,17 +99,22 @@
         <div class="col-lg-12">
             <div class="panel panel-default">
                 <div class="panel-heading">
-                    <i class="fa fa-comments fa-fw"></i> HelpDesk Updates <span style="float: right;" class="label label-warning">{{ count($tickets) }}</span>
+                    <i class="fa fa-comments fa-fw"></i> HelpDesk Unassigned Tickets <span style="float: right;" class="label label-warning">{{ count($tickets) }}</span>
                 </div>
                 <div class="panel-body">
                     <div class="panel-group">
                         @foreach ($tickets as $ticket)
                         <div class="panel panel-success">
                             <div class="panel-heading">
-                                <span style="margin-right: 5px;" class="label label-success">@if ($ticket->type == 1) {{{ User::getFullName($ticket->vid) }}} @elseif ($ticket->type == 2) {{{ User::getFullName($ticket->ticket_author) }}} @endif</span> {{{ $ticket->subject }}} <span style="float:right;" class="broadcast-date label label-limegreen">{{{ $ticket->created_at }}}</span>
+                                <span style="margin-right: 5px;" class="label label-success">{{{ User::getFullName($ticket->vid) }}}</span> {{{ $ticket->subject }}} <span style="float:right;" class="broadcast-date label label-limegreen">{{{ $ticket->created_at }}}</span>
                             </div>
                             <div class="panel-body">
-                                @if ($ticket->type == 1) {{{ $ticket->description }}} @elseif ($ticket->type == 2) <i class="fa fa-mail-forward fa-fw"></i> {{{ $ticket->content }}} @if ($ticket->ticket_author != $ticket->author) <span style="float: right;"><span class="label label-danger"><i class="fa fa-bookmark fa-fw"></i> {{{ ConsoleUser::getName($ticket->author) }}}</span></span> @endif @endif
+                                <div class="col-lg-11">
+                                    {{{ $ticket->description }}}
+                                </div>
+                                <div class="col-lg-1">
+                                    <a style="text-decoration: none;" href="{{ URL::route('console') }}/helpdesk/view/{{{ $ticket->id }}}"><button class="btn btn-info"><i class="fa fa-eye fa-fw"></i> View</button></a>
+                                </div>
                             </div>
                         </div>
                         @endforeach

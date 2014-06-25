@@ -32,7 +32,7 @@
     max-width: 100%;
 }
 a.nolinkstyle {
-    text-decoration:none;
+    text-decoration: none;
     font-family: "Lato", sans-serif;
     color: #333;
 }
@@ -75,4 +75,10 @@ ul.ticket-dropdown-actions {
     right: 0;
     left: auto;
     margin-left: 5px;
+}
+div.repliesbg {
+    background-image:url('../images/crossword.png');
+}
+div.repliespanelbg {
+    background-color: rgba(255, 255, 255, 0.5);
 }

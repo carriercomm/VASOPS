@@ -31,13 +31,24 @@
     <script src="{{ URL::to('/') }}/js/plugins/metisMenu/jquery.metisMenu.js"></script>
     <script src="{{ URL::to('/') }}/js/plugins/morris/raphael-2.1.0.min.js"></script>
     <script src="{{ URL::to('/') }}/js/plugins/morris/morris.js"></script>
+    <script src="{{ URL::to('/') }}/js/smooth-scroll.js"></script>
     <script>
         $(document).ready(function() {
             $('#page-wrapper').fadeIn();
 
+            smoothScroll.init({
+                speed: 850,
+                easing: 'easeInOutQuad',
+            });
+
+            @if (Session::get('scrollTo') != '')
+                smoothScroll.animateScroll( null, '{{{ Session::get('scrollTo') }}}' );
+            @endif
+
             $('#createBroadcastToggle').on('click', function() {
                 $('#createBroadcastPanelBody').slideToggle('fast');
             });
+
 
             function ajaxSearch() {
                 if ($('#searchInput').val() != '') {
@@ -441,6 +452,19 @@
             })
 
             })
+
+            $('#inputConsoleTicketReplySubmit, #inputConsoleTicketReplyAndCloseSubmit, #inputConsoleTicketReplyAndOpenSubmit').on('click', function(e) {
+                if ($('#inputConsoleTicketReplyContent').val() == '') {
+                    var fg = $('#inputConsoleTicketReplyContent').closest('.form-group');
+                    fg.attr('class', fg.attr('class') + ' has-error')
+                    e.preventDefault();
+                }
+            });
+
+            $('#verifyDeleteTicketTriggerModal').on('click', function() {
+                $('#verifyDeleteTicketModal').modal('show');
+            });
+
 
 
         });

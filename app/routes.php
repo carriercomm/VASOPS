@@ -60,6 +60,10 @@ Route::get('console/logout', array('as' => 'consolelogout', 'uses' => 'ConsoleCo
 Route::get('console/va/{id}', array('as' => 'consoleva', 'uses' => 'ConsoleController@get_va', 'before' => 'consoleauth'));
 Route::get('console/helpdesk/{filter}', array('as' => 'consolehelpdesk', 'uses' => 'ConsoleController@get_helpdesk', 'before' => 'consoleauth'));
 Route::get('console/helpdesk/view/{id}', array('as' => 'consolehelpdeskview', 'uses' => 'ConsoleController@get_helpdeskview', 'before' => 'consoleauth'));
+Route::post('console/helpdesk/reply/{id}', array('as' => 'consolehelpdeskreply', 'uses' => 'ConsoleController@post_helpdeskreply', 'before' => 'consoleauth|csrf'));
+Route::get('console/helpdesk/close/{id}', array('as' => 'consolehelpdeskclose', 'uses' => 'ConsoleController@get_helpdeskclose', 'before' => 'consoleauth'));
+Route::get('console/helpdesk/open/{id}', array('as' => 'consolehelpdeskopen', 'uses' => 'ConsoleController@get_helpdeskopen', 'before' => 'consoleauth'));
+Route::get('console/helpdesk/assign/{ticketid}/{cid}', array('as' => 'consolehelpdeskassign', 'uses' => 'ConsoleController@get_helpdeskassign', 'before' => 'consoleauth'));
 Route::get('console/emailtemplates', array('as' => 'consoleemailtemplates', 'uses' => 'ConsoleController@get_emailtemplates', 'before' => 'consoleauth'));
 Route::post('console/emailtemplate/new', array('as' => 'consoleemailtemplatenew', 'uses' => 'ConsoleController@post_emailtemplatenew', 'before' => 'consoleauth|csrf'));
 Route::get('console/emailtemplates/edit/{id}', array('as' => 'consoleemailtemplateedit', 'uses' => 'ConsoleController@get_emailtemplateedit', 'before' => 'consoleauth'));
@@ -84,6 +88,7 @@ Route::get('console/categories', array('as' => 'consolecategories', 'uses' => 'C
 Route::post('console/categories/new', array('as' => 'consolecategoriesnew', 'uses' => 'ConsoleController@post_categoriesnew', 'before' => 'consoleauth1|csrf'));
 Route::get('console/categories/edit/{id}', array('as' => 'consolecategoriesedit', 'uses' => 'ConsoleController@get_categoriesedit', 'before' => 'consoleauth1'));
 Route::post('console/categories/edit/{id}', array('uses' => 'ConsoleController@post_categoriesedit', 'before' => 'consoleauth1|csrf'));
+Route::get('console/helpdesk/delete/{id}', array('as' => 'consolehelpdeskdelete', 'uses' => 'ConsoleController@get_helpdeskdelete', 'before' => 'consoleauth1'));
     //------AJAX---------
     Route::post('console/categories/deletechild', array('as' => 'consolecategoriesdeletechild', 'uses' => 'ConsoleController@post_categoriesdeletechild', 'before' => 'consoleauth1|csrf'));
     Route::post('console/categories/deleteparent', array('as' => 'consolecategoriesdeleteparent', 'uses' => 'ConsoleController@post_categoriesdeleteparent', 'before' => 'consoleauth1|csrf'));

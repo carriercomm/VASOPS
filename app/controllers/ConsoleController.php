@@ -85,23 +85,7 @@ class ConsoleController extends BaseController {
 
         //Determine and fetch unread helpdesk updates to be displayed in the dashboard.
         $cid = Auth::consoleuser()->get('cid');
-        $unreadTickets = Ticket::where('status', '=', '1')->where('seen_by', 'not like', '%' . $cid . ',%')->get();
-        //Pull a list of our Ticket IDs
-        //Now that we have the list of tickets, let's pull the latest reply if there is one.
-        $unreadHelpDesk = array();
-        foreach ($unreadTickets as $unreadTicket) {
-            $replyCount = TicketReply::where('tid', '=', $unreadTicket->id)->orderBy('created_at', 'ASC')->count();
-            if ($replyCount > 0) {
-                $unreadHelpDesk[$unreadTicket->id] = TicketReply::where('tid', '=', $unreadTicket->id)->orderBy('created_at', 'ASC')->first();
-                $unreadHelpDesk[$unreadTicket->id]['subject'] = $unreadTicket->subject;
-                $unreadHelpDesk[$unreadTicket->id]['type'] = '2';
-                $unreadHelpDesk[$unreadTicket->id]['ticket_author'] = $unreadTicket->vid;
-            }
-            else {
-                $unreadHelpDesk[$unreadTicket->id] = $unreadTicket;
-                $unreadHelpDesk[$unreadTicket->id]['type'] = '1';
-            }
-        }
+        $unAssignedTickets = Ticket::where('status', '=', '1')->where('assigned', '=', '0')->get();
         //Fetch our two most recent audit logs
         $auditLogs = AuditLog::orderBy('created_at', 'DESC')->get();
         $i = 0;
@@ -119,7 +103,7 @@ class ConsoleController extends BaseController {
         }
         $pendingVAs = User::where('status', '=', '0')->orderBy('created_at', 'ASC')->get();
         $activeBroadcasts = Broadcast::where('status', '=', '1')->orderBy('created_at', 'DESC')->get();
-        return View::make('console.index')->with(array('pendingVAs' => $pendingVAs, 'activeBroadcasts' => $activeBroadcasts, 'tickets' => $unreadHelpDesk, 'auditLog1' => $auditLog1, 'auditLog2' => $auditLog2));
+        return View::make('console.index')->with(array('pendingVAs' => $pendingVAs, 'activeBroadcasts' => $activeBroadcasts, 'tickets' => $unAssignedTickets, 'auditLog1' => $auditLog1, 'auditLog2' => $auditLog2));
     }
 
     public function get_broadcasts() {
@@ -248,6 +232,81 @@ class ConsoleController extends BaseController {
         $replies = Ticket::find($id)->replies;
         //Make the view
         return View::make('console.helpdeskview')->with(array('ticket' => $ticket, 'replies' => $replies));
+    }
+
+    public function post_helpdeskreply($id) {
+        //Find the ticket to reply to or fail
+        $ticket = Ticket::findOrFail($id);
+        //Update the timestamps for the ticket
+        $ticket->touch();
+        //We have client side verification here so if they modified the JS and submitted an empty reply screw them and just abort.
+        $content = Input::get('inputReplyContent');
+        if (empty($content))
+            App::abort('404', 'Page not found. Reply content not sent.');
+        //Create a new instance of TicketReply
+        $reply = new TicketReply();
+        $reply->tid = $id;
+        $reply->author = Auth::consoleuser()->get()->cid;
+        $reply->staff = 1;
+        $reply->content = $content;
+        $reply->save();
+        //Figure out what button was clicked, be it reply, reply and open, or reply and close
+        if (Input::get('replyAndOpenSubmit')) {
+            $ticket->status = 1;
+            $ticket->save();
+            //Declare the success message
+            $message = "Your ticket reply was successfully submitted and the ticket was reopened.";
+        }
+        else if (Input::get('replyAndCloseSubmit')) {
+            $ticket->status = 0;
+            $ticket->save();
+            //Declare the success message
+            $message = "Your ticket reply was successfully submitted and the ticket was closed.";
+        }
+        else {
+            //Declare the success message
+            $message = "Your ticket reply was successfully submitted.";
+        }
+        //All set now just redirect back to the ticket page with the message
+        return Redirect::to('console/helpdesk/view/' . $id)->with(array('scrollTo' => '#ticketReply' . $reply->id, 'message' => $message));
+    }
+
+    public function get_helpdeskclose($id) {
+        //Verify this is a valid ticket id
+        $ticket = Ticket::findOrFail($id);
+        $ticket->status = 0;
+        $ticket->save();
+        //That was easy. Now just redirect back
+        return Redirect::to('console/helpdesk/view/' . $id)->with('message', 'Ticket status successfully changed to closed.');
+    }
+
+    public function get_helpdeskopen($id) {
+        //Verify this is a valid ticket id
+        $ticket = Ticket::findOrFail($id);
+        $ticket->status = 1;
+        $ticket->save();
+        //That was easy. Now just redirect back
+        return Redirect::to('console/helpdesk/view/' . $id)->with('message', 'Ticket status successfully changed to open.');
+    }
+
+    public function get_helpdeskassign($id, $cid){
+        //Verify the ticket exists
+        $ticket = Ticket::findOrFail($id);
+        //Verify the console user exists
+        $user = ConsoleUser::findOrFail($cid);
+        //Update the ticket
+        $ticket->assigned = $cid;
+        $ticket->save();
+        //That was easy. Now just redirect back
+        return Redirect::to('console/helpdesk/view/' . $id)->with('message', 'Ticket successfully assigned to ' . ConsoleUser::getName($cid));
+    }
+
+    public function get_helpdeskdelete($id) {
+        //Verify the ticket exists
+        $ticket = Ticket::findOrFail($id);
+        $ticket->delete();
+        //That was easy. Now just redirect back to the dashboard with a message
+        return Redirect::route('console')->with('message', 'Ticket successfully deleted.');
     }
 
     public function get_emailtemplates() {
