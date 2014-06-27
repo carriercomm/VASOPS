@@ -9,7 +9,7 @@
     </div>
     <div style="margin-bottom: 20px;" class="row">
         <div class="col-lg-12">
-            <ul class="nav nav-pills">
+            <ul id="consoleVATabs" class="nav nav-pills">
                 <li class="active">
                     <a href="#profile" data-toggle="tab">
                         Profile
@@ -497,13 +497,13 @@
                     <table class="table table-responsive">
                         <tr><td>Status: </td><td>
                                 @if ($va->status == 1)
-                                <span class="label label-success">Active</span>
+                                <span class="label label-success">Active</span> <a href="{{ URL::route('console') }}/va/{{{ $va->cid }}}/status/0"><button id="pendingVABtn" style="padding: 1px;" data-title="Set VA status to Pending" class="btn btn-default tooltip-top"><i class="fa fa-square-o fa-fw"></i></button></a> <a href="{{ URL::route('console') }}/va/{{{ $va->cid }}}/status/-1"><button id="removeVABtn" style="padding: 1px;" data-title="Set VA status to Removed" class="btn btn-default tooltip-top"><i class="fa fa-ban fa-fw"></i></button></a>
                                 @endif
                                 @if ($va->status == 0)
-                                <span class="label label-danger">Pending</span>
+                                <span class="label label-danger">Pending</span> <a href="{{ URL::route('console') }}/va/{{{ $va->cid }}}/status/1"><button id="approveVABtn" style="padding: 1px;" data-title="Set VA status to Approved" class="btn btn-default tooltip-top"><i class="fa fa-thumbs-up fa-fw"></i></button></a> <a href="{{ URL::route('console') }}/va/{{{ $va->cid }}}/status/-1"><button id="removeVABtn" style="padding: 1px;" data-title="Set VA status to Removed" class="btn btn-default tooltip-top"><i class="fa fa-ban fa-fw"></i></button></a>
                                 @endif
                                 @if ($va->status == -1)
-                                <span class="label label-default">Removed</span>
+                                <span class="label label-default">Removed</span> <a href="{{ URL::route('console') }}/va/{{{ $va->cid }}}/status/0"><button id="pendingVABtn" style="padding: 1px;" data-title="Set VA status to Pending" class="btn btn-default tooltip-top"><i class="fa fa-square-o fa-fw"></i></button></a> <a href="{{ URL::route('console') }}/va/{{{ $va->cid }}}/status/1"><button id="approveVABtn" style="padding: 1px;" data-title="Set VA status to Approved" class="btn btn-default tooltip-top"><i class="fa fa-thumbs-up fa-fw"></i></button></a>
                                 @endif
                             </td></tr>
                         <tr/><td>Link Back: </td><td>
@@ -516,7 +516,12 @@
                             <span id="linkbackNotFoundLabel" style="display: none;" class="label label-danger">Not Found</span>
                             @endif
                             <input type="hidden" id="linkBackVa" value="{{{ $va->cid }}}" />
-                            <button style="padding: 1px;" id="linkBackRefreshBtn" class="btn btn-default"><i id="linkBackRefreshIcon" class="fa fa-refresh fa-fw"></i></button>
+                            <button data-title="Have the system automatically search for a link back and update the status accordingly." style="padding: 1px;" id="linkBackRefreshBtn" class="btn btn-default tooltip-bottom"><i id="linkBackRefreshIcon" class="fa fa-refresh fa-fw"></i></button>
+                            @if ($va->linkbackstatus == 0)
+                            <a href="{{ URL::route('console') }}/va/{{{ $va->cid }}}/linkbackstatus/1"><button id="foundLinkBackBtn" style="padding: 1px;" data-title="Set VA Link Back status to Found" class="btn btn-default tooltip-bottom"><i class="fa fa-thumbs-up fa-fw"></i></button></a>
+                            @elseif ($va->linkbackstatus == 1)
+                            <a href="{{ URL::route('console') }}/va/{{{ $va->cid }}}/linkbackstatus/0"><button id="notFoundLinkBackBtn" style="padding: 1px;" data-title="Set VA Link Back status to Not Found" class="btn btn-default tooltip-bottom"><i class="fa fa-thumbs-down fa-fw"></i></button></a>
+                            @endif
                         </td></tr>
                     </table>
                 </div>

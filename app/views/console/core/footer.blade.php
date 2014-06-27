@@ -32,22 +32,41 @@
     <script src="{{ URL::to('/') }}/js/plugins/morris/raphael-2.1.0.min.js"></script>
     <script src="{{ URL::to('/') }}/js/plugins/morris/morris.js"></script>
     <script src="{{ URL::to('/') }}/js/smooth-scroll.js"></script>
+    <script src="{{ URL::to('/') }}/js/consoleapplication.js"></script>
     <script>
         $(document).ready(function() {
             $('#page-wrapper').fadeIn();
 
-            smoothScroll.init({
-                speed: 850,
-                easing: 'easeInOutQuad',
-            });
 
             @if (Session::get('scrollTo') != '')
                 smoothScroll.animateScroll( null, '{{{ Session::get('scrollTo') }}}' );
             @endif
 
+
             $('#createBroadcastToggle').on('click', function() {
                 $('#createBroadcastPanelBody').slideToggle('fast');
             });
+
+            var hash = window.location.hash;
+            switch (hash) {
+                case("#status"):
+                    $('#consoleVATabs a[href="#status"]').tab('show');
+                    smoothScroll.animateScroll(null, '#page-wrapper')
+                    break;
+                case("#profile"):
+                    $('#consoleVATabs a[href="#profile"]').tab('show');
+                    smoothScroll.animateScroll(null, '#page-wrapper')
+                    break;
+                case("#banner"):
+                    $('#consoleVATabs a[href="#banner"]').tab('show');
+                    smoothScroll.animateScroll(null, '#page-wrapper')
+                    break;
+                case("#audit"):
+                    $('#consoleVATabs a[href="#audit"]').tab('show');
+                    smoothScroll.animateScroll(null, '#page-wrapper')
+                    break;
+            }
+
 
 
             function ajaxSearch() {

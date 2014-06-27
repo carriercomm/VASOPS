@@ -193,6 +193,40 @@ class ConsoleController extends BaseController {
         return View::make('console.va')->with(array('va' => $va, 'banner' => $banner, 'audit_log' => $audit_log, 'banner_maxwidth' => $banner_maxwidth, 'banner_maxheight' => $banner_maxheight));
     }
 
+    public function get_vaupdatestatus($id, $status) {
+        //Verify the VA exists
+        $va = User::findOrFail($id);
+        //Verify the status is a valid number
+        $possibleStatus = array('-1', '0', '1');
+        if (in_array($status, $possibleStatus)) {
+            //Update the VA
+            $va->status = $status;
+            $va->save();
+            //Finally redirect to the page
+            return Redirect::to('console/va/' . $id . '#status');
+        }
+        else
+            App::abort('404', 'Invalid Status');
+    }
+
+    public function get_vaupdatelinkbackstatus($id, $status) {
+        //Verify the VA exists
+        $va = User::findOrFail($id);
+        //Verify the status is valid
+        $possibleStatus = array('0', '1');
+        if (in_array($status, $possibleStatus)) {
+            //Update the linkback status
+            $va->linkbackstatus = $status;
+            //Save
+            $va->save();
+            //Finally redirect to the page
+            return Redirect::to('console/va/' . $id . '#status');
+        }
+        else {
+            App::abort('404', 'Invalid Linkback Status');
+        }
+    }
+
     public function get_helpdesk($filter) {
         $filter = strtolower($filter);
         //Make sure our filter is valid
