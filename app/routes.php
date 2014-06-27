@@ -63,7 +63,7 @@ Route::get('console/helpdesk/view/{id}', array('as' => 'consolehelpdeskview', 'u
 Route::post('console/helpdesk/reply/{id}', array('as' => 'consolehelpdeskreply', 'uses' => 'ConsoleController@post_helpdeskreply', 'before' => 'consoleauth|csrf'));
 Route::get('console/helpdesk/close/{id}', array('as' => 'consolehelpdeskclose', 'uses' => 'ConsoleController@get_helpdeskclose', 'before' => 'consoleauth'));
 Route::get('console/helpdesk/open/{id}', array('as' => 'consolehelpdeskopen', 'uses' => 'ConsoleController@get_helpdeskopen', 'before' => 'consoleauth'));
-Route::get('console/helpdesk/assign/{ticketid}/{cid}', array('as' => 'consolehelpdeskassign', 'uses' => 'ConsoleController@get_helpdeskassign', 'before' => 'consoleauth'));
+Route::any('console/helpdesk/assign/{ticketid}/{cid?}', array('as' => 'consolehelpdeskassign', 'uses' => 'ConsoleController@get_post_helpdeskassign', 'before' => 'consoleauth'));
 Route::get('console/emailtemplates', array('as' => 'consoleemailtemplates', 'uses' => 'ConsoleController@get_emailtemplates', 'before' => 'consoleauth'));
 Route::post('console/emailtemplate/new', array('as' => 'consoleemailtemplatenew', 'uses' => 'ConsoleController@post_emailtemplatenew', 'before' => 'consoleauth|csrf'));
 Route::get('console/emailtemplates/edit/{id}', array('as' => 'consoleemailtemplateedit', 'uses' => 'ConsoleController@get_emailtemplateedit', 'before' => 'consoleauth'));

@@ -57,7 +57,7 @@
                                     </li>
                                     @endif
                                     <li>
-                                        <a href="#assignToTicketModal">
+                                        <a id="assignToTicketTriggerModal" href="#">
                                             <div>
                                                 <i class="fa fa-users fa-fw"></i> Assign To
                                             </div>
@@ -173,6 +173,35 @@
                 <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
                 <a href="{{ Url::route('console') }}/helpdesk/delete/{{{ $ticket->id }}}"><button type="button" class="btn btn-danger">Delete Ticket</button></a>
             </div>
+        </div>
+    </div>
+</div>
+
+<!--/#assignToTicketModal -->
+<div class="modal fade" id="assignToTicketModal" tabindex="-1" role="dialog" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true"><i class="fa fa-times fa-fw"></i></button>
+                <h3 class="modal-title" id="myModalLabel">Assign Ticket To</h3>
+            </div>
+            <form class="form" action="{{ Url::route('console') }}/helpdesk/assign/{{{ $ticket->id }}}" method="POST">
+                <div class="modal-body">
+                    <div class="form-group">
+                        <label>Choose an auditor to assign the ticket to:</label>
+                        <select name="assignToTicketSelect" class="form-control">
+                            <option value="">Select an audit manager</option>
+                            @foreach ($auditors as $auditor)
+                            <option value="{{{ $auditor->cid }}}">{{{ $auditor->name }}}</option>
+                            @endforeach
+                        </select>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+                    <input class="btn btn-info" type="submit" value="Assign Ticket" />
+                </div>
+            </form>
         </div>
     </div>
 </div>

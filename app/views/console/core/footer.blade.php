@@ -465,6 +465,10 @@
                 $('#verifyDeleteTicketModal').modal('show');
             });
 
+            $('#assignToTicketTriggerModal').on('click', function() {
+                $('#assignToTicketModal').modal('show');
+            })
+
 
 
         });

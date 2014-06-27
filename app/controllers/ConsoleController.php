@@ -230,8 +230,10 @@ class ConsoleController extends BaseController {
         $ticket = Ticket::findOrFail($id);
         //Find the replies
         $replies = Ticket::find($id)->replies;
+        //Get a list of auditors (who still have access and not ourselves), for our assign ticket select
+        $auditors = ConsoleUser::where('access', '>', '-1')->where('cid', '!=', Auth::consoleuser()->get()->cid)->orderBy('name', 'ASC')->get();
         //Make the view
-        return View::make('console.helpdeskview')->with(array('ticket' => $ticket, 'replies' => $replies));
+        return View::make('console.helpdeskview')->with(array('ticket' => $ticket, 'replies' => $replies, 'auditors' => $auditors));
     }
 
     public function post_helpdeskreply($id) {
@@ -289,11 +291,20 @@ class ConsoleController extends BaseController {
         return Redirect::to('console/helpdesk/view/' . $id)->with('message', 'Ticket status successfully changed to open.');
     }
 
-    public function get_helpdeskassign($id, $cid){
+    public function get_post_helpdeskassign($id, $cid=""){
         //Verify the ticket exists
         $ticket = Ticket::findOrFail($id);
-        //Verify the console user exists
-        $user = ConsoleUser::findOrFail($cid);
+        //Check to see if the CID is passed via the URL or if it is sent in the post form data
+        if (!empty($cid)) {
+            //Verify the console user exists
+            $user = ConsoleUser::findOrFail($cid);
+        }
+        else {
+            $cid = Input::get('assignToTicketSelect');
+            $user = ConsoleUser::where('cid', '=', $cid)->where('access', '>', '-1')->count();
+            if ($user == 0)
+                App::abort('404', 'Console User model not found');
+        }
         //Update the ticket
         $ticket->assigned = $cid;
         $ticket->save();
