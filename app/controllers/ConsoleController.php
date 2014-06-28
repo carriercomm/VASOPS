@@ -190,7 +190,10 @@ class ConsoleController extends BaseController {
 
         //Pull our audit log
         $audit_log = AuditLog::where('va', '=', $va->cid)->orderBy('created_at', 'DESC')->get();
-        return View::make('console.va')->with(array('va' => $va, 'banner' => $banner, 'audit_log' => $audit_log, 'banner_maxwidth' => $banner_maxwidth, 'banner_maxheight' => $banner_maxheight));
+
+        //Pull our tickets created by this VA
+        $tickets = Ticket::where('vid', '=', $id)->orderBy('updated_at', 'DESC')->get();
+        return View::make('console.va')->with(array('va' => $va, 'banner' => $banner, 'audit_log' => $audit_log, 'banner_maxwidth' => $banner_maxwidth, 'banner_maxheight' => $banner_maxheight, 'tickets' => $tickets));
     }
 
     public function get_vaupdatestatus($id, $status) {
@@ -805,6 +808,131 @@ class ConsoleController extends BaseController {
         $category->save();
         //Great, all done. Now to redirect the user.
         return Redirect::route('consolecategories')->with('message', 'Category successfully updated.');
+    }
+
+    public function get_auditmanagers() {
+        //Get a list of audit managers that are currently active
+        $auditors = ConsoleUser::where('access', '>=', '0')->get();
+        $inactiveAuditors = ConsoleUser::where('access', '=', '-1')->get();
+        //Return our view
+        return View::make('console.auditmanagers')->with(array('auditors' => $auditors, 'inactiveAuditors' => $inactiveAuditors));
+    }
+
+    public function post_auditmanagersadd() {
+        //Get our values
+        $cid = Input::get('inputCid');
+        $name = Input::get('inputName');
+        $access = Input::get('inputAccess');
+        //Create our validator
+        $validator = Validator::make(array(
+            'cid' => $cid,
+            'name' => $name,
+            'access' => $access,
+        ),
+        array(
+            'cid' => 'integer|required|unique:consoleusers',
+            'name' => 'required',
+            'access' => 'integer|in:0,1'
+        ));
+        if ($validator->fails()) {
+            return Redirect::route('consoleauditmanagers')->withErrors($validator);
+        }
+
+        //Great validation passed now just to insert our new data
+        $consoleuser = new ConsoleUser();
+        $consoleuser->cid = $cid;
+        $consoleuser->name = $name;
+        $consoleuser->access = $access;
+        $consoleuser->save();
+        //All done. Now redirect back
+        return Redirect::route('consoleauditmanagers')->with('message', 'Audit Manager <strong>' . $name . '</strong> added successfully.');
+    }
+
+    public function post_auditmanageredit() {
+        $remove = Input::get('editAuditManagerInputRemove');
+        $cid = Input::get('cid');
+        if (empty($remove)) {
+            //Get our values
+            $name = Input::get('editAuditManagerInputName');
+            $access = Input::get('editAuditManagerInputAccess');
+            //Create our validator
+            $validator = Validator::make(array(
+                    'cid' => $cid,
+                    'name' => $name,
+                    'access' => $access,
+                ),
+                array(
+                    'cid' => 'required|exists:consoleusers,cid',
+                    'name' => 'required',
+                    'access' => 'integer|in:0,1'
+                ));
+            if ($validator->fails()) {
+                return Redirect::route('consoleauditmanagers')->withErrors($validator);
+            }
+
+            //Great validation passed now just to insert our new data
+            $consoleuser = ConsoleUser::findOrFail($cid);
+            $consoleuser->name = $name;
+            $consoleuser->access = $access;
+            $consoleuser->save();
+            //All done. Now redirect back
+            return Redirect::route('consoleauditmanagers')->with('message', 'Audit Manager <strong>' . $name . '</strong> edited successfully.');
+        }
+        else {
+            //OK we are removing this guy (in other words setting his access to -1
+            $consoleuser = ConsoleUser::findOrFail($cid);
+            $consoleuser->access = "-1";
+            $consoleuser->save();
+            //No redirect back
+            return Redirect::route('consoleauditmanagers')->with('message', 'Audit Manager <strong>' . $consoleuser->name . '</strong> removed successfully.');
+        }
+    }
+
+    public function get_auditmanagerrestore($id) {
+        //Verify the ID exists
+        $consoleuser = ConsoleUser::findOrFail($id);
+        //Update his access to 0 (Audit Manager)
+        $consoleuser->access = 0;
+        $consoleuser->save();
+        //Redirect back
+        return Redirect::route('consoleauditmanagers')->with('message', 'Audit Manager <strong>' . $consoleuser->name . '</strong> access restored successfully.');
+    }
+
+    public function get_assignauditors() {
+        //Pull our categories
+        //Potential parents are nonchild categories.
+        $potentialparents = Category::where('parentid', '=', '')->get();
+        $children = Category::where('parentid', '!=', '')->get();
+        $parentsarray = Array();
+        foreach ($children as $child) {
+            if (!in_array($child->parentid, $parentsarray))
+                //If the parent is not already in the array add it.
+                $parentsarray[$child->id] = $child->parentid;
+        }
+        //Get all of our parents and find the amount of VAs associated with each
+        $categories = Category::all();
+        $vaInCategories = array();
+        foreach ($categories as $category) {
+            $vaInCategories[$category->id] = User::where('categories', 'like', '%' . $category->id . ',%')->count();
+        }
+        //Fetch a list of active auditors
+        $auditors = ConsoleUser::where('access', '>', '-1')->get();
+        //Calculate how many assignments each auditor currently has
+        $assignmentsPerAuditor = array();
+        foreach ($auditors as $auditor) {
+            $assignments = Assignment::where('auditors', 'like', '%' . $auditor->cid . ',%')->get();
+            $assignmentsPerAuditor[$auditor->cid] = 0;
+            foreach ($assignments as $assignment) {
+                $vas = explode(',', $assignment->vas);
+                $vascount = count($vas) - 1;
+                //Remove the last value of the array (if it is empty)
+                if (empty($vas[$vascount]))
+                    unset($vas[$vascount]);
+                $count = count($vas);
+                $assignmentsPerAuditor[$auditor->cid] += $count;
+            }
+        }
+        return View::make('console.assignauditors')->with(array('potentialparents' => $potentialparents, 'children' => $children, 'parentsarray' => $parentsarray, 'vaInCategories' => $vaInCategories, 'auditors' => $auditors, 'assignmentsPerAuditor' => $assignmentsPerAuditor));
     }
 
 }

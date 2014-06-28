@@ -91,6 +91,11 @@ Route::post('console/categories/new', array('as' => 'consolecategoriesnew', 'use
 Route::get('console/categories/edit/{id}', array('as' => 'consolecategoriesedit', 'uses' => 'ConsoleController@get_categoriesedit', 'before' => 'consoleauth1'));
 Route::post('console/categories/edit/{id}', array('uses' => 'ConsoleController@post_categoriesedit', 'before' => 'consoleauth1|csrf'));
 Route::get('console/helpdesk/delete/{id}', array('as' => 'consolehelpdeskdelete', 'uses' => 'ConsoleController@get_helpdeskdelete', 'before' => 'consoleauth1'));
+Route::get('console/auditmanagers', array('as' => 'consoleauditmanagers', 'uses' => 'ConsoleController@get_auditmanagers', 'before' => 'consoleauth1'));
+Route::post('console/auditmanagers/add', array('as' => 'consoleaddauditmanager', 'uses' => 'ConsoleController@post_auditmanagersadd', 'before' => 'consoleauth1|csrf'));
+Route::post('console/auditmanagers/edit', array('as' => 'consoleeditauditmanager', 'uses' => 'ConsoleController@post_auditmanageredit', 'before' => 'consoleauth1|csrf'));
+Route::get('console/auditmanagers/restore/{id}', array('as' => 'consolerestoreauditmanager', 'uses' => 'ConsoleController@get_auditmanagerrestore', 'before' => 'consoleauth1'));
+Route::get('console/assignauditors', array('as' => 'consoleassignauditors', 'uses' => 'ConsoleController@get_assignauditors', 'before' => 'consoleauth1'));
     //------AJAX---------
     Route::post('console/categories/deletechild', array('as' => 'consolecategoriesdeletechild', 'uses' => 'ConsoleController@post_categoriesdeletechild', 'before' => 'consoleauth1|csrf'));
     Route::post('console/categories/deleteparent', array('as' => 'consolecategoriesdeleteparent', 'uses' => 'ConsoleController@post_categoriesdeleteparent', 'before' => 'consoleauth1|csrf'));

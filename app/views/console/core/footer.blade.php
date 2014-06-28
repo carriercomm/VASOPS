@@ -65,6 +65,10 @@
                     $('#consoleVATabs a[href="#audit"]').tab('show');
                     smoothScroll.animateScroll(null, '#page-wrapper')
                     break;
+                case('#tickets'):
+                    $('#consoleVATabs a[href="#tickets"]').tab('show');
+                    smoothScroll.animateScroll(null, '#page-wrapper')
+                    break;
             }
 
 
@@ -487,6 +491,25 @@
             $('#assignToTicketTriggerModal').on('click', function() {
                 $('#assignToTicketModal').modal('show');
             })
+
+            $('#addAuditManagerBtn').on('click', function(e) {
+                console.log('Triggered');
+                $('#addAuditManagerModal').modal('show');
+                e.preventDefault();
+            })
+
+            $('.editAuditManagerBtn').on('click', function(e) {
+                var cid = $(this).attr('data-cid');
+                var name = $(this).attr('data-name');
+                var access = $(this).attr('data-access');
+                console.log(cid);
+                $('#editAuditManagerInputCid, #editAuditManagerInputCidDisabled').val(cid);
+                $('#editAuditManagerInputName').val(name);
+                $('#editAuditManagerInputAccess option').eq(access).attr('selected', 'selected');
+                $('#editAuditManagerModal').modal('show');
+                e.preventDefault();
+            })
+
 
 
 

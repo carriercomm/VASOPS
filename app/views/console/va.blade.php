@@ -30,6 +30,11 @@
                         Audit Log
                     </a>
                 </li>
+                <li>
+                    <a href="#tickets" data-toggle="tab">
+                        Tickets
+                    </a>
+                </li>
             </ul>
 
         </div>
@@ -555,6 +560,20 @@
                             </div>
                         </div>
                         @endforeach
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div id="tickets" class="tab-pane fade in">
+            <div class="row">
+                <div class="col-lg-12">
+                    <div class="table-responsive">
+                        <table class="table table-bordered table-responsive">
+                            <tr><th><i class="fa fa-slack fa-fw"></i></th><th>Name</th><th>Subject</th><th>Assigned</th><th>Status</th><th>Last Update</th><th>Created</th><th><i class="fa fa-eye fa-fw"></i></th></tr>
+                            @foreach ($tickets as $ticket)
+                            <tr><td>{{{ $ticket->id }}}</td><td>{{{ User::getFullName($ticket->vid) }}}</td><td>{{{ $ticket->subject }}}</td><td>@if (!empty($ticket->assigned)) <span class="label label-danger"><i class="fa fa-bookmark fa-fw"></i> {{{ ConsoleUser::getName($ticket->assigned) }}} @else <span class="label label-default">Unassigned</span> @endif</td><td>@if ($ticket->status == 0)<span class="label label-primary">Closed</span> @elseif ($ticket->status == 1) <span class="label label-success">Open</span>@endif</td><td>{{{ $ticket->updated_at }}}</td><td>{{{ $ticket->created_at }}}</td><td><a class="nolinkstyle" href="{{ URL::route('console') }}/helpdesk/view/{{{ $ticket->id }}}"><i class="fa fa-eye fa-fw"></i></a></td></tr>
+                            @endforeach
+                        </table>
                     </div>
                 </div>
             </div>

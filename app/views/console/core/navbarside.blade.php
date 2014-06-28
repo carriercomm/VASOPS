@@ -48,10 +48,10 @@
                         <a href="{{ URL::route('consolebroadcasts') }}"> <i class="fa fa-bullhorn fa-fw"></i> Console Broadcasts</a>
                     </li>
                     <li>
-                        <a href="#"> <i class="fa fa-users fa-fw"></i> Manage Audit Managers</a>
+                        <a href="{{ URL::route('consoleauditmanagers') }}"> <i class="fa fa-users fa-fw"></i> Manage Audit Managers</a>
                     </li>
                     <li>
-                        <a href="#"> <i class="fa fa-exchange fa-fw"></i> Assign Auditors</a>
+                        <a href="{{ URL::route('consoleassignauditors') }}"> <i class="fa fa-exchange fa-fw"></i> Assign Auditors</a>
                     </li>
                     <li>
                         <a href="{{ URL::route('consolecategories') }}"> <i class="fa fa-ellipsis-h fa-fw"></i> Manage Categories</a>
