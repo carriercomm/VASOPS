@@ -27,7 +27,7 @@
     @endif
     <div class="row">
         <div class="col-lg-12">
-            <h4>Your Assignments</h4>
+            <h4>Your Assignments @if (count($assignments) > 0) <span class="label label-warning">{{{ count($assignments) }}}</span> @endif</h4>
             <div class="table-responsive">
                 <table class="table table-responsive table-bordered">
                     <tr><th>ID</th><th>Categories</th><th>Auditors Assigned</th><th>Assigned At</th><th>Actions</th>@if (Auth::consoleuser()->get()->access > 0)<th>Admin</th> @endif</tr>
@@ -41,7 +41,7 @@
     @if (Auth::consoleuser()->get()->access > 0)
     <div class="row">
         <div class="col-lg-12">
-            <h4>Other's Assignments</h4>
+            <h4>Other's Assignments @if (count($othersAssignments) > 0) <span class="label label-warning">{{{ count($othersAssignments) }}}</span> @endif</h4>
             <div class="table-responsive">
                 <table class="table table-responsive table-bordered">
                     <tr><th>ID</th><th>Categories</th><th>Auditors Assigned</th><th>Assigned At</th><th>Admin</th></tr>

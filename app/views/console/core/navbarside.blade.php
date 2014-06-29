@@ -35,7 +35,7 @@
                 <!-- /.nav-second-level -->
             </li>
             <li>
-                <a href="{{ URL::route('consoleassignments') }}"><i class="fa fa-pencil fa-fw"></i> Audit Assignments</a>
+                <a href="{{ URL::route('consoleassignments') }}"><i class="fa fa-pencil fa-fw"></i> Audit Assignments @if (Assignment::get_NumAssignments() > 0)<span class="label label-warning">{{{ Assignment::get_NumAssignments() > 0 }}}</span>@endif</a>
             </li>
             <li>
                 <a href="{{ URL::route('consoleemailtemplates') }}"><i class="fa fa-envelope fa-fw"></i> Email Templates</a>
