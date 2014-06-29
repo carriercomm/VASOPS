@@ -35,10 +35,13 @@
                 <!-- /.nav-second-level -->
             </li>
             <li>
+                <a href="{{ URL::route('consoleassignments') }}"><i class="fa fa-pencil fa-fw"></i> Audit Assignments</a>
+            </li>
+            <li>
                 <a href="{{ URL::route('consoleemailtemplates') }}"><i class="fa fa-envelope fa-fw"></i> Email Templates</a>
             </li>
             <li>
-                <a href="#"><i class="fa fa-bar-chart-o fa-fw"></i> Global Statistics</a>
+                <a href="{{ URL::route('consolestats') }}"><i class="fa fa-bar-chart-o fa-fw"></i> Global Statistics</a>
             </li>
             @if (Auth::consoleuser()->get()->access > 0)
             <li>

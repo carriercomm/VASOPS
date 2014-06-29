@@ -39,9 +39,8 @@
 
 
             @if (Session::get('scrollTo') != '')
-                smoothScroll.animateScroll( null, '{{{ Session::get('scrollTo') }}}' );
+                smoothScroll.animateScroll(null, '{{{ Session::get('scrollTo') }}}' );
             @endif
-
 
             $('#createBroadcastToggle').on('click', function() {
                 $('#createBroadcastPanelBody').slideToggle('fast');
@@ -51,6 +50,10 @@
             switch (hash) {
                 case("#status"):
                     $('#consoleVATabs a[href="#status"]').tab('show');
+                    smoothScroll.animateScroll(null, '#page-wrapper')
+                    break;
+                case('#email'):
+                    $('#consoleVATabs a[href="#email"]').tab('show');
                     smoothScroll.animateScroll(null, '#page-wrapper')
                     break;
                 case("#profile"):
@@ -493,7 +496,6 @@
             })
 
             $('#addAuditManagerBtn').on('click', function(e) {
-                console.log('Triggered');
                 $('#addAuditManagerModal').modal('show');
                 e.preventDefault();
             })
@@ -502,12 +504,25 @@
                 var cid = $(this).attr('data-cid');
                 var name = $(this).attr('data-name');
                 var access = $(this).attr('data-access');
-                console.log(cid);
                 $('#editAuditManagerInputCid, #editAuditManagerInputCidDisabled').val(cid);
                 $('#editAuditManagerInputName').val(name);
                 $('#editAuditManagerInputAccess option').eq(access).attr('selected', 'selected');
                 $('#editAuditManagerModal').modal('show');
                 e.preventDefault();
+            })
+
+            $('#completeAuditsBtn').on('click', function() {
+                smoothScroll.animateScroll(null, '#completeAuditsRow');
+            })
+
+            $('#inputEmailTemplatesSelectVA').on('change', function() {
+                if ($(this).val() != "") {
+                    var caretPos = document.getElementById('inputEmailTemplatesBodyVA').selectionStart;
+                    var text = $(this).val();
+                    var currentContent = $('#inputEmailTemplatesBodyVA').val();
+                    jQuery('#inputEmailTemplatesBodyVA').val(currentContent.substring(0, caretPos) + text + currentContent.substring(caretPos));
+                }
+
             })
 
 

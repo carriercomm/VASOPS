@@ -72,12 +72,12 @@
             <h4>Shared Templates</h4>
             <div class="table-responsive">
                 <table class="table table-bordered table-responsive table-striped">
-                    <tr><th>Name</th><th>Subject</th><th>Body</th>@if (Auth::consoleuser()->get()->access > 0) <th>Actions</th> @endif</tr>
+                    <tr><th>Author</th></th><th>Name</th><th>Subject</th><th>Body</th>@if (Auth::consoleuser()->get()->access > 0) <th>Actions</th> @endif</tr>
                     @if (count($sharedTemplates) < 1)
-                    <tr><td @if (Auth::consoleuser()->get()->access > 0) colspan="4" @else colspan="3" @endif>No shared templates found...</td></tr>
+                    <tr><td @if (Auth::consoleuser()->get()->access > 0) colspan="5" @else colspan="4" @endif>No shared templates found...</td></tr>
                     @else
                     @foreach ($sharedTemplates as $sharedTemplate)
-                    <tr data-templateid="{{{ $sharedTemplate->id }}}"><td>{{{ $sharedTemplate->name }}}</td><td>{{{ $sharedTemplate->subject }}}</td><td>{{{ substr($sharedTemplate->content,0,100) }}}...</td>@if (Auth::consoleuser()->get()->access > 0) <td><a href="{{ URL::route('consoleemailtemplates') }}/edit/{{{ $sharedTemplate->id }}}"><i class="fa fa-edit fa-fw pointer"></i></a><span class="emailTemplateDeleteX"><i class="fa fa-times fa-fw pointer"></i></span></td> @endif</tr>
+                    <tr data-templateid="{{{ $sharedTemplate->id }}}"><td><span class="label label-danger"><i class="fa fa-bookmark fa-fw"></i> {{{ ConsoleUser::getName($sharedTemplate->author) }}}</span></td><td>{{{ $sharedTemplate->name }}}</td><td>{{{ $sharedTemplate->subject }}}</td><td>{{{ substr($sharedTemplate->content,0,100) }}}...</td>@if (Auth::consoleuser()->get()->access > 0) <td><a class="nolinkstyle" href="{{ URL::route('consoleemailtemplates') }}/edit/{{{ $sharedTemplate->id }}}"><i class="fa fa-edit fa-fw pointer"></i></a><span class="emailTemplateDeleteX"><i class="fa fa-times fa-fw pointer"></i></span></td> @endif</tr>
                     @endforeach
                     @endif
                 </table>

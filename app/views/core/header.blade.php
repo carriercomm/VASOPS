@@ -34,7 +34,7 @@
                     <a id="applyBtn" class="btn btn-success" href="#">Apply to be a VA Partner</a>
                     @endif
                     <a id="currentBtn" class="btn btn-success" href="#">Current VAs</a>
-                    <a id="findBtn" class="btn btn-success" href="#">Find Your VA</a>
+                    <!--<a id="findBtn" class="btn btn-success" href="#">Find Your VA</a>-->
                     @if(Auth::user()->check())
                     <a class="btn" href="{{URL::to('va')}}">Manage VA</a>
                     @endif
@@ -43,7 +43,7 @@
                     <a id="applyBtn" class="btn btn-success" href="{{URL::to('/')}}/#moduleApply">Apply to be a VA Partner</a>
                     @endif
                     <a id="currentBtn" class="btn btn-success" href="{{URL::to('/')}}/#moduleCurrent">Current VAs</a>
-                    <a id="findBtn" class="btn btn-success" href="{{URL::to('/')}}/#moduleFind">Find Your VA</a>
+                    <!--<a id="findBtn" class="btn btn-success" href="{{URL::to('/')}}/#moduleFind">Find Your VA</a>-->
                     @if(Auth::user()->check())
                     <a class="btn" href="{{URL::to('va')}}">Manage VA</a>
                     @endif

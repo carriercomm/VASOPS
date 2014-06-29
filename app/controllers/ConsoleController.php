@@ -193,7 +193,11 @@ class ConsoleController extends BaseController {
 
         //Pull our tickets created by this VA
         $tickets = Ticket::where('vid', '=', $id)->orderBy('updated_at', 'DESC')->get();
-        return View::make('console.va')->with(array('va' => $va, 'banner' => $banner, 'audit_log' => $audit_log, 'banner_maxwidth' => $banner_maxwidth, 'banner_maxheight' => $banner_maxheight, 'tickets' => $tickets));
+
+        //Pull our email templates
+        $emailTemplates = EmailTemplate::where('author', '=', Auth::consoleuser()->get()->cid)->orderBy('name', 'DESC')->get();
+        $sharedEmailTemplates = EmailTemplate::where('author', '!=', Auth::consoleuser()->get()->cid)->where('public', '=', '1')->orderBy('name', 'DESC')->get();
+        return View::make('console.va')->with(array('va' => $va, 'banner' => $banner, 'audit_log' => $audit_log, 'banner_maxwidth' => $banner_maxwidth, 'banner_maxheight' => $banner_maxheight, 'tickets' => $tickets, 'emailTemplates' => $emailTemplates, 'sharedEmailTemplates' => $sharedEmailTemplates));
     }
 
     public function get_vaupdatestatus($id, $status) {
@@ -533,7 +537,7 @@ class ConsoleController extends BaseController {
                 $va->banner = $fileName;
                 $va->save();
                 //Redirect the user back to the VA Profile
-                return Redirect::to('console/va/' . $cid);
+                return Redirect::to('console/va/' . $cid . '#banner')->with('message', 'Banner Uploaded Successfully.');
             }
         }
     }
@@ -554,7 +558,7 @@ class ConsoleController extends BaseController {
         //Update the database
         $va->banner = '';
         $va->save();
-        return Redirect::to('console/va/' . $cid);
+        return Redirect::to('console/va/' . $cid . '#banner')->with('message', 'Banner Removed Successfully.');
     }
 
     public function post_findlinkback() {
@@ -933,6 +937,169 @@ class ConsoleController extends BaseController {
             }
         }
         return View::make('console.assignauditors')->with(array('potentialparents' => $potentialparents, 'children' => $children, 'parentsarray' => $parentsarray, 'vaInCategories' => $vaInCategories, 'auditors' => $auditors, 'assignmentsPerAuditor' => $assignmentsPerAuditor));
+    }
+
+    public function post_assignauditors() {
+        $auditors = Input::get('auditorCheckBox');
+        $categories = Input::get('categoryCheckBox');
+        //Start our validator
+        $validator = Validator::make(array(
+            'auditors' => $auditors,
+            'categories' => $categories,
+        ), array(
+            'auditors' => 'required|array',
+            'categories' => 'required|array',
+        ));
+        if ($validator->fails()) {
+            return Redirect::route('consoleassignauditors')->withErrors($validator);
+        }
+        $auditors = implode(',', $auditors) . ',';
+        $vas = '';
+        foreach ($categories as $category) {
+            $query = User::where('categories', 'like', '%' . $category . ',%')->get();
+            foreach ($query as $va) {
+                $vas = $vas . $va->cid . ',';
+            }
+        }
+        //Now check for duplicate entries (duplicate VAs)
+        $vaarray = explode(',', $vas);
+        //Remove the last empty array key
+        $vaarraycount = count($vaarray) - 1;
+        unset($vaarray[$vaarraycount]);
+        //Remove duplicate keys
+        $vaarray = array_unique($vaarray);
+        //Convert it back to a comma delimitted string
+        $vas = implode(',', $vaarray) . ',';
+        $categories = implode(',', $categories) . ',';
+        $assignment = new Assignment();
+        $assignment->vas = $vas;
+        $assignment->categories = $categories;
+        $assignment->auditors = $auditors;
+        //Save our new assignment
+        $assignment->save();
+        //Finally redirect back to the assignments page
+        return Redirect::route('consoleassignauditors')->with('message', 'New Auditor Assignment Created Successfully.');
+    }
+
+    public function get_assignments() {
+        //Pull our assignments for the current user
+        $assignments = Assignment::where('auditors', 'like', '%' . Auth::consoleuser()->get()->cid . ',%')->get();
+        //Create an array of each VA that needs to be auditted
+        $vaslist = array();
+        foreach ($assignments as $assignment) {
+            $vas = $assignment->vas;
+            $vas = explode(',', $vas);
+            //Remove the last empty value
+            $vascount = count($vas) - 1;
+            unset($vas[$vascount]);
+            foreach ($vas as $va) {
+                $result = User::findOrFail($va);
+                $vaslist[] = array('cid' => $va, 'vaname' => $result->vaname, 'assignmentid' => $assignment->id);
+            }
+        }
+        //Is our user an administrator?
+        if (Auth::consoleuser()->get()->access > 0) {
+            //Yes, ok let's query for all of the assignments other than their own
+            $othersassignments = Assignment::where('auditors', 'not like', '%' . Auth::consoleuser()->get()->cid . ',%')->get();
+        }
+        //Pull a list of all of the categories
+        $categories = Category::all();
+        //Create an array of categories with the key as the cat id and the value the name
+        $catnames = array();
+        foreach ($categories as $category) {
+            $catnames[$category->id] = $category->name;
+        }
+        //Pull all assignments
+        $allassignments = Assignment::all();
+        $categoriesPerAssignment = array();
+        $auditorsPerAssignment = array();
+        foreach ($allassignments as $allassignment) {
+            //Create a list of other auditors per assignment
+            $auditors = explode(',', $allassignment->auditors);
+            //Get rid of the last empty value
+            $auditorscount = count($auditors) - 1;
+            unset($auditors[$auditorscount]);
+            $auditorsPerAssignment[$allassignment->id] = '';
+            foreach ($auditors as $auditor) {
+                $auditorsPerAssignment[$allassignment->id] = $auditorsPerAssignment[$allassignment->id] . '<span class="label label-danger"><i class="fa fa-bookmark fa-fw"></i> ' . ConsoleUser::getName($auditor) . '</span> ';
+            }
+            $categoriesPerAssignment[$allassignment->id] = '';
+            $cats = $allassignment->categories;
+            $cats = explode(',', $cats);
+            //Remove the last empty value
+            $catscount = count($cats) - 1;
+            unset($cats[$catscount]);
+            foreach ($cats as $cat ) {
+                $categoriesPerAssignment[$allassignment->id] = $categoriesPerAssignment[$allassignment->id] . '<span class="label label-default">' . $catnames[$cat] . '</span> ';
+            }
+        }
+        return View::make('console.assignments')->with(array('assignments' => $assignments, 'othersAssignments' => $othersassignments, 'categoriesPerAssignment' => $categoriesPerAssignment, 'auditorsPerAssignment' => $auditorsPerAssignment, 'vasList' => $vaslist));
+    }
+
+    public function get_assignmentsdelete($id) {
+        //Verify the assignment exists
+        $assignment = Assignment::findOrFail($id);
+        $assignment->delete();
+        //Now just redirect back
+        return Redirect::route('consoleassignments')->with('message', 'Assignment removed successfully.');
+    }
+
+    public function get_assignmentscomplete($assignment, $va) {
+        //Ensure both variables are present
+        if (empty($assignment) || empty($va))
+            return Redirect::route('consoleassignments')->with('message', 'Missing GET parameters ($assignment, $va)');
+        //Verify the assignment exists and this member is assigned to this assignment
+        $assignment = Assignment::findOrFail($assignment);
+        $assigned = explode(',', $assignment->auditors);
+        if (!in_array(Auth::consoleuser()->get()->cid, $assigned))
+            return Redirect::route('consoleassignments')->with('message', 'Permission Denied. Auditor not assigned to this assignment.');
+        //Pull the VAs
+        $vas = explode(',', $assignment->vas);
+        //Remove the last empty value
+        $vascount = count($vas) - 1;
+        unset($vas[$vascount]);
+        //Remove the matching value
+        $key = array_search($va, $vas);
+        unset($vas[$key]);
+        //Check to see if we have any VAs left for auditting
+        if (count($vas) == 0) {
+            $assignment->delete();
+            return Redirect::route('consoleassignments')->with('message', 'Audit completed. No VAs left to audit in this assignment. Assignment Completed Successfully. Assignment Removed.');
+        }
+        //Convert our array back to a string
+        $vas = implode(',',  $vas) . ',';
+        //Update the database
+        $assignment->vas = $vas;
+        $assignment->save();
+        //Redirect back to the page.
+        return Redirect::route('consoleassignments')->with('message', 'Audit completed. Assignment Updated Successfully.');
+    }
+
+    public function post_emailva($cid) {
+        //Verify the VA CID is valid
+        $va = User::findOrFail($cid);
+        $email = $va->email;
+        $subject = Input::get('inputSubject');
+        $body = Input::get('inputBody');
+        if (empty($subject) || empty($body))
+            return Redirect::to('console/va/' . $cid . '#email')->with('message', 'Please enter a subject and body prior to sending the message.');
+        //Replace the email body variables
+        $variables = array("[name]", "[vaname]", "[cid]", "[email]", "[auditorname]");
+        $values = array(User::getFirstName($cid), $va->vaname, $cid, $va->email, Auth::consoleuser()->get()->name);
+        $body = str_replace($variables, $values, $body);
+        $body = nl2br($body);
+        $data = array('va' => $va, 'email' => $email, 'subject' => $subject);
+        //Alright. Time to do some email sending.
+        Mail::send('email.default', array("content" => $body), function($message) use ($data) {
+            $message->to($data['va']->email, $data['va']->name)->subject($data['subject']);
+        });
+        //Hopefully all went well. Now just redirect back
+        return Redirect::to('console/va/' . $cid . '#email')->with('message', 'Your email was sent successfully.');
+    }
+
+    public function get_stats() {
+        //Todo in progress
+        return View::make('console.stats');
     }
 
 }

@@ -7,6 +7,13 @@
             <h1 class="page-header"><i class="fa fa-plane fa-fw"></i>{{{ $va->vaname }}}</h1>
         </div>
     </div>
+    <div class="row">
+        <div class="col-lg-12">
+            @if (Session::get('message') != '')
+            <div class="alert alert-warning">{{{ Session::get('message') }}}</div>
+            @endif
+        </div>
+    </div>
     <div style="margin-bottom: 20px;" class="row">
         <div class="col-lg-12">
             <ul id="consoleVATabs" class="nav nav-pills">
@@ -23,6 +30,11 @@
                 <li>
                     <a href="#status" data-toggle="tab">
                         Status
+                    </a>
+                </li>
+                <li>
+                    <a href="#email" data-toggle="tab">
+                        Email
                     </a>
                 </li>
                 <li>
@@ -529,6 +541,42 @@
                             @endif
                         </td></tr>
                     </table>
+                </div>
+            </div>
+        </div>
+        <div id="email" class="tab-pane fade in">
+            <div class="row">
+                <div class="col-lg-8">
+                    <form action="{{ URL::route('console') }}/va/email/{{{ $va->cid }}}" method="POST" class="form">
+                        <input type="hidden" name="_token" value="{{ csrf_token() }}" />
+                        <div class="form-group">
+                            <label>Subject: </label>
+                            <input type="text" class="form-control" placeholder="Enter a subject..." name="inputSubject" />
+                        </div>
+                        <div class="form-group">
+                            <label>Email Template: </label>
+                            <select id="inputEmailTemplatesSelectVA" class="form-control" name="inputTemplate">
+                                <option value="">Select an Email Template...</option>
+                                @foreach ($emailTemplates as $template)
+                                <option value="{{{ $template->content }}}">{{{ $template->name }}}</option>
+                                @endforeach
+                                @if (count($sharedEmailTemplates) > 0))
+                                <option value="">-----------SHARED TEMPLATES-----------</option>
+                                @foreach ($sharedEmailTemplates as $sharedTemplate)
+                                <option value="{{{ $sharedTemplate->content }}}">{{{ $sharedTemplate->name }}}</option>
+                                @endforeach
+                                @endif
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label>Body: </label>
+                            <textarea data-title="Available Variables: [name] [vaname] [cid] [email] [auditorname]" id="inputEmailTemplatesBodyVA" rows="8" class="form-control tooltip-top" name="inputBody" placeholder="Compose your message..."></textarea>
+                        </div>
+                        <div class="form-actions">
+                            <input type="reset" class="btn" style="color: white;" value="Cancel" />
+                            <input type="submit" class="btn btn-success" value="Send Email" />
+                        </div>
+                    </form>
                 </div>
             </div>
         </div>
