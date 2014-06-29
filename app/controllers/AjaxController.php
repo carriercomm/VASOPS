@@ -377,7 +377,7 @@ class AjaxController extends BaseController {
         $categoryName = Input::get('data');
         $category = Category::where('name', '=', $categoryName)->first();
         $categoryId = $category->id;
-        $vas = User::where('categories', 'like','%' . $categoryId . ',%')->where('status', '=', '1')->where('linkbackstatus', '=', '1')->get();
+        $vas = User::where('categories', 'like','%' . $categoryId . ',%')->where('status', '=', '1')->get();
         if (count($vas) == 0) {
             echo '<h4>No Virtual Airlines Found.</h4>';
         }

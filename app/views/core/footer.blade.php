@@ -222,10 +222,11 @@
             $(this).siblings("#selectedVaInformation").slideToggle('fast');
         });
 
-        $(document).on('click', '#btnSelectVaCategory', function() {
+        $(document).on('click', '#btnSelectVaCategory, #btnVaCategoryParent', function() {
             $('#vaCategoryAjaxData').hide();
             $('#vaCategoryLoader').fadeIn();
             var categoryName = $(this).text();
+            $('#vaCategoryNameHeader').html(categoryName).slideDown();
             //Make the ajax call to fetch the data
             $.ajax({
                 type: "POST",

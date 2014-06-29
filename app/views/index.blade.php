@@ -435,6 +435,7 @@
     </div>
     <div class="row">
         <div class="span12">
+            <div class="alert alert-warning" style="display: none;" id="vaCategoryNameHeader"></div>
             <span id="vaCategoryLoader" style="text-align: center; display: none;"><img alt="Loading..." src="{{ URL::to('/') }}/images/loader.gif"></span>
             <div id="vaCategoryAjaxData" style="display: none;">
             </div>
