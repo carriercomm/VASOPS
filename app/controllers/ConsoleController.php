@@ -54,6 +54,11 @@ class ConsoleController extends BaseController {
         else {
 
             $consoleuser = ConsoleUser::where('cid', '=', $cid)->first();
+            //If there is not a password set for the user then log them in and redirect them to their profile page to set a password
+            if (empty($consoleuser->password) && $password == "initial") {
+                Auth::consoleuser()->loginUsingId($cid);
+                return Redirect::route('consoleprofile')->with('message', 'Verify your details and create a password for your account.');
+            }
             if (!empty($consoleuser)) {
                 //User with the provided CID exists. Now let's run the password
                 if (Hash::check($password, $consoleuser->password)) {
