@@ -72,7 +72,7 @@ class AjaxController extends BaseController {
                 'Email' => 'required|email',
                 'Password' => 'min:6|confirmed',
                 'Password_confirmation' => 'min:6',
-                'Category' => 'required|max:5',
+                'Category' => 'required|max:' . Setting::fetch('max_categories'),
             ),
             array (
                 'Category.max' => 'You have selected more than :max categories.',
@@ -167,7 +167,7 @@ class AjaxController extends BaseController {
                 'Email' => 'required|email',
                 'Password' => 'required|min:6|confirmed',
                 'Password_confirmation' => 'required|min:6',
-                'Category' => 'required|max:5',
+                'Category' => 'required|max:' . Setting::fetch('max_categories'),
             ),
             array (
                 'Category.max' => 'You have selected more than :max categories.',
@@ -350,6 +350,21 @@ class AjaxController extends BaseController {
             $ticket->updated_at = $reply->updated_at;
             //Save our ticket update
             $ticket->save();
+            //Check to see if there is an assigned auditor. If so send them an email notification
+            if (!empty($ticket->assigned)) {
+                $data = array();
+                $auditor = ConsoleUser::find($ticket->assigned)->first();
+                if (!empty($auditor)) {
+                    $data['auditor'] = $auditor;
+                    $data['subject'] = "VATSIM VA New Ticket Update";
+                    if (!empty($auditor->email)) {
+                        $body = "Hello " . ConsoleUser::getName($ticket->assigned) . ",<br /><br />There has been an update to your assigned ticket " . $ticket->subject . " by VA Administrator " . User::getFullName($ticket->va) . ". <br /><br />" . $content . "<br /><br /><br /> <strong>Do not reply to this email. If you wish to reply to this ticket, please do so through the auditor console.</strong>";
+                        Mail::send('email.default', array("content" => $body), function($message) use ($data) {
+                            $message->to($data['va']->email, $data['va']->name)->subject($data['subject']);
+                        });
+                    }
+                }
+            }
             //Return 1 to inform the client this was successful.
             echo '1';
         }
@@ -377,7 +392,7 @@ class AjaxController extends BaseController {
         $categoryName = Input::get('data');
         $category = Category::where('name', '=', $categoryName)->first();
         $categoryId = $category->id;
-        $vas = User::where('categories', 'like','%' . $categoryId . ',%')->where('status', '=', '1')->get();
+        $vas = User::where('categories', 'like','%' . $categoryId . ',%')->where('status', '=', '1')->orderBy('vaname', 'ASC')->get();
         if (count($vas) == 0) {
             echo '<h4>No Virtual Airlines Found.</h4>';
         }

@@ -25,7 +25,7 @@ class ConsoleController extends BaseController {
             ),
             array(
                 'Cid' => 'required|integer',
-                'Password' => 'required',
+                'Password' => '',
             ),
             array (
                 'Cid.required' => 'Please enter your VATSIM CID.',
@@ -309,6 +309,17 @@ class ConsoleController extends BaseController {
         else {
             //Declare the success message
             $message = "Your ticket reply was successfully submitted.";
+        }
+        //Email the VA advising them that there is a new response
+        $va = User::where('cid', '=', $ticket->vid)->first();
+        $data = array();
+        $data['va'] = $va;
+        $data['subject'] = "VATSIM VA New Ticket Update";
+        if (!empty($va->email)) {
+            $body = "Hello " . User::getFirstName($ticket->vid) . ",<br /><br />There has been an update to your " . $ticket->subject . " ticket by Auditor " . ConsoleUser::getName(Auth::consoleuser()->get()->cid) . ". <br /><br />" . $content . "<br /><br /><br /> <strong>Do not reply to this email. If you wish to reply to this ticket, please do so through your account online.</strong>";
+            Mail::send('email.default', array("content" => $body), function($message) use ($data) {
+                $message->to($data['va']->email, $data['va']->name)->subject($data['subject']);
+            });
         }
         //All set now just redirect back to the ticket page with the message
         return Redirect::to('console/helpdesk/view/' . $id)->with(array('scrollTo' => '#ticketReply' . $reply->id, 'message' => $message));
@@ -1097,9 +1108,122 @@ class ConsoleController extends BaseController {
         return Redirect::to('console/va/' . $cid . '#email')->with('message', 'Your email was sent successfully.');
     }
 
+    public function get_profile() {
+        //Pull the auditor
+        $auditor = ConsoleUser::findOrFail(Auth::consoleuser()->get()->cid);
+        //Create the view
+        return View::make('console.profile')->with('auditor', $auditor);
+    }
+
+    public function post_profilesave() {
+        //Get our inputs
+        $name = Input::get('inputName');
+        $email = Input::get('inputEmail');
+        $password = Input::get('inputPassword');
+        //Start the validator
+        $validator = Validator::make(array(
+            'name' => $name,
+            'email' => $email,
+            'password' => $password,
+        ), array(
+            'name' => 'required',
+            'email' => 'required|email',
+            'password' => 'min:5',
+        ));
+        if ($validator->fails())
+            return Redirect::route('consoleprofile')->withErrors($validator);
+
+        //Great validation passed. Now let's push these updates
+        $auditor = ConsoleUser::findOrFail(Auth::consoleuser()->get()->cid);
+        $auditor->name = $name;
+        $auditor->email = $email;
+        if (!empty($auditor->password))
+            $auditor->password = Hash::make($password);
+        //Save
+        $auditor->save();
+        //Redirect back with message
+        return Redirect::route('consoleprofile')->with('message', 'Profile Updated Successfully.');
+    }
+
     public function get_stats() {
         //Todo in progress
         return View::make('console.stats');
+    }
+
+    public function get_adminimport() {
+        //Make sure I am the only one using this tool
+        if (Auth::consoleuser()->get()->cid != "1095510")
+            App::abort('403');
+        $filename = public_path() . '/import/pending.csv';
+        $delimiter = ',';
+        ini_set('auto_detect_line_endings',TRUE);
+        if(!file_exists($filename) || !is_readable($filename))
+            return FALSE;
+
+        $header = NULL;
+        $data = array();
+        if (($handle = fopen($filename, 'r')) !== FALSE)
+        {
+            while (($row = fgetcsv($handle, 1000, $delimiter)) !== FALSE)
+            {
+                if (!$header) {
+                    $header = $row;
+                }
+                else {
+                    if (count($header) > count($row)) {
+                        $difference = count($header) - count($row);
+                        for ($i = 1; $i <= $difference; $i++) {
+                            $row[count($row) + 1] = $delimiter;
+                        }
+                    }
+                    $data[] = array_combine($header, $row);
+                }
+            }
+            fclose($handle);
+        }
+        $i = 0;
+        foreach ($data as $va) {
+            if (!is_numeric($va['id'])) {
+                continue;
+            }
+            $user = new User();
+            $user->cid = $va['id'];
+            $user->vaname = $va['sitename'];
+            $user->url = $va['url'];
+            $user->description = $va['description'];
+            $user->vatsimimagepagelink = $va['recip_page'];
+            $user->country = $va['country'];
+            $user->stateprovince = $va['state'];
+            $user->city = $va['city'];
+            $user->zip = $va['zip'];
+            $user->name = $va['name'];
+            $user->email = $va['email'];
+            $user->status = '0';
+            if ($va['reciprocating'] == "YES")
+                $user->linkbackstatus = '1';
+            else
+                $user->linkbackstatus = '0';
+            $user->categories = '';
+            $categoryArray = array($va['category1'], $va['category2'], $va['category3'], $va['category4'], $va['category5'], $va['category6'], $va['category7'], $va['category8'], $va['category9']);
+            $findArray = array('[1];Virtual Airlines', '[2];Africa - Middle East', '[3];Asia', '[4];North America', '[5];Europe', '[6];Oceania', '[7];South America', '[8];Central America / Caribbean / Mexico', '[9];Airline Alliances', '[17];Cargo Only VAs', '[18];Helicopter Only VAs', '[19];Historical VAs', '[20];General Aviation VAs/Flying Clubs', '[21];XPlane VAs', '[22];Heritage Virtual Airlines', '[16];Authorized Training Organizations');
+            $replaceArray = array('2', '6', '7', '8', '9', '10', '11', '12', '13', '14', '15', '16', '17', '18', '5', '4');
+            foreach ($categoryArray as $category) {
+                $category = str_replace($findArray, $replaceArray, $category);
+                if (in_array($category, $replaceArray))
+                    $user->categories = $user->categories . $category . ',';
+            }
+            //Save the user
+            //$user->save();
+
+            //Now insert the current comments as one audit log entry
+            $auditlog = new AuditLog();
+            $auditlog->va = $va['id'];
+            $auditlog->author = '800000';
+            $auditlog->content = $va['comments'];
+            $auditlog->save();
+            $i++;
+        }
+        echo "Inserted " . $i . ' new records';
     }
 
 }

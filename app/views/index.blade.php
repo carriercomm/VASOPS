@@ -371,7 +371,7 @@
     </div>
 </div>
 <div class="control-group">
-    <label><span id="chooseOrRemove">Choose</span> <span id="numberOfChoicesLabel" class="label label-success">5</span> categories</label>
+    <label><span id="chooseOrRemove">Choose</span> <span id="numberOfChoicesLabel" class="label label-success"></span> or less categories</label>
     <div class="controls">
         @foreach ($categories as $category)
         <div class="checkbox">

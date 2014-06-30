@@ -18,6 +18,8 @@
         <i class="fa fa-user fa-fw"></i> {{{ ConsoleUser::getName(Auth::consoleuser()->get()->cid) }}} <i class="fa fa-caret-down"></i>
     </a>
     <ul class="dropdown-menu dropdown-user">
+        <li><a href="{{ URL::route('consoleprofile') }}"><i class="fa fa-user fa-fw"></i> Account Profile</a></li>
+        <li class="divider"></li>
         <li><a href="{{ URL::route('consolelogout') }}"><i class="fa fa-sign-out fa-fw"></i> Logout</a>
         </li>
     </ul>

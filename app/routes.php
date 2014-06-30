@@ -76,6 +76,8 @@ Route::get('console/assignments', array('as' => 'consoleassignments', 'uses' => 
 Route::get('console/assignments/complete/{assignment}/{va}', array('as' => 'consoleassignmentscomplete', 'uses' => 'ConsoleController@get_assignmentscomplete', 'before' => 'ConsoleAuth'));
 Route::post('console/va/email/{id}', array('as' => 'consoleemailva', 'uses' => 'ConsoleController@post_emailva', 'before' => 'ConsoleAuth|csrf'));
 Route::get('console/stats', array('as' => 'consolestats', 'uses' => 'ConsoleController@get_stats', 'before' => 'ConsoleAuth'));
+Route::get('console/profile', array('as' => 'consoleprofile', 'uses' => 'ConsoleController@get_profile', 'before' => 'ConsoleAuth'));
+Route::post('console/profile', array('as' => 'consoleprofilesave', 'uses' => 'ConsoleController@post_profilesave', 'before' => 'ConsoleAuth|csrf'));
     //------AJAX---------
     Route::post('console/ajax/vaedit', array('as' => 'consoleajaxvaedit', 'uses' => 'ConsoleController@post_vaedit', 'before' => 'consoleauth|csrf'));
     Route::post('console/ajax/createauditlog', array('as' => 'consoleajaxcreateauditlog', 'uses' => 'ConsoleController@post_createauditlog', 'before' => 'consoleauth|csrf'));
@@ -102,6 +104,7 @@ Route::get('console/auditmanagers/restore/{id}', array('as' => 'consolerestoreau
 Route::get('console/assignauditors', array('as' => 'consoleassignauditors', 'uses' => 'ConsoleController@get_assignauditors', 'before' => 'consoleauth1'));
 Route::post('console/assignauditors', array('as' => 'consoleassignauditorsnew', 'uses' => 'ConsoleController@post_assignauditors', 'before' => 'consoleauth1|csrf'));
 Route::get('console/assignments/delete/{id}', array('as' => 'consoleassignmentsdelete', 'uses' => 'ConsoleController@get_assignmentsdelete', 'before' => 'consoleauth1'));
+Route::get('console/admin/import', array('as' => 'consoleadminimport', 'uses' => 'ConsoleController@get_adminimport', 'before' => 'consoleauth1'));
     //------AJAX---------
     Route::post('console/categories/deletechild', array('as' => 'consolecategoriesdeletechild', 'uses' => 'ConsoleController@post_categoriesdeletechild', 'before' => 'consoleauth1|csrf'));
     Route::post('console/categories/deleteparent', array('as' => 'consolecategoriesdeleteparent', 'uses' => 'ConsoleController@post_categoriesdeleteparent', 'before' => 'consoleauth1|csrf'));

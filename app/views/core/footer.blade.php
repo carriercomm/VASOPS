@@ -5,9 +5,9 @@
             <div class="span7">
                 <img src="images/logo.gif" alt="Vatsim"/>
 
-                <h3 class="footer-title">Subscribe</h3>
+                <h3 class="footer-title">VATSIM Virtual Airline System</h3>
 
-                <p>VATSIM Virtual Airline System Beta
+                <p><small>Developed by Colin Schoen</small>
                 </p>
 
                 <p class="pvl">
@@ -18,11 +18,9 @@
 
             <div class="span5">
                 <div class="footer-banner">
-                    <h3 class="footer-title">CS</h3>
+                    <h3 class="footer-title">Beta</h3>
                     <ul>
-                        <li>Cool contact info here!</li>
-                        <li>Many places to find help</li>
-                        <li>VATSIM Rules</li>
+                        <li><a href="/console">Auditor Console</a></li>
                     </ul>
                 </div>
             </div>
@@ -198,7 +196,7 @@
 
         function calculateInputCategory() {
 
-            var maxAllowed = 5;
+            var maxAllowed = {{{ Setting::fetch('max_categories') }}};
             var cnt = $("input[name='inputCategory[]']:checked").length;
             if (cnt > maxAllowed) {
                 $('#chooseOrRemove').text('Remove');
