@@ -1142,7 +1142,7 @@ class ConsoleController extends BaseController {
         $auditor = ConsoleUser::findOrFail(Auth::consoleuser()->get()->cid);
         $auditor->name = $name;
         $auditor->email = $email;
-        if (!empty($auditor->password))
+        if (!empty($password))
             $auditor->password = Hash::make($password);
         //Save
         $auditor->save();
