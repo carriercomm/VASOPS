@@ -15,6 +15,11 @@
         </div>
         <!-- /.col-lg-12 -->
     </div>
+    <div class="row">
+        <div class="col-lg-12">
+            <div class="alert alert-warning"><i class="fa fa-bullhorn fa-fw"></i> <strong>Beta Test Notice</strong>:  Please do not edit or remove existing categories. I need the IDs to stay the same when importing future data. Thank you, Colin.</div>
+        </div>
+    </div>
     <!-- /.row -->
     <div class="row">
         <div class="col-lg-12">
