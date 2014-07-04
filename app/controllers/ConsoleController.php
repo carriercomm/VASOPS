@@ -1225,10 +1225,79 @@ class ConsoleController extends BaseController {
             $auditlog->va = $va['id'];
             $auditlog->author = '800000';
             $auditlog->content = $va['comments'];
-            $auditlog->save();
+//            $auditlog->save();
             $i++;
         }
         echo "Inserted " . $i . ' new records';
+    }
+
+    public function get_adminbannerimport() {
+        //Make sure I am the only one using this tool
+        if (Auth::consoleuser()->get()->cid != "1095510")
+            App::abort('403');
+        $filename = public_path() . '/import/current.csv';
+        $delimiter = ',';
+        ini_set('auto_detect_line_endings',TRUE);
+        if(!file_exists($filename) || !is_readable($filename))
+            return FALSE;
+
+        $header = NULL;
+        $data = array();
+        if (($handle = fopen($filename, 'r')) !== FALSE)
+        {
+            while (($row = fgetcsv($handle, 1000, $delimiter)) !== FALSE)
+            {
+                if (!$header) {
+                    $header = $row;
+                }
+                else {
+                    if (count($header) > count($row)) {
+                        $difference = count($header) - count($row);
+                        for ($i = 1; $i <= $difference; $i++) {
+                            $row[count($row) + 1] = $delimiter;
+                        }
+                    }
+                    $data[] = array_combine($header, $row);
+                }
+            }
+            fclose($handle);
+        }
+        $i = 0;
+        foreach ($data as $va) {
+            if (!is_numeric($va['id'])) {
+                continue;
+            }
+            //Find our user
+            $user = User::find($va['id']);
+            //Make sure this is a valid va
+            if (empty($va))
+                continue;
+            //Pull our banner (prepend 'pend' to the image name when importing pending links)
+            $url = "http://linksmanager.com/b/vatsimvas/" . $va['id'] . ".gif";
+            $saveto = public_path() . '/banners/' . $va['id'] . '.gif';
+            //Save the banner
+            $ch = curl_init ($url);
+            curl_setopt($ch, CURLOPT_HEADER, 0);
+            curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+            curl_setopt($ch, CURLOPT_BINARYTRANSFER,1);
+            $raw=curl_exec($ch);
+            $info = curl_getinfo($ch);
+            if ($info['content_type'] != 'image/gif')
+                continue;
+            curl_close ($ch);
+            if(file_exists($saveto)){
+                unlink($saveto);
+            }
+            $fp = fopen($saveto,'x');
+            fwrite($fp, $raw);
+            fclose($fp);
+
+            //Now update the db
+            $user->banner = $va['id'] . '.gif';
+            $user->save();
+            $i++;
+        }
+        echo 'A total of ' . $i . ' banners imported';
     }
 
 }
