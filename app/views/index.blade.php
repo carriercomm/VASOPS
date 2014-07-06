@@ -445,33 +445,20 @@
 <div id="moduleFind" style="display: none;">
     <div style="margin-bottom: 30px;" class="row">
         <div class="span5">
-            <h2>Find Your Virtual Airline</h2>
+            <h2>Search for Virtual Airlines</h2>
         </div>
     </div>
     <div class="row">
         <div class="span12">
-            <div class="progress">
-                <div id="progressBar" style="width: 5%;" class="bar">
+            <div class="control-group">
+                <div class="controls">
+                    <div style="width: 100%;" class="input-append">
+                    <input id="ajaxSearchVAs" style="width: 100%;" class="input-large" type="text" placeholder="Virtual Airline Name..." />
+                    <span class="add-on"><i class="icon icon-search"></i></span>
+                    </div>
                 </div>
             </div>
         </div>
     </div>
-    <div style="display:none;" id="q2" class="row">
-        <div class="span12">
-            <div class="well">
-                Would you prefer a Virtual Airline that is geared more toward <strong>newer VATSIM members</strong>?  <button class="btn btn-info">Yes</button><span style="padding: 2px;" class="divider-vertical"></span><button class="btn">No</button>
-            </div>
-        </div>
-    </div>
-    <div id="q1" class="row">
-        <div class="span12">
-            <div class="well">
-                Are you looking to join a <strong>Special Operations</strong> Virtual Airline? <button id="q1yes" class="btn btn-info">Yes</button><span style="padding: 2px;" class="divider-vertical"></span><button id="q1no" class="btn">No</button>
-            </div>
-        </div>
-    </div>
-</div>
-
-</div>
 </div>
 @include('core.footer')

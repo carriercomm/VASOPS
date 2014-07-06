@@ -18,7 +18,7 @@
 
             <div class="span5">
                 <div class="footer-banner">
-                    <h3 class="footer-title">Beta</h3>
+                    <h3 class="footer-title">VASOPS 1.0</h3>
                     <ul>
                         <li><a href="/console">Auditor Console</a></li>
                     </ul>
