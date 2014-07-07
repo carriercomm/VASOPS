@@ -27,6 +27,7 @@ Route::post('/ajax/replyticket', array('as' => 'ajaxReplyTicket', 'uses' => 'Aja
 Route::post('/ajax/deletebanner', array('as' => 'ajaxDeleteBanner', 'uses' => 'AjaxController@post_deletebanner', 'before' => 'auth|csrf'));
 Route::post('/ajax/checkimagelinkback', array('as' => 'ajaxCheckImageLinkBack', 'uses' => 'AjaxController@post_checkimagelinkback'));
 Route::post('/ajax/getvasbycategory', array('as' => 'ajaxGetVasByCategory', 'uses' => 'AjaxController@post_getvasbycategory'));
+Route::post('/ajax/searchvas', array('as' => 'ajaxSearchVAs', 'uses' => 'AjaxController@post_searchvas'));
 
 
 //Pages

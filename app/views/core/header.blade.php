@@ -65,17 +65,17 @@
         <p style="margin-top: 10px; display: none;" id="loginLoading" class="span2 offset7">
             <img alt="Loading..." src="{{ URL::to('/') }}/images/loader.gif">
         </p>
-        <div style="margin-top: -15px; display: none;" id="loginErrorCid" class="span2 offset4">
-            <span class="label label-important">Invalid VATSIM CID. Please try again.</span>
+        <div style="margin-top: -15px; display: none;" id="loginErrorEmail" class="span2 offset4">
+            <span class="label label-important">Invalid email. Please try again.</span>
         </div>
         <div style="margin-top: -15px; display: none;" id="loginErrorPassword" class="span2 offset4">
-            <span class="label label-important">Invalid VATSIM Password. Please try again.</span>
+            <span class="label label-important">Invalid password. Please try again.</span>
         </div>
         @if (!Auth::user()->check())
         <p class="span3 offset1">
         <form id="loginForm" style=" margin-top: 10px;" class="form-inline">
             <div class="controls controls-row">
-                <input name="inputCid" id="login_cid" class="input-medium" type="text" value="" placeholder="CID" class="span3"/>
+                <input name="inputEmail" id="login_cid" class="input-medium" type="text" value="" placeholder="Email" class="span3"/>
                 <input name="inputPassword" class="input-medium" type="password" value="" placeholder="Password" class="span3"/>
                 <input id="submitLoginForm" type="submit" class="btn btn-success" value="Go" class="span3"/>
             </div>

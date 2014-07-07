@@ -457,7 +457,15 @@
                     <span class="add-on"><i class="icon icon-search"></i></span>
                     </div>
                 </div>
+                <div class="form-actions">
+                    <button id="searchvasbtn" class="btn btn-success"><i class="icon icon-search icon-white"></i> Search</button>
+                </div>
             </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="span12">
+            <div id="vaSearchAjaxData" style="display: none;"></div>
         </div>
     </div>
 </div>

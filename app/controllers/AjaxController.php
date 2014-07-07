@@ -8,12 +8,12 @@ class AjaxController extends BaseController {
     public function post_login() {
         $postStr = Input::get('data');
         parse_str($postStr, $post);
-        $cid = $post['inputCid'];
+        $email = $post['inputEmail'];
         $password = $post['inputPassword'];
-        $user = User::where('cid', '=', $cid)->first();
+        $user = User::where('email', '=', $email)->first();
         if (!empty($user)) {
            if (Hash::check($password, $user->password)) {
-               Auth::user()->loginUsingId($cid);
+               Auth::user()->loginUsingId($user->cid);
                $fname = User::getFirstName(Auth::user()->get()->cid);
                Session::put('fname', $fname);
                echo $fname;
@@ -23,7 +23,7 @@ class AjaxController extends BaseController {
             }
         }
         else {
-            echo "/errorBadCid";
+            echo "/errorBadEmail";
         }
     }
 
@@ -76,10 +76,9 @@ class AjaxController extends BaseController {
             ),
             array (
                 'Category.max' => 'You have selected more than :max categories.',
-                'Cid.unique' => 'There is already an account with an active virtual airline with that CID.',
             )
         );
-
+        $check = User::where('email', '=', $post['inputEmail'])->where('cid', '!=', Auth::user()->get()->cid)->count();
         if ($validator->fails())
         {
             // The given data did not pass validation
@@ -87,11 +86,17 @@ class AjaxController extends BaseController {
             $errorStr = '';
             foreach ($messages->all('<li>:message</li>') as $message)
             {
-                $errorStr .= '<div class="alert alert-error">'. $message . '</div>';
+                $errorStr .= '<div class="alert alert-error">' . $message . '</div>';
             }
             echo $errorStr;
 
         }
+
+        elseif ($check > 0) {
+            $errorStr = '<div class="alert alert-error">That email address is already taken by another virtual airline.</div>';
+            echo $errorStr;
+        }
+
         else {
 
             //Pull our current VA record
@@ -164,7 +169,7 @@ class AjaxController extends BaseController {
                 'City' => 'required',
                 'Zip' => 'required',
                 'Name' => 'required',
-                'Email' => 'required|email',
+                'Email' => 'required|email|unique:vas,email',
                 'Password' => 'required|min:6|confirmed',
                 'Password_confirmation' => 'required|min:6',
                 'Category' => 'required|max:' . Setting::fetch('max_categories'),
@@ -403,9 +408,10 @@ class AjaxController extends BaseController {
                 $va->description = html_entity_decode($va->description);
                 $va->vaname = html_entity_decode($va->vaname);
                 $va->url = html_entity_decode($va->url);
+                $banner_directory = $banner_directory = rtrim(Setting::fetch('banner_directory'), '/').'/';
                 $banner = '';
                 if ($va->banner) {
-                    $banner = User::getBannerUrl($va->cid);
+                    $banner = User::getBannerUrl($va->cid, $banner_directory);
                     $output .= '<div class="bannerbg"><a target="_blank" href="' . URL::to('/click') . '/' .  $va->cid . '"><img style="max-width:' . $maxwidth . ';" class="img-polaroid" src="' . $banner . '" alt="Banner" /></a></div><div class="well"><a target="_blank" href="' . URL::to('/click') . '/' .  $va->cid . '"><h4>' . $va->vaname . '</h4></a><blockquote style="margin-top: 4px;">'. $va->description . '</blockquote></div>';
 
                 }
@@ -425,6 +431,35 @@ class AjaxController extends BaseController {
         $user->save();
         //Finally echo 1
         echo 1;
+    }
+
+    public function post_searchvas() {
+        $query = Input::get('query');
+
+        $vas = User::where('vaname', 'like','%' . $query . '%')->where('status', '=', '1')->orderBy('vaname', 'ASC')->get();
+        if (count($vas) == 0) {
+            echo '<h4>No Virtual Airlines Found.</h4>';
+        }
+        else {
+            $maxwidth = Setting::fetch('banner_maxwidth');
+            $banner_directory = rtrim(Setting::fetch('banner_directory'), '/').'/';
+            $output = '';
+            foreach ($vas as $va) {
+                $va->description = html_entity_decode($va->description);
+                $va->vaname = html_entity_decode($va->vaname);
+                $va->url = html_entity_decode($va->url);
+                $banner = '';
+                if ($va->banner) {
+                    $banner = User::getBannerUrl($va->cid, $banner_directory);
+                    $output .= '<div class="bannerbg"><a target="_blank" href="' . URL::to('/click') . '/' .  $va->cid . '"><img style="max-width:' . $maxwidth . ';" class="img-polaroid" src="' . $banner . '" alt="Banner" /></a></div><div class="well"><a target="_blank" href="' . URL::to('/click') . '/' .  $va->cid . '"><h4>' . $va->vaname . '</h4></a><blockquote style="margin-top: 4px;">'. $va->description . '</blockquote></div>';
+
+                }
+                else {
+                    $output .= '<div class="well"><a target="_blank" href="' . URL::to('/click') . '/' .  $va->cid . '"><h4>' . $va->vaname . '</h4></a><blockquote style="margin-top: 4px;">'. $va->description . '</blockquote></div>';
+                }
+            }
+            echo $output;
+        }
     }
 
 }
