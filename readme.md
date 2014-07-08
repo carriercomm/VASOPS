@@ -1,6 +1,8 @@
 ## VATSIM VA System
+####vasops.vatsim.net
 
-[![VATSIM](http://www.vatsim.net/uploads/tf/vlw_1_011.jpg)](http://rgdev.zapto.org)
+
+[![VATSIM](http://www.vatsim.net/uploads/tf/vlw_1_011.jpg)](http://vasops.vatsim.net)
 
 ### Current list of authorized users
 
@@ -8,6 +10,3 @@ Colin Schoen
 
 
 *** 
-### Naming Conventions
-
-All post AJAX data sent to a controller must be named `data`
