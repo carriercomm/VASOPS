@@ -239,7 +239,30 @@
 
         });
 
-        $('#searchvasbtn').on('click', function() {
+        $('#ajaxSearchVAs').keypress(function(e) {
+            var key = e.which;
+            if (key == 13) {
+                $('#vaSearchAjaxData').hide();
+                $('#vaSearchAjaxData').html("<h4>Loading...</h4>").fadeIn();
+                var query = $('#ajaxSearchVAs').val();
+                $.ajax({
+                    type: "POST",
+                    url: "{{ URL::route('ajaxSearchVAs') }}",
+                    data: { _token: "{{ csrf_token() }}", query: query}
+                })
+                    .done(function(received) {
+                        $('#vaSearchAjaxData').hide();
+                        if (received == "") {
+                            $('#vaSearchAjaxData').html("<h4>No Virtual Airlines Found...</h4>").fadeIn();
+                        }
+                        else {
+                            $('#vaSearchAjaxData').html(received).fadeIn();
+                        }
+                    });
+            }
+        });
+
+        $('#searchvasbtn').on('click', function(e) {
             $('#vaSearchAjaxData').hide();
             $('#vaSearchAjaxData').html("<h4>Loading...</h4>").fadeIn();
             var query = $('#ajaxSearchVAs').val();
