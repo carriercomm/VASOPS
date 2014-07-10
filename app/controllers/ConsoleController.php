@@ -998,6 +998,8 @@ class ConsoleController extends BaseController {
     }
 
     public function get_assignments() {
+        //Just declare this here since laravel get's mad if it is empty
+        $othersassignments = '';
         //Pull our assignments for the current user
         $assignments = Assignment::where('auditors', 'like', '%' . Auth::consoleuser()->get()->cid . ',%')->get();
         //Create an array of each VA that needs to be auditted
