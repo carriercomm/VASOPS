@@ -17,6 +17,13 @@
 </head>
 <body>
 <div class="container">
+    @if (Session::get('topmessage') != "")
+    <div style="margin-top: 35px;" class="row">
+        <div class="span12">
+            <div class="alert alert-warning">{{{ Session::get('topmessage') }}}</div>
+        </div>
+    </div>
+    @endif
     <div class="demo-headline">
         <h1 id="title" class="demo-logo">
             <!--<div class="logo"></div>-->

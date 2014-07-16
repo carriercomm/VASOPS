@@ -75,11 +75,11 @@ Route::post('console/emailtemplates/edit/{id}', array('as' => 'consoleemailtempl
 Route::post('console/uploadbanner', array('as' => 'consoleuploadbanner', 'uses' => 'ConsoleController@post_uploadbanner', 'before' => 'consoleauth|csrf'));
 Route::post('console/removebanner', array('as' => 'consoleremovebanner', 'uses' => 'ConsoleController@post_removebanner', 'before' => 'consoleauth|csrf'));
 Route::get('console/assignments', array('as' => 'consoleassignments', 'uses' => 'ConsoleController@get_assignments', 'before' => 'consoleauth'));
-Route::get('console/assignments/complete/{assignment}/{va}', array('as' => 'consoleassignmentscomplete', 'uses' => 'ConsoleController@get_assignmentscomplete', 'before' => 'ConsoleAuth'));
-Route::post('console/va/email/{id}', array('as' => 'consoleemailva', 'uses' => 'ConsoleController@post_emailva', 'before' => 'ConsoleAuth|csrf'));
-Route::get('console/stats', array('as' => 'consolestats', 'uses' => 'ConsoleController@get_stats', 'before' => 'ConsoleAuth'));
-Route::get('console/profile', array('as' => 'consoleprofile', 'uses' => 'ConsoleController@get_profile', 'before' => 'ConsoleAuth'));
-Route::post('console/profile', array('as' => 'consoleprofilesave', 'uses' => 'ConsoleController@post_profilesave', 'before' => 'ConsoleAuth|csrf'));
+Route::get('console/assignments/complete/{assignment}/{va}', array('as' => 'consoleassignmentscomplete', 'uses' => 'ConsoleController@get_assignmentscomplete', 'before' => 'consoleauth'));
+Route::post('console/va/email/{id}', array('as' => 'consoleemailva', 'uses' => 'ConsoleController@post_emailva', 'before' => 'consoleauth|csrf'));
+Route::get('console/stats', array('as' => 'consolestats', 'uses' => 'ConsoleController@get_stats', 'before' => 'consoleauth'));
+Route::get('console/profile', array('as' => 'consoleprofile', 'uses' => 'ConsoleController@get_profile', 'before' => 'consoleauth'));
+Route::post('console/profile', array('as' => 'consoleprofilesave', 'uses' => 'ConsoleController@post_profilesave', 'before' => 'consoleauth|csrf'));
     //------AJAX---------
     Route::post('console/ajax/vaedit', array('as' => 'consoleajaxvaedit', 'uses' => 'ConsoleController@post_vaedit', 'before' => 'consoleauth|csrf'));
     Route::post('console/ajax/createauditlog', array('as' => 'consoleajaxcreateauditlog', 'uses' => 'ConsoleController@post_createauditlog', 'before' => 'consoleauth|csrf'));

@@ -6,32 +6,55 @@ class ConsoleController extends BaseController {
         //Log the user out
         Auth::consoleuser()->logout();
         //Redirect to the login page with a message
-        return Redirect::route('consolelogin')->with('message', 'You have been successfully logged out.');
+        return Redirect::route('index')->with('topmessage', 'Logged out of the console successfully.');
     }
 
     public function get_login()
 
     {
 //        *****SSO******
-//        $config = require app_path() . '/config/packages/vatsim/sso/config.php';
-//        $key = $config['key'];
-//        $base = $config['base'];
-//        $method = $config['method'];
-//        $secret = $config['secret'];
-//        $cert = $config['cert'];
-//        $return = $config['return'];
-//        return VatsimSSO::login(
-//            $return,
-//            function($key, $secret, $cert) {
-//                Session::put('vatsimauth', compact('key', 'secret'));
-//                return Redirect::to($cert);
-//            },
-//            function($error) {
-//                throw new Exception('Could not authenticate: ' . $error['message']);
-//            }
-//        );
+        $config = require app_path() . '/config/packages/vatsim/sso/config.php';
+        $key = $config['key'];
+        $base = $config['base'];
+        $method = $config['method'];
+        $secret = $config['secret'];
+        $cert = $config['cert'];
+        $return = $config['return'];
+        return VatsimSSO::login(
+            $return,
+            function($key, $secret, $cert) {
+                Session::put('vatsimauth', compact('key', 'secret'));
+                return Redirect::to($cert);
+            },
+            function($error) {
+                Redirect::route('index')->with('topmessage','Could not authenticate: ' . $error['message']);
+            }
+        );
 
-        return View::make('console.login');
+//        return View::make('console.login');
+    }
+
+    public function post_validatelogin() {
+        $session = Session::get('vatsimauth');
+
+        return VatsimSSO::validate(
+            $session['key'],
+            $session['secret'],
+            Input::get('oauth_verifier'),
+            function($user, $request) {
+                // At this point we can remove the session data.
+                Session::forget('vatsimauth');
+                //Verify that our user is a console user
+                $find = ConsoleUser::where('cid', '=', $user->id)->where('access', '>', -1)->count();
+                if ($find == 0)
+                    return Redirect::route('index')->with('topmessage','Member not authorised to use VA Auditors Console');
+                Auth::consoleuser()->loginUsingId($user->id);
+                return Redirect::route('console');
+            },
+            function($error) {
+                Redirect::route('index')->with('topmessage','Could not authenticate: ' . $error['message']);
+            }
+        );
     }
 
     public function post_login() {;
@@ -73,7 +96,7 @@ class ConsoleController extends BaseController {
         }
         else {
 
-            $consoleuser = ConsoleUser::where('cid', '=', $cid)->first();
+            $consoleuser = ConsoleUser::where('cid', '=', $cid)->where('access', '>', -1)->first();
             //If there is not a password set for the user then log them in and redirect them to their profile page to set a password
             if (empty($consoleuser->password) && $password == "initial") {
                 Auth::consoleuser()->loginUsingId($cid);
