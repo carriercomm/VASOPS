@@ -57,6 +57,7 @@ Route::post('/va/uploadbanner', array('as' => 'uploadbanner', 'uses' => 'VaContr
 Route::get('console', array('as' => 'console', 'uses' => 'ConsoleController@get_index', 'before' => 'consoleauth'));
 Route::get('console/login', array('as' => 'consolelogin', 'uses' => 'ConsoleController@get_login'));
 Route::post('console/login', array('as' => 'postconsolelogin', 'uses' => 'ConsoleController@post_login'));
+Route::any('console/validateLogin', array('as' => 'consolevalidatelogin', 'uses' => 'ConsoleController@post_validatelogin'));
 Route::get('console/logout', array('as' => 'consolelogout', 'uses' => 'ConsoleController@get_logout', 'before' => 'consoleauth'));
 Route::get('console/va/{id}', array('as' => 'consoleva', 'uses' => 'ConsoleController@get_va', 'before' => 'consoleauth'));
 Route::get('console/va/{id}/status/{status}', array('as' => 'consolevaupdatestatus', 'uses' => 'ConsoleController@get_vaupdatestatus', 'before' => 'consoleauth'));

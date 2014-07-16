@@ -1,4 +1,5 @@
 <?php
+
 class ConsoleController extends BaseController {
 
     public function get_logout() {
@@ -11,6 +12,25 @@ class ConsoleController extends BaseController {
     public function get_login()
 
     {
+//        *****SSO******
+//        $config = require app_path() . '/config/packages/vatsim/sso/config.php';
+//        $key = $config['key'];
+//        $base = $config['base'];
+//        $method = $config['method'];
+//        $secret = $config['secret'];
+//        $cert = $config['cert'];
+//        $return = $config['return'];
+//        return VatsimSSO::login(
+//            $return,
+//            function($key, $secret, $cert) {
+//                Session::put('vatsimauth', compact('key', 'secret'));
+//                return Redirect::to($cert);
+//            },
+//            function($error) {
+//                throw new Exception('Could not authenticate: ' . $error['message']);
+//            }
+//        );
+
         return View::make('console.login');
     }
 
@@ -1007,7 +1027,8 @@ class ConsoleController extends BaseController {
         foreach ($assignments as $assignment) {
             $vas = $assignment->vas;
             $vas = explode(',', $vas);
-            //Remove the last empty value
+            //Remove the last empty valuee
+
             $vascount = count($vas) - 1;
             unset($vas[$vascount]);
             foreach ($vas as $va) {
