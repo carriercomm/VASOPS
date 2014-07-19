@@ -13,7 +13,7 @@
 <div id="moduleApply" style="display: none;">
 <div style="margin-bottom: 20px;" class="row">
     <div class="span8">
-        <h2 id="applyTitle">Apply to be a VATSIM Virtual Airline Partner</h2>
+        <h2 id="applyTitle"><i class="fa fa-user fa-fw"></i> Apply to be a VATSIM Virtual Airline Partner</h2>
     </div>
 </div>
 <div class="row">
@@ -43,7 +43,7 @@
 
         B) An airline may be removed from the database at any time for any valid reason as deemed by VATSIM officials to include, but not limited to: Dead links, bad email addresses, continuous misbehavior by pilots on the network, or failure to adhere to the above stated affiliation requirements.<br /><br />
     </div>
-    <button id="applyToStep2" class="btn">I have read and fully understand these rules and regulations</button>
+    <button id="applyToStep2" class="btn"><i class="fa fa-check fa-fw"></i> I have read and fully understand these rules and regulations</button>
 </div>
 <div style="display:none;" id="applyStep2Success">
     <div class="alert alert-success">
@@ -386,7 +386,7 @@
 <hr />
 <div class="control-group">
     <div class="controls">
-        <button id="submitVAForm" class="btn btn-success">Submit <i class="fui fui-check"></i></button>
+        <button id="submitVAForm" class="btn btn-success">Submit <i class="fa fa-arrow-right fa-fw"></i></button>
     </div>
 </div>
 <!--   </form> -->
@@ -445,7 +445,7 @@
 <div id="moduleFind" style="display: none;">
     <div style="margin-bottom: 30px;" class="row">
         <div class="span5">
-            <h2>Search for Virtual Airlines</h2>
+            <h2><i class="fa fa-search fa-fw"></i> Search for Virtual Airlines</h2>
         </div>
     </div>
     <div class="row">
@@ -454,11 +454,11 @@
                 <div class="controls">
                     <div style="width: 100%;" class="input-append">
                     <input id="ajaxSearchVAs" style="width: 100%;" class="input-large" type="text" placeholder="Virtual Airline Name..." />
-                    <span class="add-on"><i class="icon icon-search"></i></span>
+                    <span class="add-on"><i class="fa fa-search fa-fw"></i></span>
                     </div>
                 </div>
                 <div class="form-actions">
-                    <button id="searchvasbtn" class="btn btn-success"><i class="icon icon-search icon-white"></i> Search</button>
+                    <button id="searchvasbtn" class="btn btn-success"><i class="fa fa-search fa-fw"></i> Search</button>
                 </div>
             </div>
         </div>
@@ -466,6 +466,58 @@
     <div class="row">
         <div class="span12">
             <div id="vaSearchAjaxData" style="display: none;"></div>
+        </div>
+    </div>
+</div>
+<div id="moduleSupport" style="display: none;">
+    <div class="row">
+        <div class="span12">
+            <h2><i class="fa fa-support fa-fw"></i> Contact an Audit Manager</h2>
+        </div>
+    </div>
+    <div style="margin-top: 20px;" class="row">
+        <div class="span12">
+            <button id="supportNewTicketBtn" style="width: 100%;" class="btn btn-primary"><i class="fa fa-plus fa-fw"></i> Create a New Ticket</button>
+        </div>
+        <div id="supportNewTicketForm" style="display: none; margin-top: 20px;" class="span12">
+            <div class="well">
+                <div class="form-horizontal">
+                    <form class="form" method="POST">
+                        <div style="" class="control-group">
+                            <label class="control-label" for="supportInputName">Name: </label>
+                            <div class="controls">
+                                <input style="" id="supportInputName" placeholder="Enter your name..." type="text" class="input-xlarge" />
+                            </div>
+                        </div>
+                        <div class="control-group">
+                            <label class="control-label" for="supportInputEmail">Email: </label>
+                            <div class="controls">
+                                <input style="" id="supportInputEmail" placeholder="Enter your email..." type="text" class="input-xlarge" />
+                            </div>
+                        </div>
+                        <div class="control-group">
+                            <label class="control-label" for="supportInputSubject">Subject: </label>
+                            <div class="controls">
+                                <input style="" id="supportInputSubject" placeholder="Enter a subject..." type="text" class="input-xxlarge" />
+                            </div>
+                        </div>
+                        <div class="control-group">
+                            <label class="control-label" for="supportInputDescription">Description: </label>
+                            <div class="controls">
+                                <textarea rows="7" class="input-xxlarge" id="supportInputDescription" placeholder="Please detail your inquiry..."></textarea>
+                            </div>
+                        </div>
+                        <div class="control-group">
+                            <div class="form-actions">
+                                <div class="controls">
+                                    <input type="submit" class="btn btn-success" id="supportInputNewSubmit" value="Submit Ticket" />
+                                    <input id="supportInputResetBtn" type="reset" class="btn btn-default" value="Cancel" />
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
         </div>
     </div>
 </div>

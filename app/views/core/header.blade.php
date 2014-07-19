@@ -7,6 +7,7 @@
     {{ HTML::style('bootstrap/css/bootstrap.css') }}
     {{ HTML::style('css/flat-ui.css') }}
     {{ HTML::style('css/custom.css') }}
+    {{ HTML::style('css/plugins/font-awesome/css/font-awesome.css') }}
     <!-- Vatsim Favicon -->
     <link rel="shortcut icon" href="images/favicon.ico">
 
@@ -38,16 +39,19 @@
                 <div class="btn-group">
                     @if (Route::currentRouteName() == "index")
                     @if(!Auth::user()->check())
-                    <a id="applyBtn" class="btn btn-success" href="#">Apply to be a VA Partner</a>
+                    <a id="applyBtn" class="btn btn-success" href="#"><i class="fa fa-user fa-fw"></i> Apply</a>
                     @endif
-                    <a id="currentBtn" class="btn btn-success" href="#">Current VAs</a>
-                    <a id="findBtn" class="btn btn-success" href="#">Search VAs</a>
+                    <a id="currentBtn" class="btn btn-success" href="#"><i class="fa fa-bars fa-fw"></i> Current VAs</a>
+                    <a id="findBtn" class="btn btn-success" href="#"><i class="fa fa-search fa-fw"></i> Search VAs</a>
+                    @if(!Auth::user()->check())
+                    <a id="supportBtn" class="btn btn-success" href="{{URL::to('/')}}/#moduleSupport"><i class="fa fa-support fa-fw"></i> Support</a>
+                    @endif
                     @if(Auth::user()->check())
                     <a class="btn" href="{{URL::to('va')}}">Manage VA</a>
                     @endif
                     @else
                     @if(!Auth::user()->check())
-                    <a id="applyBtn" class="btn btn-success" href="{{URL::to('/')}}/#moduleApply">Apply to be a VA Partner</a>
+                    <a id="applyBtn" class="btn btn-success" href="{{URL::to('/')}}/#moduleApply">Apply</a>
                     @endif
                     <a id="currentBtn" class="btn btn-success" href="{{URL::to('/')}}/#moduleCurrent">Current VAs</a>
                     <a id="findBtn" class="btn btn-success" href="{{URL::to('/')}}/#moduleFind">Search VAs</a>

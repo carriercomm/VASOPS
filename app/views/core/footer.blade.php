@@ -43,7 +43,6 @@
 <script src="js/jquery.placeholder.js"></script>
 <script src="js/jquery.stacktable.js"></script>
 <script src="js/retina.js"></script>
-<script src="http://vjs.zencdn.net/c/video.js"></script>
 <script src="js/application.js"></script>
 <script type="text/javascript">
     $(document).ready(function () {
@@ -69,6 +68,10 @@
             moduleApply();
             return false;
         });
+        $('#supportBtn').click(function () {
+            moduleSupport();
+            return false;
+        })
     @endif
 
         var hash = window.location.hash;
@@ -82,32 +85,44 @@
             case '#moduleApply':
                 moduleApply();
                 break;
+            case '#moduleSupport':
+                moduleSupport();
+                break;
             default:
                 moduleCurrent();
                 break;
         }
 
         function moduleFind() {
-            $('#moduleCurrent').hide();
-            $('#moduleApply').hide();
+            $('#moduleCurrent, #moduleApply, #moduleSupport').hide();
             $('#moduleFind').fadeIn();
             return false;
         }
 
         function moduleCurrent() {
-            $('#moduleApply').hide();
-            $('#moduleFind').hide();
+            $('#moduleApply, #moduleFind, #moduleSupport').hide();
             $('#moduleCurrent').fadeIn();
             return false;
         }
 
         function moduleApply() {
-            $('#moduleFind').hide();
-            $('#moduleCurrent').hide();
+            $('#moduleFind, #moduleCurrent, #moduleSupport').hide();
             $('#moduleApply').fadeIn();
             return false;
         }
 
+        function moduleSupport() {
+            $('#moduleFind, #moduleCurrent, #moduleApply').hide();
+            $('#moduleSupport').fadeIn();
+            return false;
+        }
+
+        $('#supportNewTicketBtn').on('click', function() {
+            $('#supportNewTicketForm').slideToggle('fast');
+        });
+        $('#supportInputResetBtn').on('click', function() {
+           $('#supportNewTicketForm').slideUp('fast');
+        });
 
 
         $('#q1').click(function () {
