@@ -481,42 +481,83 @@
         </div>
         <div id="supportNewTicketForm" style="display: none; margin-top: 20px;" class="span12">
             <div class="well">
+                <div style="display: none;" id="supportNewTicketFormErrors">
+                </div>
                 <div class="form-horizontal">
-                    <form class="form" method="POST">
+                    <form id="supportNewTicketFormID" class="form" method="POST">
+                        <input type="hidden" name="_token" value="{{ csrf_token() }}" />
                         <div style="" class="control-group">
                             <label class="control-label" for="supportInputName">Name: </label>
                             <div class="controls">
-                                <input style="" id="supportInputName" placeholder="Enter your name..." type="text" class="input-xlarge" />
+                                <input style="" id="supportInputName" name="supportInputName" placeholder="Enter your name..." type="text" class="input-xlarge" />
                             </div>
                         </div>
                         <div class="control-group">
                             <label class="control-label" for="supportInputEmail">Email: </label>
                             <div class="controls">
-                                <input style="" id="supportInputEmail" placeholder="Enter your email..." type="text" class="input-xlarge" />
+                                <input style="" id="supportInputEmail" name="supportInputEmail" placeholder="Enter your email..." type="text" class="input-xlarge" />
                             </div>
                         </div>
                         <div class="control-group">
                             <label class="control-label" for="supportInputSubject">Subject: </label>
                             <div class="controls">
-                                <input style="" id="supportInputSubject" placeholder="Enter a subject..." type="text" class="input-xxlarge" />
+                                <input style="" id="supportInputSubject" name="supportInputSubject" placeholder="Enter a subject..." type="text" class="input-xxlarge" />
                             </div>
                         </div>
                         <div class="control-group">
                             <label class="control-label" for="supportInputDescription">Description: </label>
                             <div class="controls">
-                                <textarea rows="7" class="input-xxlarge" id="supportInputDescription" placeholder="Please detail your inquiry..."></textarea>
+                                <textarea rows="7" class="input-xxlarge" name="supportInputDescription" id="supportInputDescription" placeholder="Please detail your inquiry..."></textarea>
+                            </div>
+                        </div>
+                        <div class="control-group">
+                            <label class="control-label" for="supportInputHuman">What is the parent organization that VASOPS falls under? </label>
+                            <div class="controls">
+                                <input style="" id="supportInputHuman" name="supportInputHuman" placeholder="Enter your anti-spam answer... (Hint: the answer is in this website's domain)" type="text" class="input-xxlarge" />
                             </div>
                         </div>
                         <div class="control-group">
                             <div class="form-actions">
                                 <div class="controls">
-                                    <input type="submit" class="btn btn-success" id="supportInputNewSubmit" value="Submit Ticket" />
+                                    <button class="btn btn-success" id="supportInputNewSubmit"><i style="display: none;" class="fa fa-circle-o-notch fa-spin"></i> Submit Ticket</button>
                                     <input id="supportInputResetBtn" type="reset" class="btn btn-default" value="Cancel" />
                                 </div>
                             </div>
                         </div>
                     </form>
                 </div>
+            </div>
+        </div>
+    </div>
+    <hr />
+    <div style="margin-top: 10px;" class="row">
+        <div class="span12">
+            <button id="supportFindTicketBtn" style="width: 100%;" class="btn btn-warning"><i class="fa fa-search fa-fw"></i> View a Ticket</button>
+        </div>
+        <div id="supportViewTicketForm" style="display: none; margin-top: 20px;" class="span12">
+            <div class="well">
+                <div style="display: none;" id="supportViewTicketFormErrors">
+                </div>
+                <form>
+                    <div class="form-horizontal">
+                        <div class="control-group">
+                            <label class="control-label" for="supportFindTicketInputEmail">Email Address: </label>
+                            <div class="controls">
+                                <input id="supportFindTicketInputEmail" type="text" class="input-xlarge" placeholder="Email Address..." />
+                            </div>
+                        </div>
+                        <div class="control-group">
+                            <label class="control-label" for="supportFindTicketInputId">Ticket ID <i class="fa fa-slack fa-fw"></i>: </label>
+                            <div class="controls">
+                                <input type="text" id="supportFindTicketInputId" class="input-small" placeholder="Ticket ID #..." />
+                            </div>
+                        </div>
+                        <div class="form-actions">
+                            <button id="supportFindTicketInputSubmit" class="btn btn-success"><i style="display: none;" class="fa fa-circle-o-notch fa-spin fa-fw"></i> Locate Ticket</button>
+                            <input id="supportFindTicketInputReset" class="btn btn-default" type="reset" value="Cancel" />
+                        </div>
+                    </div>
+                </form>
             </div>
         </div>
     </div>

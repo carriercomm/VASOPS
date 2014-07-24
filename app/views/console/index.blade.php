@@ -106,7 +106,7 @@
                         @foreach ($tickets as $ticket)
                         <div class="panel panel-success">
                             <div class="panel-heading">
-                                <span style="margin-right: 5px;" class="label label-success">{{{ User::getFullName($ticket->vid) }}}</span> {{{ $ticket->subject }}} <span style="float:right;" class="broadcast-date label label-limegreen">{{{ $ticket->created_at }}}</span>
+                                <span style="margin-right: 5px;" class="label label-success">@if ($ticket->vid == -1) {{{ $ticket->name }}} @else {{{ User::getFullName($ticket->vid) }}} @endif</span> {{{ $ticket->subject }}} <span style="float:right;" class="broadcast-date label label-limegreen">{{{ $ticket->created_at }}}</span>
                             </div>
                             <div class="panel-body">
                                 <div class="col-lg-11">

@@ -462,4 +462,101 @@ class AjaxController extends BaseController {
         }
     }
 
+    public function post_newguestticket() {
+
+        $postStr = Input::get('data');
+        parse_str($postStr, $post);
+        //Create our validator
+        $validator = Validator::make(array(
+            'name' => $post['supportInputName'],
+            'email' => $post['supportInputEmail'],
+            'subject' => $post['supportInputSubject'],
+            'description' => $post['supportInputDescription'],
+            'human' => $post['supportInputHuman'],
+        ),
+        array(
+            'name' => 'required|max:50',
+            'email' => 'required|email|max:100',
+            'subject' => 'required|max:100',
+            'description' => 'required|max:4000',
+            'human' => 'required|in:vatsim,VATSIM,VAT SIM, Vatsim, Vat Sim, Vat sim',
+        ),
+        array(
+            'human.required' => 'Please fill in the anti-spam question. (Hint It ends with SIM and starts with VAT. Do not use any crazy capitalization).',
+            'human.in' => 'The antispam answer is not correct. (Hint: It ends with SIM and starts with VAT. Do not use any crazy capitalization.)',
+        ));
+        //Let's make sure that our user is not logged in
+        if ($validator->fails() || Auth::user()->check()) {
+            $messages = $validator->messages();
+            $errorStr = '';
+            //If we are logged in let's append an error to that message.
+            if (Auth::user()->check())
+                $errorStr .= '<div class="alert alert-error">Please use the built in ticket help desk in your VA console. You can log in at the top right of this page.</div>';
+            foreach ($messages->all('<li>:message</li>') as $message)
+            {
+                $errorStr .= '<div class="alert alert-error">'. $message . '</div>';
+            }
+            echo $errorStr;
+        }
+        else {
+            //All clear.
+            $ticket = new Ticket();
+            //We set this value to -1 since it is not associated with a specific VID
+            $ticket->vid = -1;
+            $ticket->subject = $post['supportInputSubject'];
+            $ticket->description = $post['supportInputDescription'];
+            //The status is open by default
+            $ticket->status = 1;
+            $ticket->name = $post['supportInputName'];
+            $ticket->email = $post['supportInputEmail'];
+            $ticket->hash = sha1($post['supportInputName']. time());
+            //Save our ticket
+            $ticket->save();
+            //That will be all. Let's send 1 to our client to let me know that everything went well.
+            echo 1;
+        }
+    }
+
+    public function post_guestfindticket() {
+        //Get our values
+        $email = Input::get('email');
+        $ticketid = Input::get('ticketid');
+        //Start our validator
+        $validator = Validator::make(array(
+            'email' => $email,
+            'ticketid' => $ticketid,
+        ),
+        array(
+            'email' => 'required|email',
+            'ticketid' => 'required|integer',
+        ));
+
+        if ($validator->fails()) {
+            $messages = $validator->messages();
+            $errorStr = '';
+            //If we are logged in let's append an error to that message.
+            if (Auth::user()->check())
+                $errorStr .= '<div class="alert alert-error">Please use the built in ticket help desk in your VA console. You can log in at the top right of this page.</div>';
+            foreach ($messages->all('<li>:message</li>') as $message)
+            {
+                $errorStr .= '<div class="alert alert-error">'. $message . '</div>';
+            }
+            echo $errorStr;
+        }
+        else {
+            //All clear
+            //Actually not quite. Let's make sure that the email and ticket # are valid and that this is marked as a guest ticket
+            $ticket = Ticket::where('id', '=', $ticketid)->where('email', '=', $email)->where('vid', '=', -1)->first();
+            if (empty($ticket->id)) {
+                echo '<div class="alert alert-error">We were unable to locate a ticket with the details provided. Please try again and check your email for the confirmation message sent to you when the ticket was initially created</div>';
+            }
+            else {
+                //Alright now actually all clear.
+                $response = '';
+
+            }
+
+        }
+    }
+
 }

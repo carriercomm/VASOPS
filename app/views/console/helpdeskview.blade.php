@@ -81,14 +81,14 @@
                 </div>
                 <div class="panel-body">
                     <div class="col-lg-4">
-                        <a class="nolinkstyle" href="{{ URL::route('console') }}/va/{{{ $ticket->vid }}}">
+                        @if ($ticket->vid != -1)<a class="nolinkstyle" href="{{ URL::route('console') }}/va/{{{ $ticket->vid }}}">@endif
                             <div class="well ticket-info">
                                 <div class="table-responsive">
                                     <table class="table table-responsive table-borderless">
                                         <tr><td>ID: </td><td><i class="fa fa-slack fa-fw"></i>{{{ $ticket->id }}}</td></tr>
-                                        <tr><td>CID: </td><td>{{{ $ticket->vid }}}</td></tr>
-                                        <tr><td>Name: </td><td>{{{ User::getFullName($ticket->vid) }}}</td></tr>
-                                        <tr><td>VA Name: </td><td>{{{ User::getVaName($ticket->vid) }}}</td></tr>
+                                        @if ($ticket->vid != -1)<tr><td>CID: </td><td>{{{ $ticket->vid }}}</td></tr>@endif
+                                        <tr><td>Name: </td><td>@if ($ticket->vid == -1) {{{ $ticket->name }}} @else {{{ User::getFullName($ticket->vid) }}} @endif</td></tr>
+                                        <tr><td>@if ($ticket->vid == -1) Ticket Type: @else VA Name: @endif</td><td>@if ($ticket->vid == -1) <strong>Guest Ticket</strong> @else {{{ User::getVaName($ticket->vid) }}} @endif</td></tr>
                                         <tr><td>Last Updated: </td><td>{{{ $ticket->updated_at }}}</td></tr>
                                         <tr><td>Created: </td><td>{{{ $ticket->created_at }}}</td></tr>
                                         <tr><td>Assigned: </td><td>@if ($ticket->assigned != 0) <span class="label label-danger"><i class="fa fa-bookmark fa-fw"></i> {{{ ConsoleUser::getName($ticket->assigned) }}}</span> @else <span class="label label-default">Unassigned</span> @endif</td></tr>
@@ -96,7 +96,7 @@
                                     </table>
                                 </div>
                             </div>
-                        </a>
+@if ($ticket->vid != -1)</a>@endif
                     </div>
                     <div class="col-lg-8">
                         <h4>{{{ $ticket->subject }}}</h4>
@@ -118,7 +118,7 @@
                     <div id="ticketReply{{{ $reply->id }}}" class="panel panel-default repliespanelbg">
                         <div class="panel-body">
                             <div class="col-lg-3">
-                                @if ($reply->staff == 1) <span class="label label-danger"><i class="fa fa-bookmark fa-fw"></i> {{{ ConsoleUser::getName($reply->author) }}}</span> @else <a class="nolinkstyle" href="{{ URL::route('console') }}/va/{{{ $reply->author }}}"><strong>{{{ User::getFullName($reply->author) }}} ({{{ $reply->author }}})</strong></a> @endif
+                                @if ($reply->staff == 1) <span class="label label-danger"><i class="fa fa-bookmark fa-fw"></i> {{{ ConsoleUser::getName($reply->author) }}}</span> @else @if (!is_int($reply->author)) {{{ $reply->author }}} @else <a class="nolinkstyle" href="{{ URL::route('console') }}/va/{{{ $reply->author }}}"><strong>{{{ User::getFullName($reply->author) }}} ({{{ $reply->author }}})</strong></a>@endif @endif
                             </div>
                             <div class="col-lg-9">
                                 <span style="font-style: italic;">Reply written: {{{ $reply->created_at }}}</span>

@@ -297,6 +297,62 @@
                 });
         })
 
+        $('#supportInputNewSubmit').on('click', function(e) {
+            $('#supportNewTicketFormErrors').slideUp();
+            e.preventDefault();
+            var btn = $(this);
+            var loader = $(this).find('i');
+            loader.fadeIn();
+            var data = $('#supportNewTicketFormID').serialize();
+            $.ajax({
+                type: "POST",
+                url: "{{ URL::route('ajaxnewguestticket') }}",
+                data: { data: data }
+            })
+                .success(function(received) {
+                    loader.fadeOut();
+                    if (received == 1) {
+                        btn.html('Ticket Created').attr('disabled', 'disabled');
+                    }
+                    else {
+                        $('#supportNewTicketFormErrors').html(received).slideDown();
+                    }
+
+                });
+
+        });
+
+    $('#supportFindTicketBtn').on('click', function() {
+       $('#supportViewTicketForm').slideToggle('fast');
+    });
+
+    $('#supportFindTicketInputReset').on('click', function() {
+        $('#supportViewTicketForm').slideUp('fast');
+    });
+
+    $('#supportFindTicketInputSubmit').on('click', function(e) {
+        $('#supportViewTicketFormErrors').slideUp();
+        e.preventDefault();
+        var btn = $(this);
+        var loader = btn.find('i');
+        loader.fadeIn();
+        var _token = "{{ csrf_token() }}";
+        var email = $('#supportFindTicketInputEmail').val();
+        var ticketid = $('#supportFindTicketInputId').val();
+        $.ajax({
+            type: 'POST',
+            url: "{{ URL::route('ajaxguestfindticket') }}",
+            data: {_token: _token, email: email, ticketid: ticketid }
+        })
+            .success(function(received) {
+               //Do something :)
+                loader.fadeOut();
+                if (received.slice('0','1') != 1) {
+                    $('#supportViewTicketFormErrors').html(received).slideDown();
+                }
+            });
+    })
+
 
 
 

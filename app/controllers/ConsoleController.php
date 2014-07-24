@@ -359,15 +359,29 @@ class ConsoleController extends BaseController {
             $message = "Your ticket reply was successfully submitted.";
         }
         //Email the VA advising them that there is a new response
-        $va = User::where('cid', '=', $ticket->vid)->first();
-        $data = array();
-        $data['va'] = $va;
-        $data['subject'] = "VATSIM VA New Ticket Update";
-        if (!empty($va->email)) {
-            $body = "Hello " . User::getFirstName($ticket->vid) . ",<br /><br />There has been an update to your " . $ticket->subject . " ticket by Auditor " . ConsoleUser::getName(Auth::consoleuser()->get()->cid) . ". <br /><br />" . $content . "<br /><br /><br /> <strong>Do not reply to this email. If you wish to reply to this ticket, please do so through your account online.</strong>";
-            Mail::send('email.default', array("content" => $body), function($message) use ($data) {
-                $message->to($data['va']->email, $data['va']->name)->subject($data['subject']);
-            });
+        if ($ticket->vid == -1) {
+            $data = array();
+            $data['subject'] = "VATSIM VA New Ticket Update";
+            $data['email'] = $ticket->email;
+            $data['name'] = $ticket->name;
+            if (!empty($data['email'])) {
+                $body = "Hello " . $data['name'] . ",<br /><br />There has been an update to your " . $ticket->subject . " ticket by Auditor " . ConsoleUser::getName(Auth::consoleuser()->get()->cid) . ". <br /><br />" . $content . "<br /><br /><br /> <strong>Do not reply to this email. If you wish to reply to this ticket, please do so through your account online.</strong>";
+                Mail::send('email.default', array("content" => $body), function($message) use ($data) {
+                    $message->to($data['email'], $data['name'])->subject($data['subject']);
+                });
+            }
+        }
+        else {
+            $va = User::where('cid', '=', $ticket->vid)->first();
+            $data = array();
+            $data['va'] = $va;
+            $data['subject'] = "VATSIM VA New Ticket Update";
+            if (!empty($va->email)) {
+                $body = "Hello " . User::getFirstName($ticket->vid) . ",<br /><br />There has been an update to your " . $ticket->subject . " ticket by Auditor " . ConsoleUser::getName(Auth::consoleuser()->get()->cid) . ". <br /><br />" . $content . "<br /><br /><br /> <strong>Do not reply to this email. If you wish to reply to this ticket, please do so through your account online.</strong>";
+                Mail::send('email.default', array("content" => $body), function($message) use ($data) {
+                    $message->to($data['va']->email, $data['va']->name)->subject($data['subject']);
+                });
+            }
         }
         //All set now just redirect back to the ticket page with the message
         return Redirect::to('console/helpdesk/view/' . $id)->with(array('scrollTo' => '#ticketReply' . $reply->id, 'message' => $message));
