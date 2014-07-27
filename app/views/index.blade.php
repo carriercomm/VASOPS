@@ -479,7 +479,7 @@
         <div class="span12">
             <button id="supportNewTicketBtn" style="width: 100%;" class="btn btn-primary"><i class="fa fa-plus fa-fw"></i> Create a New Ticket</button>
         </div>
-        <div id="supportNewTicketForm" style="display: none; margin-top: 20px;" class="span12">
+        <div id="supportNewTicketForm" style="display: none; padding:top: 20px; margin-top: 20px;" class="span12">
             <div class="well">
                 <div style="display: none;" id="supportNewTicketFormErrors">
                 </div>
@@ -534,30 +534,46 @@
         <div class="span12">
             <button id="supportFindTicketBtn" style="width: 100%;" class="btn btn-warning"><i class="fa fa-search fa-fw"></i> View a Ticket</button>
         </div>
-        <div id="supportViewTicketForm" style="display: none; margin-top: 20px;" class="span12">
-            <div class="well">
-                <div style="display: none;" id="supportViewTicketFormErrors">
-                </div>
-                <form>
-                    <div class="form-horizontal">
-                        <div class="control-group">
-                            <label class="control-label" for="supportFindTicketInputEmail">Email Address: </label>
-                            <div class="controls">
-                                <input id="supportFindTicketInputEmail" type="text" class="input-xlarge" placeholder="Email Address..." />
-                            </div>
-                        </div>
-                        <div class="control-group">
-                            <label class="control-label" for="supportFindTicketInputId">Ticket ID <i class="fa fa-slack fa-fw"></i>: </label>
-                            <div class="controls">
-                                <input type="text" id="supportFindTicketInputId" class="input-small" placeholder="Ticket ID #..." />
-                            </div>
-                        </div>
-                        <div class="form-actions">
-                            <button id="supportFindTicketInputSubmit" class="btn btn-success"><i style="display: none;" class="fa fa-circle-o-notch fa-spin fa-fw"></i> Locate Ticket</button>
-                            <input id="supportFindTicketInputReset" class="btn btn-default" type="reset" value="Cancel" />
-                        </div>
+        <div id="supportViewTicketForm" style="display:none;">
+            <div style="padding-top: 20px; margin-top: 20px;" class="span12">
+                <div class="well">
+                    <div style="display: none;" id="supportViewTicketFormErrors">
                     </div>
-                </form>
+                    <form>
+                        <div class="form-horizontal">
+                            <div class="control-group">
+                                <label class="control-label" for="supportFindTicketInputEmail">Email Address: </label>
+                                <div class="controls">
+                                    <input id="supportFindTicketInputEmail" type="text" class="input-xlarge" placeholder="Email Address..." />
+                                </div>
+                            </div>
+                            <div class="control-group">
+                                <label class="control-label" for="supportFindTicketInputId">Ticket ID <i class="fa fa-slack fa-fw"></i>: </label>
+                                <div class="controls">
+                                    <input type="text" id="supportFindTicketInputId" class="input-small" placeholder="Ticket ID #..." />
+                                </div>
+                            </div>
+                            <div class="form-actions">
+                                <button id="supportFindTicketInputSubmit" class="btn btn-success"><i style="display: none;" class="fa fa-circle-o-notch fa-spin fa-fw"></i> Locate Ticket</button>
+                                <input id="supportFindTicketInputReset" class="btn btn-default" type="reset" value="Cancel" />
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+            <div class="span12">
+                <div style="display: none;" id="supportViewTicketResponse" class="well">
+                </div>
+                <div style="display: none;" id="supportViewTicketResponseReply" class="well">
+                    <form>
+                        <textarea rows="8" class="input-xxlarge" name="supportFindTicketInputReply" placeholder="Please detail your reply..."></textarea>
+                        <div class="form-actions">
+                            <button class="btn btn-success">Submit Reply</button>
+                            <button class="btn btn-info">Close Ticket</button>
+                            <input type="reset" value="Cancel" class="btn btn-default" />
+                        </div>
+                    </form>
+                </div>
             </div>
         </div>
     </div>

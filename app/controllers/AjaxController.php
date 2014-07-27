@@ -479,7 +479,7 @@ class AjaxController extends BaseController {
             'email' => 'required|email|max:100',
             'subject' => 'required|max:100',
             'description' => 'required|max:4000',
-            'human' => 'required|in:vatsim,VATSIM,VAT SIM, Vatsim, Vat Sim, Vat sim',
+            'human' => 'required|in:vatsim,VATSIM,VAT SIM,Vatsim,Vat Sim,Vat sim',
         ),
         array(
             'human.required' => 'Please fill in the anti-spam question. (Hint It ends with SIM and starts with VAT. Do not use any crazy capitalization).',
@@ -512,6 +512,14 @@ class AjaxController extends BaseController {
             $ticket->hash = sha1($post['supportInputName']. time());
             //Save our ticket
             $ticket->save();
+            //Create a URL for the user to access their ticket at
+            $url = URL::to('/') . '/ticket/hash/' . $ticket->hash;
+            //Now email the user the ticket # and a direct link to access updates (using the hash)
+            $body = "Hello " . $post['supportInputName'] . ",<br /><br />The VATSIM VASOPs department has received your ticket. Please use the following link to view and update your ticket.<br /><br /> <a href='" . $url . "'>" . $url . "</a><br /><br />You may also view your ticket at <a href='" . Url::to('/') . "/#moduleSupport'>" . Url::to('/') . "/#moduleSupport</a> by entering the following details.<br /><br /><strong>Ticket ID: " . $ticket->id . "</strong><br /><strong>Email: " . $post['supportInputEmail'] . "</strong><br /><br /><br /> <strong>Do not reply to this email. If you wish to reply to this ticket, please do so through your account online.</strong>";
+            $data = array('subject' => 'VASOPS Ticket #' . $ticket->id . ": " . $post['supportInputSubject'], 'email' => $post['supportInputEmail'], 'name' => $post['supportInputName']);
+            Mail::send('email.default', array("content" => $body), function($message) use ($data) {
+                $message->to($data['email'], $data['name'])->subject($data['subject']);
+            });
             //That will be all. Let's send 1 to our client to let me know that everything went well.
             echo 1;
         }
@@ -552,8 +560,27 @@ class AjaxController extends BaseController {
             }
             else {
                 //Alright now actually all clear.
-                $response = '';
-
+                //Prepare the status
+                $status = "";
+                if ($ticket->status == 1)
+                    $status = '<span style="margin-right: 10px;" class="badge badge-success">OPEN</span>';
+                else if ($ticket->status == 0) {
+                    $status = '<span style="margin-right: 10px;" class="badge badge-info">CLOSED</span>';
+                }
+                $response = '1<div class="well"><div style="margin-top: 20px; margin-bottom: 40px;" class="row-fluid"><div style="border-bottom: 1px solid #e5e5e5;" class="span10 offset2"><h4>' . $status . ' ' . $ticket->subject . '</h4></div><div class="span2"><strong>' . $ticket->name . '</strong><br /><small>' . $ticket->created_at . '</small></div><div style="padding-top: 3px; padding-left: 3px; margin-left: 0px; border-left: 1px solid #e5e5e5;" class="span8">' . $ticket->description . '</div></div></div>';
+                //Get our replies
+                $replies = $ticket->replies()->get();
+                foreach ($replies as $reply) {
+                    //Figure out if this is a staff reply
+                    if ($reply->staff === 0)
+                        $author = $ticket->name;
+                    else {
+                        //Alright. It is a staff reply. Let's fetch the name of the a auditor
+                        $author = '<span class="label label-important"><i class="fa fa-bookmark fa-fw"></i>' . ConsoleUser::getName($reply->author) . '</span>';
+                    }
+                    $response .= '<div style="margin-top: 15px; margin-bottom: 15px;"><hr style="border-bottom: 0;" /></div><div class="well"><div style="margin-top: 20px; margin-bottom: 40px;" class="row-fluid"><div class="span2">' . $author . '<br /><small>' . $ticket->created_at . '</small></div><div style="padding-top: 3px; padding-left: 3px; margin-left: 0px; border-left: 1px solid #e5e5e5;" class="span8">' . $reply->content . '</div></div></div>';
+                }
+                echo $response;
             }
 
         }

@@ -313,6 +313,7 @@
                     loader.fadeOut();
                     if (received == 1) {
                         btn.html('Ticket Created').attr('disabled', 'disabled');
+                        $('#supportNewTicketFormErrors').html('<div class="alert alert-success">Ticket Created Successfully. Please check your email for further details.</div>').slideDown();
                     }
                     else {
                         $('#supportNewTicketFormErrors').html(received).slideDown();
@@ -349,6 +350,11 @@
                 loader.fadeOut();
                 if (received.slice('0','1') != 1) {
                     $('#supportViewTicketFormErrors').html(received).slideDown();
+                }
+                else {
+                    $('#supportViewTicketFormErrors').html('<div class="alert alert-success">Ticket ID# ' + ticketid + ' located successfully.</div>').slideDown()
+                    $('#supportViewTicketResponse').html(received.substring(1)).slideDown();
+                    $('#supportViewTicketResponseReply').fadeIn('fast');
                 }
             });
     })
