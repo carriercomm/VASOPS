@@ -566,10 +566,11 @@
                 </div>
                 <div style="display: none;" id="supportViewTicketResponseReply" class="well">
                     <form>
-                        <textarea rows="8" class="input-xxlarge" name="supportFindTicketInputReply" placeholder="Please detail your reply..."></textarea>
+                        <textarea rows="8" class="input-xxlarge" id="supportFindTicketInputReply" name="supportFindTicketInputReply" placeholder="Please detail your reply..."></textarea>
                         <div class="form-actions">
-                            <button class="btn btn-success">Submit Reply</button>
-                            <button class="btn btn-info">Close Ticket</button>
+                            <button id="supportFindTicketReplySubmit" class="btn btn-success"><i style="display: none;" class="fa fa-circle-o-notch fa-spin fa-fw loader"></i> Submit Reply <i class="fa fa-arrow-right fa-fw"></i></button>
+                            <button style="display: none;" id="supportFindTicketCloseTicket" class="btn btn-info"><i style="display: none;" class="fa fa-circle-o-notch fa-spin fa-fw loader"></i> Close Ticket <i class="fa fa-check-circle fa-fw"></i></button>
+                            <button style="display: none;" id="supportFindTicketReopenTicket" class="btn btn-warning"><i style="display: none;" class="fa fa-circle-o-notch fa-spin fa-fw loader"></i> Reopen Ticket <i class="fa fa-history fa-fw"></i></button>
                             <input type="reset" value="Cancel" class="btn btn-default" />
                         </div>
                     </form>

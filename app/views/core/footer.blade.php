@@ -44,8 +44,16 @@
 <script src="js/jquery.stacktable.js"></script>
 <script src="js/retina.js"></script>
 <script src="js/application.js"></script>
+<script src="js/smooth-scroll.js"></script>
 <script type="text/javascript">
     $(document).ready(function () {
+
+        smoothScroll.init({
+            speed: 850,
+            easing: 'easeInOutQuad',
+        });
+
+
         $('#top-right').click(function () {
             $('#vatsimparagraph').fadeOut('slow');
             localStorage.setItem('vatsimparagraph', 1);
@@ -78,15 +86,19 @@
         switch (hash) {
             case '#moduleFind':
                 moduleFind();
+                smoothScroll.animateScroll(null, '#moduleFind');
                 break;
             case '#moduleCurrent':
                 moduleCurrent();
+                smoothScroll.animateScroll(null, '#moduleCurrent');
                 break;
             case '#moduleApply':
                 moduleApply();
+                smoothScroll.animateScroll(null, '#moduleApply');
                 break;
             case '#moduleSupport':
                 moduleSupport();
+                smoothScroll.animateScroll(null, '#moduleSupport');
                 break;
             default:
                 moduleCurrent();
@@ -343,21 +355,111 @@
         $.ajax({
             type: 'POST',
             url: "{{ URL::route('ajaxguestfindticket') }}",
-            data: {_token: _token, email: email, ticketid: ticketid }
+            data: { _token: _token, email: email, ticketid: ticketid }
         })
             .success(function(received) {
-               //Do something :)
                 loader.fadeOut();
-                if (received.slice('0','1') != 1) {
+                var status = received.slice(0,1);
+                console.log("Status = " + status);
+                if (status != 1 && status != 0) {
                     $('#supportViewTicketFormErrors').html(received).slideDown();
                 }
                 else {
                     $('#supportViewTicketFormErrors').html('<div class="alert alert-success">Ticket ID# ' + ticketid + ' located successfully.</div>').slideDown()
                     $('#supportViewTicketResponse').html(received.substring(1)).slideDown();
                     $('#supportViewTicketResponseReply').fadeIn('fast');
+                    if (status == 1) {
+                        $('#supportFindTicketCloseTicket').show();
+                        $('#supportFindTicketReopenTicket').hide();
+                    }
+                    else if (status == 0) {
+                        $('#supportFindTicketReopenTicket').show();
+                        $('#supportFindTicketCloseTicket').hide();
+                    }
                 }
             });
     })
+
+    $('#supportFindTicketReplySubmit').on('click', function(e) {
+        e.preventDefault();
+        var btn = $(this);
+        var loader = btn.find('i');
+        var _token = "{{ csrf_token() }}";
+        var contentTextArea = $('#supportFindTicketInputReply');
+        var content = contentTextArea.val();
+        if (content == '') {
+            contentTextArea.attr('placeholder', 'Please detail your reply... (You need to fill this in)');
+        }
+        else {
+            loader.fadeIn();
+            var ticketdiv = $('#ticketreceived');
+            var ticketid = ticketdiv.attr('data-ticketid');
+            var tickethash = ticketdiv.attr('data-tickethash');
+            $.ajax({
+                type: 'POST',
+                url: "{{ URL::route('ajaxguestsubmitreply') }}",
+                data: { _token: _token, content: content, ticketid: ticketid, hash: tickethash }
+            })
+                .success(function(received) {
+                    loader.fadeOut();
+                    contentTextArea.val('');
+                   //Append the response to the current response div
+                    var responsediv = $('#supportViewTicketResponse');
+                    responsediv.html(responsediv.html() + received);
+                });
+        }
+    });
+    $('#supportFindTicketCloseTicket').on('click', function(e) {
+        e.preventDefault();
+        var btn = $(this);
+        var loader = btn.find('.loader');
+        loader.fadeIn();
+        var _token = "{{ csrf_token() }}";
+        var ticketdiv = $('#ticketreceived');
+        var ticketid = ticketdiv.attr('data-ticketid');
+        var tickethash = ticketdiv.attr('data-tickethash');
+        $.ajax({
+            type: "POST",
+            url: "{{ URL::route('ajaxguestcloseticket') }}",
+            data: { _token: _token, ticketid: ticketid, hash: tickethash }
+        })
+            .success(function(received) {
+                loader.fadeOut();
+                $('#supportFindTicketCloseTicket').hide();
+                $('#supportFindTicketReopenTicket').fadeIn();
+                $('#supportViewTicketResponse').html(received);
+            });
+    });
+
+    $('#supportFindTicketReopenTicket').on('click', function(e) {
+        e.preventDefault();
+        var btn = $(this);
+        var loader = btn.find('.loader');
+        loader.fadeIn();
+        var _token = "{{ csrf_token() }}";
+        var ticketdiv = $('#ticketreceived');
+        var ticketid = ticketdiv.attr('data-ticketid');
+        var tickethash = ticketdiv.attr('data-tickethash');
+        $.ajax({
+            type: "POST",
+            url: "{{ URL::route('ajaxguestreopenticket') }}",
+            data: { _token: _token, ticketid: ticketid, hash: tickethash }
+        })
+            .success(function(received) {
+                loader.fadeOut();
+                $('#supportFindTicketReopenTicket').hide();
+                $('#supportFindTicketCloseTicket').fadeIn();
+                $('#supportViewTicketResponse').html(received);
+            });
+    });
+
+    @if (Session::has('ticketid'))
+    $('#supportViewTicketForm').slideDown('fast');
+    $('#supportFindTicketInputEmail').val('{{ Session::get('ticketemail') }}');
+    $('#supportFindTicketInputId').val({{ Session::get('ticketid') }});
+    $('#supportFindTicketInputSubmit').click();
+    @endif
+
 
 
 

@@ -118,7 +118,7 @@
                     <div id="ticketReply{{{ $reply->id }}}" class="panel panel-default repliespanelbg">
                         <div class="panel-body">
                             <div class="col-lg-3">
-                                @if ($reply->staff == 1) <span class="label label-danger"><i class="fa fa-bookmark fa-fw"></i> {{{ ConsoleUser::getName($reply->author) }}}</span> @else @if (!is_int($reply->author)) {{{ $reply->author }}} @else <a class="nolinkstyle" href="{{ URL::route('console') }}/va/{{{ $reply->author }}}"><strong>{{{ User::getFullName($reply->author) }}} ({{{ $reply->author }}})</strong></a>@endif @endif
+                                @if ($reply->staff == 1) <span class="label label-danger"><i class="fa fa-bookmark fa-fw"></i> {{{ ConsoleUser::getName($reply->author) }}}</span> @else @if (($reply->author == -1)) {{{ $ticket->name }}} @else <a class="nolinkstyle" href="{{ URL::route('console') }}/va/{{{ $reply->author }}}"><strong>{{{ User::getFullName($reply->author) }}} ({{{ $reply->author }}})</strong></a>@endif @endif
                             </div>
                             <div class="col-lg-9">
                                 <span style="font-style: italic;">Reply written: {{{ $reply->created_at }}}</span>

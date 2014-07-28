@@ -24,4 +24,14 @@ public function get_index()
     return View::make('index')->with(array('fname' => $fname, 'categories' => $categories, 'categoryChildren' => $categoryChildren));
 }
 
+    public function get_tickethash($hash)
+    {
+        $ticket = Ticket::where('hash', '=', $hash)->first();
+        if (empty($ticket))
+            return Redirect::to('/#moduleSupport')->with('topmessage', 'Invalid Ticket Hash. Please enter your ticket ID and email below to locate the ticket.');
+        $email = $ticket->email;
+        $ticketid = $ticket->id;
+        return Redirect::to('/#moduleSupport')->with(array('ticketemail' => $email, 'ticketid' => $ticketid));
+    }
+
 }

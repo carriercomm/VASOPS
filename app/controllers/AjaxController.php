@@ -562,28 +562,131 @@ class AjaxController extends BaseController {
                 //Alright now actually all clear.
                 //Prepare the status
                 $status = "";
-                if ($ticket->status == 1)
+                $statusnum = 1;
+                if ($ticket->status == 1) {
                     $status = '<span style="margin-right: 10px;" class="badge badge-success">OPEN</span>';
+                    $statusnum = 1;
+                }
                 else if ($ticket->status == 0) {
                     $status = '<span style="margin-right: 10px;" class="badge badge-info">CLOSED</span>';
+                    $statusnum = 0;
                 }
-                $response = '1<div class="well"><div style="margin-top: 20px; margin-bottom: 40px;" class="row-fluid"><div style="border-bottom: 1px solid #e5e5e5;" class="span10 offset2"><h4>' . $status . ' ' . $ticket->subject . '</h4></div><div class="span2"><strong>' . $ticket->name . '</strong><br /><small>' . $ticket->created_at . '</small></div><div style="padding-top: 3px; padding-left: 3px; margin-left: 0px; border-left: 1px solid #e5e5e5;" class="span8">' . $ticket->description . '</div></div></div>';
+                $response = $statusnum . '<div id="ticketreceived" data-tickethash="' . $ticket->hash . '" data-ticketid="' . $ticket->id . '" class="well"><div style="margin-top: 20px; margin-bottom: 40px;" class="row-fluid"><div style="border-bottom: 1px solid #e5e5e5;" class="span10 offset2"><h4>' . $status . ' ' . $ticket->subject . '</h4></div><div class="span2"><strong>' . $ticket->name . '</strong><br /><small>' . $ticket->created_at . '</small></div><div style="padding-top: 3px; padding-left: 3px; margin-left: 0px; border-left: 1px solid #e5e5e5;" class="span8">' . $ticket->description . '</div></div></div>';
                 //Get our replies
                 $replies = $ticket->replies()->get();
                 foreach ($replies as $reply) {
                     //Figure out if this is a staff reply
-                    if ($reply->staff === 0)
-                        $author = $ticket->name;
+                    if ($reply->staff == 0)
+                        $author = '<strong>' . $ticket->name . '</strong>';
                     else {
-                        //Alright. It is a staff reply. Let's fetch the name of the a auditor
+                        //Alright. It is a staff reply. Let's fetch the name of the auditor
                         $author = '<span class="label label-important"><i class="fa fa-bookmark fa-fw"></i>' . ConsoleUser::getName($reply->author) . '</span>';
                     }
-                    $response .= '<div style="margin-top: 15px; margin-bottom: 15px;"><hr style="border-bottom: 0;" /></div><div class="well"><div style="margin-top: 20px; margin-bottom: 40px;" class="row-fluid"><div class="span2">' . $author . '<br /><small>' . $ticket->created_at . '</small></div><div style="padding-top: 3px; padding-left: 3px; margin-left: 0px; border-left: 1px solid #e5e5e5;" class="span8">' . $reply->content . '</div></div></div>';
+                    $response .= '<div style="margin-top: 15px; margin-bottom: 15px;"><hr style="border-bottom: 0;" /></div><div class="well"><div style="margin-top: 20px; margin-bottom: 40px;" class="row-fluid"><div class="span2">' . $author . '<br /><small>' . $reply->created_at . '</small></div><div style="padding-top: 3px; padding-left: 3px; margin-left: 0px; border-left: 1px solid #e5e5e5;" class="span8">' . $reply->content . '</div></div></div>';
                 }
                 echo $response;
             }
 
         }
     }
+
+    public function post_guestsubmitticket() {
+        //Get our data
+        $content = Input::get('content');
+        //Ticked ID
+        $ticketid = Input::get('ticketid');
+        //Hash
+        $hash = Input::get('hash');
+        //We never trust the client. Let's make sure our trust is not broken :P
+        $ticket = Ticket::where('id', '=', $ticketid)->where('hash', '=', $hash)->first();
+        if (!empty($ticket)) {
+            //Phew alright, we trust the client now, (maybe) :)
+            $reply = new TicketReply;
+            $reply->tid = $ticketid;
+            //Make it clear that this is not from a VA account
+            $reply->author = '-1';
+            $reply->content = $content;
+            $reply->staff = 0;
+            //Save our reply
+            $reply->save();
+            //Check to see if there is an auditor assigned to this ticket. If there is then let's send them an email notification advising them that there is a ticket update.
+            if (!empty($ticket->assigned)) {
+                $auditor = ConsoleUser::where('cid', '=', $ticket->assigned)->first();
+                if (!empty($auditor->email)) {
+                    $data = array('email' => $auditor->email, 'name' => $auditor->name, 'subject' => 'VASOPS Ticket #' . $ticket->id . ": " . $ticket->subject);
+                    $body = "Hello " . $auditor->name . ",<br /><br />There has been an update to your assigned ticket " . $ticket->subject . " by " . $ticket->name . ". <br /><br />" . $content . "<br /><br /><br /> <strong>Do not reply to this email. If you wish to reply to this ticket, please do so through the auditor console.</strong>";
+                    Mail::send('email.default', array("content" => $body), function($message) use ($data) {
+                        $message->to($data['email'], $data['name'])->subject($data['subject']);
+                    });
+                }
+            }
+            //Return the new content to append to the existing div
+            $response = '<div style="margin-top: 15px; margin-bottom: 15px;"><hr style="border-bottom: 0;" /></div><div class="well"><div style="margin-top: 20px; margin-bottom: 40px;" class="row-fluid"><div class="span2"><strong>' . $ticket->name . '</strong><br /><small>' . $reply->created_at . '</small></div><div style="padding-top: 3px; padding-left: 3px; margin-left: 0px; border-left: 1px solid #e5e5e5;" class="span8">' . $reply->content . '</div></div></div>';
+            echo $response;
+        }
+    }
+
+    public function post_guestcloseticket() {
+        //Get our data
+        $ticketid = Input::get('ticketid');
+        $hash = Input::get('hash');
+        //Fetch our ticket
+        $ticket = Ticket::where('id', '=', $ticketid)->where('hash', '=', $hash)->first();
+        if (!empty($ticket)) {
+            //Close our ticket
+            $ticket->status = 0;
+            //Update our ticket
+            $ticket->save();
+            //Hell, let's just pull new replies in case something was updated
+            $status = '<span style="margin-right: 10px;" class="badge badge-info">CLOSED</span>';
+            $response = '<div id="ticketreceived" data-tickethash="' . $ticket->hash . '" data-ticketid="' . $ticket->id . '" class="well"><div style="margin-top: 20px; margin-bottom: 40px;" class="row-fluid"><div style="border-bottom: 1px solid #e5e5e5;" class="span10 offset2"><h4>' . $status . ' ' . $ticket->subject . '</h4></div><div class="span2"><strong>' . $ticket->name . '</strong><br /><small>' . $ticket->created_at . '</small></div><div style="padding-top: 3px; padding-left: 3px; margin-left: 0px; border-left: 1px solid #e5e5e5;" class="span8">' . $ticket->description . '</div></div></div>';
+            //Get our replies
+            $replies = $ticket->replies()->get();
+            foreach ($replies as $reply) {
+                //Figure out if this is a staff reply
+                if ($reply->staff == 0)
+                    $author = '<strong>' . $ticket->name . '</strong>';
+                else {
+                    //Alright. It is a staff reply. Let's fetch the name of the auditor
+                    $author = '<span class="label label-important"><i class="fa fa-bookmark fa-fw"></i>' . ConsoleUser::getName($reply->author) . '</span>';
+                }
+                $response .= '<div style="margin-top: 15px; margin-bottom: 15px;"><hr style="border-bottom: 0;" /></div><div class="well"><div style="margin-top: 20px; margin-bottom: 40px;" class="row-fluid"><div class="span2">' . $author . '<br /><small>' . $reply->created_at . '</small></div><div style="padding-top: 3px; padding-left: 3px; margin-left: 0px; border-left: 1px solid #e5e5e5;" class="span8">' . $reply->content . '</div></div></div>';
+            }
+            echo $response;
+        }
+    }
+
+    public function post_guestreopenticket() {
+        //Get our data
+        $ticketid = Input::get('ticketid');
+        $hash = Input::get('hash');
+        //Fetch our ticket
+        $ticket = Ticket::where('id', '=', $ticketid)->where('hash', '=', $hash)->first();
+        if (!empty($ticket)) {
+            //Reopen our ticket
+            $ticket->status = 1;
+            //Update our ticket
+            $ticket->save();
+            //Hell, let's just pull new replies in case something was updated
+            $status = '<span style="margin-right: 10px;" class="badge badge-success">OPEN</span>';
+            $response = '<div id="ticketreceived" data-tickethash="' . $ticket->hash . '" data-ticketid="' . $ticket->id . '" class="well"><div style="margin-top: 20px; margin-bottom: 40px;" class="row-fluid"><div style="border-bottom: 1px solid #e5e5e5;" class="span10 offset2"><h4>' . $status . ' ' . $ticket->subject . '</h4></div><div class="span2"><strong>' . $ticket->name . '</strong><br /><small>' . $ticket->created_at . '</small></div><div style="padding-top: 3px; padding-left: 3px; margin-left: 0px; border-left: 1px solid #e5e5e5;" class="span8">' . $ticket->description . '</div></div></div>';
+            //Get our replies
+            $replies = $ticket->replies()->get();
+            foreach ($replies as $reply) {
+                //Figure out if this is a staff reply
+                if ($reply->staff == 0)
+                    $author = '<strong>' . $ticket->name . '</strong>';
+                else {
+                    //Alright. It is a staff reply. Let's fetch the name of the auditor
+                    $author = '<span class="label label-important"><i class="fa fa-bookmark fa-fw"></i>' . ConsoleUser::getName($reply->author) . '</span>';
+                }
+                $response .= '<div style="margin-top: 15px; margin-bottom: 15px;"><hr style="border-bottom: 0;" /></div><div class="well"><div style="margin-top: 20px; margin-bottom: 40px;" class="row-fluid"><div class="span2">' . $author . '<br /><small>' . $reply->created_at . '</small></div><div style="padding-top: 3px; padding-left: 3px; margin-left: 0px; border-left: 1px solid #e5e5e5;" class="span8">' . $reply->content . '</div></div></div>';
+            }
+            echo $response;
+        }
+    }
+
+
+
 
 }

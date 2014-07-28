@@ -50,27 +50,27 @@
             switch (hash) {
                 case("#status"):
                     $('#consoleVATabs a[href="#status"]').tab('show');
-                    smoothScroll.animateScroll(null, '#page-wrapper')
+                    smoothScroll.animateScroll(null, '#page-wrapper');
                     break;
                 case('#email'):
                     $('#consoleVATabs a[href="#email"]').tab('show');
-                    smoothScroll.animateScroll(null, '#page-wrapper')
+                    smoothScroll.animateScroll(null, '#page-wrapper');
                     break;
                 case("#profile"):
                     $('#consoleVATabs a[href="#profile"]').tab('show');
-                    smoothScroll.animateScroll(null, '#page-wrapper')
+                    smoothScroll.animateScroll(null, '#page-wrapper');
                     break;
                 case("#banner"):
                     $('#consoleVATabs a[href="#banner"]').tab('show');
-                    smoothScroll.animateScroll(null, '#page-wrapper')
+                    smoothScroll.animateScroll(null, '#page-wrapper');
                     break;
                 case("#audit"):
                     $('#consoleVATabs a[href="#audit"]').tab('show');
-                    smoothScroll.animateScroll(null, '#page-wrapper')
+                    smoothScroll.animateScroll(null, '#page-wrapper');
                     break;
                 case('#tickets'):
                     $('#consoleVATabs a[href="#tickets"]').tab('show');
-                    smoothScroll.animateScroll(null, '#page-wrapper')
+                    smoothScroll.animateScroll(null, '#page-wrapper');
                     break;
             }
 

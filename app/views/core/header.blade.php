@@ -17,7 +17,7 @@
     <![endif]-->
 </head>
 <body>
-<div class="container">
+<div id="container" class="container">
     @if (Session::get('topmessage') != "")
     <div style="margin-top: 35px;" class="row">
         <div class="span12">

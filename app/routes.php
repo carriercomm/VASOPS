@@ -14,6 +14,8 @@
 //-------------------Public Routes---------------------------
 //Index - Root
 Route::get('/', array('as' => 'index', 'uses' => 'IndexController@get_index'));
+//Public Ticket Hash Look up
+Route::get('/ticket/hash/{hash}', array('uses' => 'IndexController@get_tickethash'));
 
 //AJAX
 Route::post('/ajax/registration', array('as' => 'ajaxRegistration', 'uses' => 'AjaxController@post_registration', 'before' => 'csrf'));
@@ -30,7 +32,9 @@ Route::post('/ajax/getvasbycategory', array('as' => 'ajaxGetVasByCategory', 'use
 Route::post('/ajax/searchvas', array('as' => 'ajaxSearchVAs', 'uses' => 'AjaxController@post_searchvas'));
 Route::post('/ajax/newguestticket', array('as' => 'ajaxnewguestticket', 'uses' => 'AjaxController@post_newguestticket', 'before' => 'csrf'));
 Route::post('/ajax/guestfindticket', array('as' => 'ajaxguestfindticket', 'uses' => 'AjaxController@post_guestfindticket', 'before' => 'csrf'));
-
+Route::Post('/ajax/guest/submitticket', array('as' => 'ajaxguestsubmitreply', 'uses' => 'AjaxController@post_guestsubmitticket', 'before' => 'csrf'));
+Route::post('/ajax/guest/closeticket', array('as' => 'ajaxguestcloseticket', 'uses' => 'AjaxController@post_guestcloseticket', 'before' => 'csrf'));
+Route::post('/ajax/guest/reopenticket', array('as' => 'ajaxguestreopenticket', 'uses' => 'AjaxController@post_guestreopenticket', 'before' => 'csrf'));
 
 //Pages
 Route::get('/va', array('as' => 'va', 'uses' => 'VaController@get_va', 'before' => 'auth'));
