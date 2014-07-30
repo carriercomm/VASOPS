@@ -61,7 +61,10 @@ class VaController extends BaseController {
             $tid = $ticket_request->id;
             $tids[$tid] = $tid;
         }
-        $replies = TicketReply::whereIn('tid', $tids)->orderBy('created_at', 'ASC')->get();
+        if (!empty($tids))
+            $replies = TicketReply::whereIn('tid', $tids)->orderBy('created_at', 'ASC')->get();
+        else
+            $replies = '';
         $tickets['replies'] = $replies;
 
         //Pull our Category data

@@ -3,7 +3,6 @@
 <head>
     <meta charset="utf-8">
     <title>VATSIM Virtual Airline System 1.0</title>
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     {{ HTML::style('bootstrap/css/bootstrap.css') }}
     {{ HTML::style('css/flat-ui.css') }}
     {{ HTML::style('css/custom.css') }}
