@@ -1219,7 +1219,7 @@ class ConsoleController extends BaseController {
         //Make sure I am the only one using this tool
         if (Auth::consoleuser()->get()->cid != "1095510")
             App::abort('403');
-        $filename = public_path() . '/import/pending.csv';
+        $filename = public_path() . '/import/current.csv';
         $delimiter = ',';
         ini_set('auto_detect_line_endings',TRUE);
         if(!file_exists($filename) || !is_readable($filename))
@@ -1247,8 +1247,14 @@ class ConsoleController extends BaseController {
             fclose($handle);
         }
         $i = 0;
+        //We need to get a list of all current VA cids to make sure that we aren't importing a VA that we already imported
+        $currentvas = User::all();
+        $currentvaids = array();
+        foreach ($currentvas as $currentva) {
+            $currentvaids[] = $currentva->cid;
+        }
         foreach ($data as $va) {
-            if (!is_numeric($va['id'])) {
+            if (!is_numeric($va['id']) || in_array($va['id'], $currentvaids)) {
                 continue;
             }
             $user = new User();
@@ -1263,7 +1269,8 @@ class ConsoleController extends BaseController {
             $user->zip = $va['zip'];
             $user->name = $va['name'];
             $user->email = $va['email'];
-            $user->status = '0';
+            //0 for pending and 1 for active
+            $user->status = '1';
             if ($va['reciprocating'] == "YES")
                 $user->linkbackstatus = '1';
             else
@@ -1278,14 +1285,14 @@ class ConsoleController extends BaseController {
                     $user->categories = $user->categories . $category . ',';
             }
             //Save the user
-            //$user->save();
+            $user->save();
 
             //Now insert the current comments as one audit log entry
             $auditlog = new AuditLog();
             $auditlog->va = $va['id'];
             $auditlog->author = '800000';
             $auditlog->content = $va['comments'];
-//            $auditlog->save();
+            $auditlog->save();
             $i++;
         }
         echo "Inserted " . $i . ' new records';
@@ -1295,7 +1302,7 @@ class ConsoleController extends BaseController {
         //Make sure I am the only one using this tool
         if (Auth::consoleuser()->get()->cid != "1095510")
             App::abort('403');
-        $filename = public_path() . '/import/current.csv';
+        $filename = public_path() . '/import/pending.csv';
         $delimiter = ',';
         ini_set('auto_detect_line_endings',TRUE);
         if(!file_exists($filename) || !is_readable($filename))
@@ -1330,7 +1337,7 @@ class ConsoleController extends BaseController {
             //Find our user
             $user = User::find($va['id']);
             //Make sure this is a valid va
-            if (empty($va))
+            if (empty($va) || !empty($va->banner))
                 continue;
             //Pull our banner (prepend 'pend' to the image name when importing pending links)
             $url = "http://linksmanager.com/b/vatsimvas/" . $va['id'] . ".gif";
