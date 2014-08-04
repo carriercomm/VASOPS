@@ -240,15 +240,18 @@
             var cnt = $("input[name='inputCategory[]']:checked").length;
             if (cnt > maxAllowed) {
                 $('#chooseOrRemove').text('Remove');
+                $('#lessOrMore').text('or more');
                 $('#numberOfChoicesLabel').text(Math.abs(maxAllowed - cnt)).prop('class','label label-important');
             }
             if (cnt < maxAllowed) {
                 $('#chooseOrRemove').text('Choose');
+                $('#lessOrMore').text('or less');
                 $('#numberOfChoicesLabel').text(maxAllowed - cnt).prop('class','label label-success');
             }
             if (cnt == maxAllowed)
             {
                 $('#chooseOrRemove').text('Choose');
+                $('#lessOrMore').text('more');
                 $('#numberOfChoicesLabel').text(maxAllowed - cnt).prop('class','label label-warning');
             }
 
