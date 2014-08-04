@@ -17,7 +17,7 @@
     </div>
     <div class="row">
         <div class="col-lg-12">
-            <div class="alert alert-warning"><i class="fa fa-bullhorn fa-fw"></i> <strong>Beta Test Notice</strong>:  Please do not edit or remove existing categories. I need the IDs to stay the same when importing future data. Thank you, Colin.</div>
+            <div class="alert alert-warning"><i class="fa fa-bullhorn fa-fw"></i> <strong>Warning</strong>:  Please exercise caution when using the Category Manager as certain actions are destructive.</div>
         </div>
     </div>
     <!-- /.row -->
