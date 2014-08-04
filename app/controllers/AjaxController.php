@@ -466,6 +466,7 @@ class AjaxController extends BaseController {
 
         $postStr = Input::get('data');
         parse_str($postStr, $post);
+        $post['supportInputHuman'] = strtolower($post['supportInputHuman']);
         //Create our validator
         $validator = Validator::make(array(
             'name' => $post['supportInputName'],
@@ -479,11 +480,11 @@ class AjaxController extends BaseController {
             'email' => 'required|email|max:100',
             'subject' => 'required|max:100',
             'description' => 'required|max:4000',
-            'human' => 'required|in:vatsim,VATSIM,VAT SIM,Vatsim,Vat Sim,Vat sim',
+            'human' => 'required|in:vatsim',
         ),
         array(
             'human.required' => 'Please fill in the anti-spam question. (Hint It ends with SIM and starts with VAT. Do not use any crazy capitalization).',
-            'human.in' => 'The antispam answer is not correct. (Hint: It ends with SIM and starts with VAT. Do not use any crazy capitalization.)',
+            'human.in' => 'The antispam answer is not correct. (Hint: It ends with SIM and starts with VAT.)',
         ));
         //Let's make sure that our user is not logged in
         if ($validator->fails() || Auth::user()->check()) {

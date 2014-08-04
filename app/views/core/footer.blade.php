@@ -475,6 +475,7 @@
 
     $('#forgotPassBtn').on('click', function(e) {
         e.preventDefault();
+        $('#loginErrorEmail, #loginErrorPassword').hide();
         $('#loginFormContainer').hide();
         $('#forgotPassFormContainer').fadeIn();
     });
