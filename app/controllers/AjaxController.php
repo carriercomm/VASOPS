@@ -483,7 +483,7 @@ class AjaxController extends BaseController {
             'human' => 'required|in:vatsim',
         ),
         array(
-            'human.required' => 'Please fill in the anti-spam question. (Hint It ends with SIM and starts with VAT. Do not use any crazy capitalization).',
+            'human.required' => 'Please fill in the anti-spam question. (Hint It ends with SIM and starts with VAT.).',
             'human.in' => 'The antispam answer is not correct. (Hint: It ends with SIM and starts with VAT.)',
         ));
         //Let's make sure that our user is not logged in
