@@ -9,7 +9,9 @@ class ClickController extends BaseController {
         }
 
         //Now to pull our VA record or fail
-        $va = User::findOrFail($id);
+        $va = User::find($id);
+        if (empty($va))
+            return Redirect::to('/')->with('topmessage', 'Sorry, that VA URL could not be located. Please try again and open a ticket if you continue experiencing the same issue.');
         //Great a VA exists, let's make sure to add one to their clicks if this IP hasn't added a click within the last minute.
         $existingClick = Click::where('ip', '=', Request::getClientIp())->orderBy('created_at', 'DESC')->first();
         if (!empty($existingClick)) {

@@ -3,7 +3,7 @@
     <div class="container">
         <div class="row">
             <div class="span7">
-                <img src="images/logo.gif" alt="Vatsim"/>
+                <a href="http://vatsim.net" target="_blank"><img src="images/logo.gif" alt="Vatsim"/></a>
 
                 <h3 class="footer-title">VATSIM Virtual Airline System</h3>
 
