@@ -47,6 +47,8 @@ public function get_index()
             //Remove the hash from the database
             $user->fptoken = "";
             $user->save();
+            $fname = User::getFirstName($user->cid);
+            Session::put('fname', $fname);
             //Alright now we need to redirect them to their manager and advise them to change their password
             return Redirect::to('va#editva')->with('topmessage', 'The reset link was valid and you were logged in. Please change your password below.');
         }

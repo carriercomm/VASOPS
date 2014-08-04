@@ -14,6 +14,9 @@ class AjaxController extends BaseController {
         if (!empty($user)) {
            if (Hash::check($password, $user->password)) {
                Auth::user()->loginUsingId($user->cid);
+               //Update the database with their last IP
+               $user->ip = Request::getClientIp();
+               $user->save();
                $fname = User::getFirstName(Auth::user()->get()->cid);
                Session::put('fname', $fname);
                echo $fname;
