@@ -437,7 +437,7 @@ class AjaxController extends BaseController {
         $query = Input::get('query');
 
         $vas = User::where('vaname', 'like','%' . $query . '%')->where('status', '=', '1')->orderBy('vaname', 'ASC')->get();
-        if (count($vas) == 0) {
+        if (count($vas) == 0 || empty($query) || $query == " ") {
             echo '<h4>No Virtual Airlines Found.</h4>';
         }
         else {
