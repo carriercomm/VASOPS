@@ -417,12 +417,8 @@
                 </div>
                 <div class="tab-pane fade in" id="clicks">
                     <h3>Clicks</h3>
-                    <div class="table-responsive">
-                        <table class="table table-striped table-bordered">
-                            <tr><th>{{ $clicks['month3before_name'] }}</th><th>{{ $clicks['month2before_name'] }}</th><th>{{ $clicks['month1before_name'] }}</th><th>{{ $clicks['month_name'] }}</th></tr>
-                            <tr><td>{{ $clicks['month3before'] }}</td><td>{{ $clicks['month2before'] }}</td><td>{{ $clicks['month1before'] }}</td><td>{{ $clicks['month'] }}</td></tr>
-                        </table>
-                    </div>
+                    <div><small>(More detailed stats coming soon)</small></div>
+                    <div style="margin-top: 20px;">Total Number of Clicks: <span class="label label-warning"><strong>{{{ $clicks }}}</strong></span></div>
                 </div>
                 <div class="tab-pane fade in" id="help">
                     <h3>Contact an Audit Manager</h3>

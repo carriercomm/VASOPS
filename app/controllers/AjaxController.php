@@ -689,7 +689,7 @@ class AjaxController extends BaseController {
     public function post_forgotpass() {
         $email = Input::get('email');
         $user = User::where('email', '=', $email)->first();
-        if (empty($user))
+        if (empty($user) || empty($email))
             echo -1;
         else {
             //Generate a forgot password token
