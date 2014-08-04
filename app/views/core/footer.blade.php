@@ -48,6 +48,19 @@
 <script type="text/javascript">
     $(document).ready(function () {
 
+        $('.tooltip-bottom').tooltip({
+            placement: 'bottom',
+        });
+        $('.tooltip-top').tooltip({
+            placement: 'top',
+        });
+        $('.tooltip-right').tooltip({
+            placement: 'right',
+        });
+        $('.tooltip-top').tooltip({
+            placement: 'left',
+        });
+
         smoothScroll.init({
             speed: 850,
             easing: 'easeInOutQuad',
@@ -459,6 +472,47 @@
     $('#supportFindTicketInputId').val({{ Session::get('ticketid') }});
     $('#supportFindTicketInputSubmit').click();
     @endif
+
+    $('#forgotPassBtn').on('click', function(e) {
+        e.preventDefault();
+        $('#loginFormContainer').hide();
+        $('#forgotPassFormContainer').fadeIn();
+    });
+
+    $('#cancelForgotPassBtn').on('click', function(e) {
+        e.preventDefault();
+        $('#forgotPassErrorEmail, #forgotPassSuccess').hide();
+        $('#forgotPassFormContainer').hide();
+        $('#loginFormContainer').fadeIn();
+    });
+
+    $('#forgotPassInputSubmitBtn').on('click', function(e) {
+        e.preventDefault();
+        $('#forgotPassErrorEmail, #forgotPassSuccess').hide();
+        var btn = $(this);
+        var email = $('#forgotPassInputEmail').val();
+        var _token = "{{ csrf_token() }}";
+        if (email != "") {
+            var loader = btn.find('i');
+            loader.fadeIn();
+            $.ajax({
+                url: "{{ Url::route('ajaxforgotpass') }}",
+                type: "POST",
+                data: { _token: _token, email: email }
+            })
+                .success(function(received) {
+                   loader.fadeOut();
+                   if (received == -1) {
+                       $('#forgotPassErrorEmail').fadeIn();
+                   }
+                   if (received == 1) {
+                       $('#forgotPassSuccess').fadeIn();
+                   }
+                });
+
+
+        }
+    });
 
 
 

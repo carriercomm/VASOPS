@@ -81,15 +81,29 @@
         <div style="margin-top: -15px; display: none;" id="loginErrorPassword" class="span2 offset4">
             <span class="label label-important">Invalid password. Please try again.</span>
         </div>
+        <div style="margin-top: -15px; display: none;" id="forgotPassErrorEmail" class="span2 offset4">
+            <span class="label label-important">That email doesn't appear to be associated with an account.</span>
+        </div>
+        <div style="margin-top: -15px; display: none;" id="forgotPassSuccess" class="span2 offset4">
+            <span class="label label-success">Please check your email for a link to reset your password.</span>
+        </div>
         @if (!Auth::user()->check())
-        <p class="span3 offset1">
+        <div class="span6 offset3">
         <form id="loginForm" style=" margin-top: 10px;" class="form-inline">
             <div class="controls controls-row">
-                <input name="inputEmail" id="login_cid" class="input-medium" type="text" value="" placeholder="Email" class="span3"/>
-                <input name="inputPassword" class="input-medium" type="password" value="" placeholder="Password" class="span3"/>
-                <input id="submitLoginForm" type="submit" class="btn btn-success" value="Go" class="span3"/>
+                <span id="loginFormContainer">
+                    <input name="inputEmail" id="login_cid" class="input-medium" type="text" value="" placeholder="Email" />
+                    <input name="inputPassword" class="input-medium" type="password" value="" placeholder="Password" />
+                    <input id="submitLoginForm" type="submit" class="btn btn-success" value="Go" />
+                    <button data-title="Forgot Password" id="forgotPassBtn" class="btn btn-default tooltip-bottom"><i class="fa fa-question fa-fw"></i></button>
+                </span>
+                <span style="display: none;" id="forgotPassFormContainer">
+                    <input id="forgotPassInputEmail" type="text" class="input-large" placeholder="Enter your account email..." />
+                    <button class="btn btn-info" id="forgotPassInputSubmitBtn"><i style="display: none;" class="fa fa-circle-o-notch fa-fw fa-spin"></i> Reset Password</button>
+                    <button data-title="Return to Login" id="cancelForgotPassBtn" class="btn btn-default tooltip-bottom"><i class="fa fa-arrow-right fa-fw"></i></button>
+                </span>
             </div>
         </form>
-        </p>
+        </div>
         @endif
     </div>

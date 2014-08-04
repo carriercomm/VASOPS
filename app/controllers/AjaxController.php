@@ -686,7 +686,28 @@ class AjaxController extends BaseController {
         }
     }
 
-
+    public function post_forgotpass() {
+        $email = Input::get('email');
+        $user = User::where('email', '=', $email)->first();
+        if (empty($user))
+            echo -1;
+        else {
+            //Generate a forgot password token
+            $user->fptoken = sha1($user->name . time());
+            //Update our user
+            $user->save();
+            //Email the user with a link to reset their password
+            if (!empty($user->email)) {
+                $data = array('email' => $user->email, 'name' => $user->name, 'subject' => 'VASOPS Password Reset');
+                $body = "Hello " . $user->name . ",<br /><br />You have requested a password reset. Included below is a link to reset your password.<br /><br /><a href=\"". URL::to('/') . "/passwordreset/" . $user->fptoken . "\">". URL::to('/') . "/passwordreset/" . $user->fptoken . "</a><br /><br /><br /> <strong>Do not reply to this email. If you have any questions please open a ticket.</strong>";
+                Mail::send('email.default', array("content" => $body), function($message) use ($data) {
+                    $message->to($data['email'], $data['name'])->subject($data['subject']);
+                });
+                //Great, that should do it. Let's just echo 1 so the client knows that everything went well
+                echo 1;
+            }
+        }
+    }
 
 
 }
