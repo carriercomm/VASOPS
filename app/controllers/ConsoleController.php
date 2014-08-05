@@ -1184,16 +1184,19 @@ class ConsoleController extends BaseController {
         //Get our inputs
         $name = Input::get('inputName');
         $email = Input::get('inputEmail');
+        $ticketnotifications = Input::get('inputTicketNotifications');
         $password = Input::get('inputPassword');
         //Start the validator
         $validator = Validator::make(array(
             'name' => $name,
             'email' => $email,
             'password' => $password,
+            'ticketnotifications' => $ticketnotifications,
         ), array(
             'name' => 'required',
             'email' => 'required|email',
             'password' => 'min:5',
+            'ticketnotifications' => 'required|in:0,1',
         ));
         if ($validator->fails())
             return Redirect::route('consoleprofile')->withErrors($validator);
@@ -1202,6 +1205,7 @@ class ConsoleController extends BaseController {
         $auditor = ConsoleUser::findOrFail(Auth::consoleuser()->get()->cid);
         $auditor->name = $name;
         $auditor->email = $email;
+        $auditor->ticketnotifications = $ticketnotifications;
         if (!empty($password))
             $auditor->password = Hash::make($password);
         //Save

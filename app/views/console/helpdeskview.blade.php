@@ -88,6 +88,7 @@
                                         <tr><td>ID: </td><td><i class="fa fa-slack fa-fw"></i>{{{ $ticket->id }}}</td></tr>
                                         @if ($ticket->vid != -1)<tr><td>CID: </td><td>{{{ $ticket->vid }}}</td></tr>@endif
                                         <tr><td>Name: </td><td>@if ($ticket->vid == -1) {{{ $ticket->name }}} @else {{{ User::getFullName($ticket->vid) }}} @endif</td></tr>
+                                        @if ($ticket->vid == -1) <tr><td>Email: </td><td>{{{ $ticket->email }}}</td></tr> @endif
                                         <tr><td>@if ($ticket->vid == -1) Ticket Type: @else VA Name: @endif</td><td>@if ($ticket->vid == -1) <strong>Guest Ticket</strong> @else {{{ User::getVaName($ticket->vid) }}} @endif</td></tr>
                                         <tr><td>Last Updated: </td><td>{{{ $ticket->updated_at }}}</td></tr>
                                         <tr><td>Created: </td><td>{{{ $ticket->created_at }}}</td></tr>

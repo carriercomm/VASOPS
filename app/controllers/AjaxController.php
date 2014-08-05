@@ -297,9 +297,20 @@ class AjaxController extends BaseController {
             //Our ticket status will start as open.
             $ticket->status = '1';
             $ticket->save();
-            //Pull the newly created ticket ID.
-            $ticket = Ticket::where('vid', '=', Auth::user()->get()->cid)->orderBy('id', 'DESC')->first();
             $id = $ticket->id;
+            //Get a list of auditors who have subscribed to ticket email notifications and send them an email
+            $auditors = ConsoleUser::where('ticketnotifications', '=', '1')->get();
+            foreach ($auditors as $auditor) {
+                $email = $auditor->email;
+                if (empty($email))
+                    continue;
+                $name = User::getFullName($ticket->vid);
+                $body = "Hello " . $auditor->name . ",<br /><br />A new ticket was created by " . $name . "<br /><br />" . $post['inputTicketContent'] . "<br /><br /><br /> <strong>Do not reply to this email. If you wish to reply to this ticket, please do so through your account online.</strong>";
+                $data = array('subject' => 'VASOPS New Ticket: ' . $post['inputTicketSubject'], 'name' => $auditor->name, 'email' => $auditor->email);
+                Mail::send('email.default', array("content" => $body), function($message) use ($data) {
+                    $message->to($data['email'], $data['name'])->subject($data['subject']);
+                });
+            }
             echo $id;
         }
 
@@ -524,6 +535,18 @@ class AjaxController extends BaseController {
             Mail::send('email.default', array("content" => $body), function($message) use ($data) {
                 $message->to($data['email'], $data['name'])->subject($data['subject']);
             });
+            //Get a list of auditors who have subscribed to ticket email notifications and send them an email
+            $auditors = ConsoleUser::where('ticketnotifications', '=', '1')->get();
+            foreach ($auditors as $auditor) {
+                $email = $auditor->email;
+                if (empty($email))
+                    continue;
+                $body = "Hello " . $auditor->name . ",<br /><br />A new ticket was created by " . $post['supportInputName'] . "<br /><br />" . $post['supportInputDescription'] . "<br /><br /><br /> <strong>Do not reply to this email. If you wish to reply to this ticket, please do so through your account online.</strong>";
+                $data = array('subject' => 'VASOPS New Ticket: ' . $post['supportInputSubject'], 'name' => $auditor->name, 'email' => $auditor->email);
+                Mail::send('email.default', array("content" => $body), function($message) use ($data) {
+                    $message->to($data['email'], $data['name'])->subject($data['subject']);
+                });
+            }
             //That will be all. Let's send 1 to our client to let me know that everything went well.
             echo 1;
         }

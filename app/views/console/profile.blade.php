@@ -43,6 +43,13 @@
                     <label>Password: </label>
                     <input name="inputPassword" class="form-control" placeholder="Enter a password... (if changing)" type="password" value="" />
                 </div>
+                <div class="form-group">
+                    <label>New Ticket Email Notifications: </label>
+                    <select class="form-control" name="inputTicketNotifications">
+                        <option value="1" @if ($auditor->ticketnotifications == 1) selected="selected" @endif>Yes</option>
+                        <option value="0" @if ($auditor->ticketnotifications == 0) selected="selected" @endif>No</option>
+                    </select>
+                </div>
                 <div class="form-actions">
                     <input type="submit" class="btn btn-success" value="Save Profile" />
                     <input type="reset" class="btn" style="color: white;" value="Cancel" />
