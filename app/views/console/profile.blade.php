@@ -40,10 +40,6 @@
                     <input name="inputEmail" class="form-control" placeholder="Enter your email address..." type="text" value="{{{ $auditor->email }}}" />
                 </div>
                 <div class="form-group">
-                    <label>Password: </label>
-                    <input name="inputPassword" class="form-control" placeholder="Enter a password... (if changing)" type="password" value="" />
-                </div>
-                <div class="form-group">
                     <label>New Ticket Email Notifications: </label>
                     <select class="form-control" name="inputTicketNotifications">
                         <option value="1" @if ($auditor->ticketnotifications == 1) selected="selected" @endif>Yes</option>

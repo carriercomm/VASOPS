@@ -429,6 +429,9 @@ class ConsoleController extends BaseController {
     public function get_helpdeskdelete($id) {
         //Verify the ticket exists
         $ticket = Ticket::findOrFail($id);
+        //Now delete the replies to start
+        $ticket::replies()->delete();
+        //And finally the ticket
         $ticket->delete();
         //That was easy. Now just redirect back to the dashboard with a message
         return Redirect::route('console')->with('message', 'Ticket successfully deleted.');
@@ -1185,17 +1188,14 @@ class ConsoleController extends BaseController {
         $name = Input::get('inputName');
         $email = Input::get('inputEmail');
         $ticketnotifications = Input::get('inputTicketNotifications');
-        $password = Input::get('inputPassword');
         //Start the validator
         $validator = Validator::make(array(
             'name' => $name,
             'email' => $email,
-            'password' => $password,
             'ticketnotifications' => $ticketnotifications,
         ), array(
             'name' => 'required',
             'email' => 'required|email',
-            'password' => 'min:5',
             'ticketnotifications' => 'required|in:0,1',
         ));
         if ($validator->fails())
@@ -1206,8 +1206,6 @@ class ConsoleController extends BaseController {
         $auditor->name = $name;
         $auditor->email = $email;
         $auditor->ticketnotifications = $ticketnotifications;
-        if (!empty($password))
-            $auditor->password = Hash::make($password);
         //Save
         $auditor->save();
         //Redirect back with message
