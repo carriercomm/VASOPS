@@ -376,7 +376,6 @@
             .success(function(received) {
                 loader.fadeOut();
                 var status = received.slice(0,1);
-                console.log("Status = " + status);
                 if (status != 1 && status != 0) {
                     $('#supportViewTicketFormErrors').html(received).slideDown();
                 }
