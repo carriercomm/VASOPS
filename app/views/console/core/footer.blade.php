@@ -517,13 +517,7 @@
             })
 
             $('#inputEmailTemplatesSelectVA').on('change', function() {
-                if ($(this).val() != "") {
-                    var caretPos = document.getElementById('inputEmailTemplatesBodyVA').selectionStart;
-                    var text = $(this).val();
-                    var currentContent = $('#inputEmailTemplatesBodyVA').val();
-                    jQuery('#inputEmailTemplatesBodyVA').val(currentContent.substring(0, caretPos) + text + currentContent.substring(caretPos));
-                }
-
+                CKEDITOR.instances.inputEmailTemplatesBodyVA.setData($(this).val());
             })
 
         @yield('consolejs')
