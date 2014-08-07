@@ -430,7 +430,7 @@ class ConsoleController extends BaseController {
         //Verify the ticket exists
         $ticket = Ticket::findOrFail($id);
         //Now delete the replies to start
-        $ticket::replies()->delete();
+        Ticket::find($id)->replies()->delete();
         //And finally the ticket
         $ticket->delete();
         //That was easy. Now just redirect back to the dashboard with a message
@@ -564,6 +564,7 @@ class ConsoleController extends BaseController {
         //Get our data
         $va = Input::get('va');
         $content = Input::get('content');
+        $content = nl2br($content);
         //Ensure that some idiot didn't try to remove the clientside verification and the content is not in fact empty
         if (!empty($content)) {
             //Ensure some idiot didn't try to change the va to some nonexistent VA
@@ -1166,7 +1167,6 @@ class ConsoleController extends BaseController {
         $variables = array("[name]", "[vaname]", "[cid]", "[email]", "[auditorname]");
         $values = array(User::getFirstName($cid), $va->vaname, $cid, $va->email, Auth::consoleuser()->get()->name);
         $body = str_replace($variables, $values, $body);
-        $body = nl2br($body);
         $data = array('va' => $va, 'email' => $email, 'subject' => $subject);
         //Alright. Time to do some email sending.
         Mail::send('email.default', array("content" => $body), function($message) use ($data) {

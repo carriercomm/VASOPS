@@ -44,6 +44,7 @@
 <script src="js/jquery.stacktable.js"></script>
 <script src="js/retina.js"></script>
 <script src="js/application.js"></script>
+<script src="ckeditor/ckeditor.js"></script>
 <script src="js/smooth-scroll.js"></script>
 <script type="text/javascript">
     $(document).ready(function () {
@@ -331,6 +332,8 @@
             var btn = $(this);
             var loader = $(this).find('i');
             loader.fadeIn();
+            //I know, this is cheating
+            $('#supportInputDescription').val(CKEDITOR.instances['supportInputDescription'].getData());
             var data = $('#supportNewTicketFormID').serialize();
             $.ajax({
                 type: "POST",
@@ -400,10 +403,9 @@
         var btn = $(this);
         var loader = btn.find('i');
         var _token = "{{ csrf_token() }}";
-        var contentTextArea = $('#supportFindTicketInputReply');
-        var content = contentTextArea.val();
+        var content = CKEDITOR.instances['supportFindTicketInputReply'].getData();
         if (content == '') {
-            contentTextArea.attr('placeholder', 'Please detail your reply... (You need to fill this in)');
+            CKEDITOR.instances.supportFindTicketInputReply.setData('Please detail your reply...');
         }
         else {
             loader.fadeIn();
@@ -417,7 +419,7 @@
             })
                 .success(function(received) {
                     loader.fadeOut();
-                    contentTextArea.val('');
+                    CKEDITOR.instances.supportFindTicketInputReply.setData('');
                    //Append the response to the current response div
                     var responsediv = $('#supportViewTicketResponse');
                     responsediv.html(responsediv.html() + received);
@@ -516,6 +518,8 @@
 
         }
     });
+
+    @yield('publicjs')
 
 
 
@@ -638,7 +642,7 @@
                         $('#submittingNewTicketAJAX').hide();
                         $('#noOpenTickets').hide();
                         var subject = $("#inputTicketSubject").val();
-                        var description = $("#inputTicketContent").val();
+                        var description = $('#inputTicketContent').val();
                         $('#containerNewOpenTickets').prepend('<div id="newOpenTickets" style="text-align: left; padding-right: 150px; display: none;" class="well"><h6 style="text-transform: none;"><span class="label">Now</span>  <strong>' + subject + '</strong>: ' + description + '</h6><span id="btnReopenTicket" style="float: right; position: relative; top: -25px; right: -145px; display: none;"><button class="btn btn-success" value="' + received + '"><i class="fui fui-plus"></i> Reopen Ticket</button></span><span id="btnCloseTicket" style="float: right; position: relative; top: -25px; right: -145px;"><button class="btn btn-danger" value="' + received + '"><i class="fui fui-cross"></i> Close Ticket</button></span></div>');
                         var replyTicketDivTemplate = $('#replyTicketDivTemplate').clone().attr('id', 'replyTicketDiv');
                         $('#containerNewOpenTickets').find('#newOpenTickets').append(replyTicketDivTemplate).find('#replyTicketDiv').fadeIn().find("input[name='tid']").attr('value', received);
@@ -957,6 +961,8 @@
                 });
 
         });
+
+        @yield('authjs')
 
 
         @endif

@@ -24,10 +24,10 @@
                 </div>
                 <div class="panel-body">
                     <a class="nolinkstyle" href="{{ URL::route('console') }}/va/{{{ $auditLog1->va }}}#audit"><div class="well">
-                        {{{ $auditLog1->content }}}
+                        {{ $auditLog1->content }}
                     </div></a>
                     <a class="nolinkstyle" href="{{ URL::route('console') }}/va/{{{ $auditLog2->va }}}#audit"><div class="well">
-                        {{{ $auditLog2->content }}}
+                        {{ $auditLog2->content }}
                     </div></a>
                 </div>
             </div>
@@ -73,7 +73,7 @@
                             </div>
                             <div class="panel-body">
                                 <div class="col-lg-11">
-                                    {{{ $ticket->description }}}
+                                    {{{ strip_tags($ticket->description) }}}
                                 </div>
                                 <div class="col-lg-1">
                                     <a style="text-decoration: none;" href="{{ URL::route('console') }}/helpdesk/view/{{{ $ticket->id }}}"><button class="btn btn-info"><i class="fa fa-eye fa-fw"></i> View</button></a>

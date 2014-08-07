@@ -59,7 +59,7 @@
                     <tr><td colspan="5">No templates found...</td></tr>
                     @else
                     @foreach ($myTemplates as $myTemplate)
-                    <tr data-templateid="{{{ $myTemplate->id }}}"><td>{{{ $myTemplate->name }}}</td><td>{{{ $myTemplate->subject }}}</td><td>{{{ substr($myTemplate->content,0,100) }}}...</td><td>@if ($myTemplate->public == 1) <span class="label label-primary">Public</span> @else <span class="label label-default">Private</span> @endif</td><td><a href="{{ URL::route('consoleemailtemplates') }}/edit/{{{ $myTemplate->id }}}" class="nolinkstyle"><i class="fa fa-edit fa-fw pointer"></i></a><span class="emailTemplateDeleteX"><i class="fa fa-times fa-fw pointer"></i></span></td></tr>
+                    <tr data-templateid="{{{ $myTemplate->id }}}"><td>{{{ $myTemplate->name }}}</td><td>{{{ $myTemplate->subject }}}</td><td>{{{ strip_tags(substr($myTemplate->content,0,100)) }}}...</td><td>@if ($myTemplate->public == 1) <span class="label label-primary">Public</span> @else <span class="label label-default">Private</span> @endif</td><td><a href="{{ URL::route('consoleemailtemplates') }}/edit/{{{ $myTemplate->id }}}" class="nolinkstyle"><i class="fa fa-edit fa-fw pointer"></i></a><span class="emailTemplateDeleteX"><i class="fa fa-times fa-fw pointer"></i></span></td></tr>
                     @endforeach
                     @endif
                 </table>
@@ -104,5 +104,8 @@
         </div>
     </div>
 </div>
+@section('consolejs')
+CKEDITOR.replace('inputEmailTemplateContent');
+@endsection
 <!-- /#page-wrapper -->
 @include('console.core.footer')

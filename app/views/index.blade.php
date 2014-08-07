@@ -579,4 +579,8 @@
         </div>
     </div>
 </div>
+@section('publicjs')
+CKEDITOR.replace('supportInputDescription');
+CKEDITOR.replace('supportFindTicketInputReply');
+@endsection
 @include('core.footer')

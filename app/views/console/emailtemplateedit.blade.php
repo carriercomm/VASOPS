@@ -37,7 +37,7 @@
                 <div class="form-group">
                     <label>Body</label>
                     <span style="line-height: 40px;" class="pointer"><pre class="variableLabels">[name]</pre> <pre class="variableLabels">[vaname]</pre> <pre class="variableLabels">[cid]</pre> <pre class="variableLabels">[email]</pre> <pre class="variableLabels">[auditorname]</pre></span>
-                    <textarea style="margin-top: 10px;" rows="15;" class="form-control" name="inputContent" id="inputEmailTemplateContent" placeholder="Body">{{{ $template->content }}}</textarea>
+                    <textarea style="margin-top: 10px;" rows="15;" class="form-control" name="inputContent" id="inputEmailTemplateContent" placeholder="Body">{{ $template->content }}</textarea>
                 </div>
                 <div class="checkbox">
                     <label>Public</label>
@@ -51,5 +51,8 @@
         </div>
     </div>
 </div>
+@section('consolejs')
+CKEDITOR.replace('inputEmailTemplateContent');
+@endsection
 <!-- /#page-wrapper -->
 @include('console.core.footer')

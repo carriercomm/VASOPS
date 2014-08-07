@@ -438,8 +438,8 @@
                                 </div>
                             </div>
                             <div class="control-group">
-                                <div class="controls">
-                                    <textarea style="width: 78%;" name="inputTicketContent" id="inputTicketContent" rows="5" placeholder="Please detail your question..."></textarea>
+                                <div style="width: 80%; margin: 0 auto;" class="controls">
+                                    <textarea name="inputTicketContent" id="inputTicketContent" rows="5" placeholder="Please detail your question..."></textarea>
                                 </div>
                             </div>
                             <div class="control-group">
@@ -457,12 +457,12 @@
                         <div id="containerNewOpenTickets">
                             @foreach ($tickets['opentickets'] as $ticket)
                             <div id="newOpenTickets" style="text-align: left; padding-right: 150px;" class="well">
-                                <h6 style="font-style: italic; text-transform: none;"><span class="label">{{ $ticket->updated_at }}</span>  <strong>{{{ $ticket->subject }}}</strong>: {{{ $ticket->description }}}</h6><span id="btnReopenTicket" style="float: right; position: relative; top: -25px; right: -145px; display: none;"><button class="btn btn-success" value="{{ $ticket->id }}"><i class="fui fui-plus"></i> Reopen Ticket</button></span><span id="btnCloseTicket" style="float: right; position: relative; top: -25px; right: -145px; display: none;"><button class="btn btn-danger" value="{{ $ticket->id }}"><i class="fui fui-cross"></i> Close Ticket</button></span>
+                                <h6 style="font-style: italic; text-transform: none;"><span class="label">{{ $ticket->updated_at }}</span>  <strong>{{{ $ticket->subject }}}</strong>: {{ $ticket->description }}</h6><span id="btnReopenTicket" style="float: right; position: relative; top: -25px; right: -145px; display: none;"><button class="btn btn-success" value="{{ $ticket->id }}"><i class="fui fui-plus"></i> Reopen Ticket</button></span><span id="btnCloseTicket" style="float: right; position: relative; top: -25px; right: -145px; display: none;"><button class="btn btn-danger" value="{{ $ticket->id }}"><i class="fui fui-cross"></i> Close Ticket</button></span>
                                 <div style="display: none;" id="newOpenTickets_expanded">
                                     @foreach ($tickets['replies'] as $reply)
                                     @if ($reply->tid == $ticket->id)
                                     <hr style="width: 80%" />
-                                    <div><span style="text-align: left; margin-right: 20px;">@if ($reply->staff == 1) <span class="label label-important"><i class="icon icon-bookmark icon-white"></i> {{{ ConsoleUser::getName($reply->author) }}}</span> @else <strong>{{{ User::getFullName($reply->author) }}}</strong>@endif</span><span style="">{{{ $reply->content }}}</span></div>
+                                    <div><span style="text-align: left; margin-right: 20px;">@if ($reply->staff == 1) <span class="label label-important"><i class="icon icon-bookmark icon-white"></i> {{{ ConsoleUser::getName($reply->author) }}}</span> @else <strong>{{{ User::getFullName($reply->author) }}}</strong>@endif</span><span style="">{{ $reply->content }}</span></div>
                                     @endif
                                     @endforeach
 
@@ -515,12 +515,12 @@
                             @foreach ($tickets['closedtickets'] as $ticket)
                             <div id="newClosedTickets" style="text-align: left; padding-right: 150px;" class="well">
                                 <input type="hidden" name="ticket_id" value="{{ $ticket->id }}" />
-                                <h6 style="text-transform: none;"><span class="label">{{ $ticket->updated_at }}</span>  <strong>{{{ $ticket->subject }}}</strong>: {{{ $ticket->description }}}</h6><span id="btnReopenTicket" style="float: right; position: relative; top: -25px; right: -145px; display: none;"><button class="btn btn-success" value="{{ $ticket->id }}"><i class="fui fui-plus"></i> Reopen Ticket</button></span><span id="btnCloseTicket" style="float: right; position: relative; top: -25px; right: -145px; display: none;"><button class="btn btn-danger" value="{{ $ticket->id }}"><i class="fui fui-cross"></i> Close Ticket</button></span>
+                                <h6 style="text-transform: none;"><span class="label">{{ $ticket->updated_at }}</span>  <strong>{{{ $ticket->subject }}}</strong>: {{ $ticket->description }}</h6><span id="btnReopenTicket" style="float: right; position: relative; top: -25px; right: -145px; display: none;"><button class="btn btn-success" value="{{ $ticket->id }}"><i class="fui fui-plus"></i> Reopen Ticket</button></span><span id="btnCloseTicket" style="float: right; position: relative; top: -25px; right: -145px; display: none;"><button class="btn btn-danger" value="{{ $ticket->id }}"><i class="fui fui-cross"></i> Close Ticket</button></span>
                                 <div style="display: none;" id="newClosedTickets_expanded">
                                     @foreach ($tickets['replies'] as $reply)
                                     @if ($reply->tid == $ticket->id)
                                     <hr style="width: 80%" />
-                                    <div><span style="text-align: left; margin-right: 20px;"><strong>{{{ User::getFullName($reply->author) }}}</strong></span><span style="">{{{ $reply->content }}}</span></div>
+                                    <div><span style="text-align: left; margin-right: 20px;"><strong>{{{ User::getFullName($reply->author) }}}</strong></span><span style="">{{ $reply->content }}</span></div>
                                     @endif
                                     @endforeach
                                 </div>

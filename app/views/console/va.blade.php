@@ -604,7 +604,7 @@
                                 <small>{{{ $log->created_at }}} - {{{ ConsoleUser::getName($log->author) }}}</small>
                             </div>
                             <div class="panel-body">
-                                {{{ $log->content }}}
+                                {{ $log->content }}
                             </div>
                         </div>
                         @endforeach
@@ -633,4 +633,7 @@
     var vacid = {{{ $va->cid }}};
     var name = '{{{ Auth::consoleuser()->get()->name }}}';
 </script>
+@section('consolejs')
+CKEDITOR.replace('inputEmailTemplatesBodyVA');
+@endsection
 @include('console.core.footer')

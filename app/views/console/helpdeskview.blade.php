@@ -102,7 +102,7 @@
                     <div class="col-lg-8">
                         <h4>{{{ $ticket->subject }}}</h4>
                         <hr />
-                        <p>{{{ $ticket->description }}}</p>
+                        <p>{{ $ticket->description }}</p>
                     </div>
                 </div>
             </div>
@@ -124,7 +124,7 @@
                             <div class="col-lg-9">
                                 <span style="font-style: italic;">Reply written: {{{ $reply->created_at }}}</span>
                                 <hr />
-                                {{{ $reply->content }}}
+                                {{ $reply->content }}
                             </div>
                         </div>
                     </div>
@@ -206,4 +206,7 @@
         </div>
     </div>
 </div>
+@section('consolejs')
+CKEDITOR.replace('inputConsoleTicketReplyContent');
+@endsection
 @include('console.core.footer')

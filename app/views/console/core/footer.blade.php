@@ -32,6 +32,7 @@
     <script src="{{ URL::to('/') }}/js/plugins/morris/raphael-2.1.0.min.js"></script>
     <script src="{{ URL::to('/') }}/js/plugins/morris/morris.js"></script>
     <script src="{{ URL::to('/') }}/js/smooth-scroll.js"></script>
+    <script src="{{ URL::to('/') }}/ckeditor/ckeditor.js"></script>
     <script src="{{ URL::to('/') }}/js/consoleapplication.js"></script>
     <script>
         $(document).ready(function() {
@@ -525,7 +526,7 @@
 
             })
 
-
+        @yield('consolejs')
 
 
         });

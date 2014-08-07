@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="utf-8">
-    <title>VASOPS Error 404</title>
+    <title>VASOPS Error 403</title>
     {{ HTML::style('bootstrap/css/bootstrap.css') }}
     {{ HTML::style('css/flat-ui.css') }}
     {{ HTML::style('css/custom.css') }}
