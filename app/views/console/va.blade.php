@@ -123,51 +123,6 @@
                 </td>
             </tr>
             <tr>
-                <td><h4><small>city</small></h4></td><td><h4 id="vaCityField">{{{ $va->city }}}</h4>
-                    <form>
-                        <div class="input-group" style="display: none;" id="vaCityInputDiv">
-                            <input class="form-control" id="vaCityInput" type="text" value="{{{ $va->city }}}" />
-                                            <span class="input-group-btn">
-                                                <button id="vaEditInputSubmit" class="btn btn-success">
-                                                    Save
-                                                </button>
-                                                <input id="vaCityInputReset" type="reset" class="btn btn-warning" value="Cancel"/>
-                                            </span>
-                        </div>
-                    </form>
-                </td>
-            </tr>
-            <tr>
-                <td><h4><small>state</small></h4></td><td><h4 id="vaStateProvinceField">{{{ $va->stateprovince }}}</h4>
-                    <form>
-                        <div class="input-group" style="display: none;" id="vaStateProvinceInputDiv">
-                            <input class="form-control" id="vaStateProvinceInput" type="text" value="{{{ $va->stateprovince }}}" />
-                                            <span class="input-group-btn">
-                                                <button id="vaEditInputSubmit" class="btn btn-success">
-                                                    Save
-                                                </button>
-                                                <input id="vaStateProvinceInputReset" type="reset" class="btn btn-warning" value="Cancel"/>
-                                            </span>
-                        </div>
-                    </form>
-                </td>
-            </tr>
-            <tr>
-                <td><h4><small>postal</small></h4></td><td><h4 id="vaZipField">{{{ $va->zip }}}</h4>
-                    <form>
-                        <div class="input-group" style="display: none;" id="vaZipInputDiv">
-                            <input class="form-control" id="vaZipInput" type="text" value="{{{ $va->zip }}}" />
-                                            <span class="input-group-btn">
-                                                <button id="vaEditInputSubmit" class="btn btn-success">
-                                                    Save
-                                                </button>
-                                                <input id="vaZipInputReset" type="reset" class="btn btn-warning" value="Cancel"/>
-                                            </span>
-                        </div>
-                    </form>
-                </td>
-            </tr>
-            <tr>
             <td><h4><small>country</small></h4></td><td><h4 id="vaCountryField">{{{ $va->country }}}</h4>
             <form>
             <div class="input-group" style="display: none;" id="vaCountryInputDiv">

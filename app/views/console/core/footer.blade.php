@@ -189,33 +189,6 @@
                 $('#vaVatsimImagePageLinkField').fadeIn();
             })
 
-            $('#vaCityField').on('click', function(){
-                $('#vaCityField').hide();
-                $('#vaCityInputDiv').fadeIn('fast');
-            });
-            $('#vaCityInputReset').on('click', function() {
-                $('#vaCityInputDiv').hide();
-                $('#vaCityField').fadeIn();
-            })
-
-            $('#vaStateProvinceField').on('click', function(){
-                $('#vaStateProvinceField').hide();
-                $('#vaStateProvinceInputDiv').fadeIn('fast');
-            });
-            $('#vaStateProvinceInputReset').on('click', function() {
-                $('#vaStateProvinceInputDiv').hide();
-                $('#vaStateProvinceField').fadeIn();
-            })
-
-            $('#vaZipField').on('click', function(){
-                $('#vaZipField').hide();
-                $('#vaZipInputDiv').fadeIn('fast');
-            });
-            $('#vaZipInputReset').on('click', function() {
-                $('#vaZipInputDiv').hide();
-                $('#vaZipField').fadeIn();
-            })
-
             $('#vaCountryField').on('click', function() {
                 $('#vaCountryField').hide();
                 $('#vaCountryInputDiv').fadeIn();

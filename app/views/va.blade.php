@@ -321,24 +321,6 @@
                     </div>
                     </div>
                     <div class="control-group">
-                        <label class="control-label" for="inputStateProvince">State or Province</label>
-                        <div class="controls">
-                            <input name="inputStateProvince" type="text" id="inputStateProvince" value="{{$record->stateprovince}}" />
-                        </div>
-                    </div>
-                    <div class="control-group">
-                        <label class="control-label" for="inputCity">City</label>
-                        <div class="controls">
-                            <input name="inputCity" type="text" id="inputCity" value="{{$record->city}}" />
-                        </div>
-                    </div>
-                    <div class="control-group">
-                        <label class="control-label" for="inputZip">Postal/Zip Code</label>
-                        <div class="controls">
-                            <input name="inputZip" type="text" id="inputZip" value="{{$record->zip}}" />
-                        </div>
-                    </div>
-                    <div class="control-group">
                         <label class="control-label" for="inputName">Full Name</label>
                         <div class="controls">
                             <input name="inputName" type="text" id="inputName" value="{{$record->name}}" />
@@ -438,8 +420,8 @@
                                 </div>
                             </div>
                             <div class="control-group">
-                                <div style="width: 80%; margin: 0 auto;" class="controls">
-                                    <textarea name="inputTicketContent" id="inputTicketContent" rows="5" placeholder="Please detail your question..."></textarea>
+                                <div class="controls">
+                                    <textarea style="width: 78%;" name="inputTicketContent" id="inputTicketContent" rows="5" placeholder="Please detail your question..."></textarea>
                                 </div>
                             </div>
                             <div class="control-group">

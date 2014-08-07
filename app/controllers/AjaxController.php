@@ -53,9 +53,6 @@ class AjaxController extends BaseController {
                 'Description' => $post['inputDescription'],
                 'Vatsim Image Page Link' => $post['inputVatsimImagePageLink'],
                 'Country' => $post['inputCountry'],
-                'State/Province' => $post['inputStateProvince'],
-                'City' => $post['inputCity'],
-                'Zip' => $post['inputZip'],
                 'Name' => $post['inputName'],
                 'Email' => $post['inputEmail'],
                 'Password' => $post['inputPassword'],
@@ -68,9 +65,6 @@ class AjaxController extends BaseController {
                 'Description' => 'required|max:200',
                 'Vatsim Image Page Link' => 'required|url',
                 'Country' => 'required',
-                'State/Province' => 'required',
-                'City' => 'required',
-                'Zip' => 'required',
                 'Name' => 'required',
                 'Email' => 'required|email',
                 'Password' => 'min:6|confirmed',
@@ -114,9 +108,6 @@ class AjaxController extends BaseController {
             $vas->description = $post['inputDescription'];
             $vas->vatsimimagepagelink = $post['inputVatsimImagePageLink'];
             $vas->country = $post['inputCountry'];
-            $vas->stateprovince = $post['inputStateProvince'];
-            $vas->city = $post['inputCity'];
-            $vas->zip = $post['inputZip'];
             $vas->name = $post['inputName'];
             $vas->email = $post['inputEmail'];
             $vas->categories = implode (",", $post['inputCategory']) . ',';
@@ -152,9 +143,6 @@ class AjaxController extends BaseController {
                 'Description' => $post['inputDescription'],
                 'Vatsim Image Page Link' => $post['inputVatsimImagePageLink'],
                 'Country' => $post['inputCountry'],
-                'State/Province' => $post['inputStateProvince'],
-                'City' => $post['inputCity'],
-                'Zip' => $post['inputZip'],
                 'Name' => $post['inputName'],
                 'Email' => $post['inputEmail'],
                 'Password' => $post['inputPassword'],
@@ -168,9 +156,6 @@ class AjaxController extends BaseController {
                 'Description' => 'required|max:200',
                 'Vatsim Image Page Link' => 'required|url',
                 'Country' => 'required',
-                'State/Province' => 'required',
-                'City' => 'required',
-                'Zip' => 'required',
                 'Name' => 'required',
                 'Email' => 'required|email|unique:vas,email',
                 'Password' => 'required|min:6|confirmed',
@@ -209,9 +194,6 @@ class AjaxController extends BaseController {
             $vas->description = $post['inputDescription'];
             $vas->vatsimimagepagelink = $post['inputVatsimImagePageLink'];
             $vas->country = $post['inputCountry'];
-            $vas->stateprovince = $post['inputStateProvince'];
-            $vas->city = $post['inputCity'];
-            $vas->zip = $post['inputZip'];
             $vas->name = $post['inputName'];
             $vas->email = $post['inputEmail'];
             $vas->categories = implode (",", $post['inputCategory']) . ',';
@@ -220,6 +202,17 @@ class AjaxController extends BaseController {
             //Save our data
             $vas->save();
 
+            //Great, now let's send our welcome email to the member
+            $template = SystemEmailTemplate::find('registration_received');
+            $subject = $template->subject;
+            $email = $post['inputEmail'];
+            $content = EmailTemplate::replaceContent($template->content, $post['inputCid']);
+            //Send our email
+            $data = array('name' => $post['inputName'], 'email' => $email, 'subject' => $subject);
+            //Alright. Time to do some email sending.
+            Mail::send('email.default', array("content" => $content), function($message) use ($data) {
+                $message->to($data['email'], $data['name'])->subject($data['subject']);
+            });
         }
 
     }

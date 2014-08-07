@@ -47,7 +47,7 @@
 </div>
 <div style="display:none;" id="applyStep2Success">
     <div class="alert alert-success">
-        Congratulations your submission was submitted successfully.
+        Congratulations your submission was submitted successfully. You should receive an email with further details. Please now login and upload a banner for your virtual airline.
     </div>
 </div>
 <div style="display: none;" id="applyStep2">
@@ -327,24 +327,6 @@
 
 </select>
 </div>
-</div>
-<div class="control-group">
-    <label class="control-label" for="inputStateProvince">State or Province</label>
-    <div class="controls">
-        <input name="inputStateProvince" type="text" id="inputStateProvince" placeholder="State or Province" />
-    </div>
-</div>
-<div class="control-group">
-    <label class="control-label" for="inputCity">City</label>
-    <div class="controls">
-        <input name="inputCity" type="text" id="inputCity" placeholder="City" />
-    </div>
-</div>
-<div class="control-group">
-    <label class="control-label" for="inputZip">Postal/Zip Code</label>
-    <div class="controls">
-        <input name="inputZip" type="text" id="inputZip" placeholder="" />
-    </div>
 </div>
 <div class="control-group">
     <label class="control-label" for="inputName">Full Name</label>

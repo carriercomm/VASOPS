@@ -149,7 +149,7 @@ class ConsoleController extends BaseController {
                 break;
             $i++;
         }
-        $pendingVAs = User::where('status', '=', '0')->orderBy('created_at', 'ASC')->get();
+        $pendingVAs = User::where('status', '=', '0')->orderBy('created_at', 'DESC')->get();
         $activeBroadcasts = Broadcast::where('status', '=', '1')->orderBy('created_at', 'DESC')->get();
         return View::make('console.index')->with(array('pendingVAs' => $pendingVAs, 'activeBroadcasts' => $activeBroadcasts, 'tickets' => $unAssignedTickets, 'auditLog1' => $auditLog1, 'auditLog2' => $auditLog2));
     }
@@ -1168,9 +1168,7 @@ class ConsoleController extends BaseController {
         if (empty($subject) || empty($body))
             return Redirect::to('console/va/' . $cid . '#email')->with('message', 'Please enter a subject and body prior to sending the message.');
         //Replace the email body variables
-        $variables = array("[name]", "[vaname]", "[cid]", "[email]", "[auditorname]");
-        $values = array(User::getFirstName($cid), $va->vaname, $cid, $va->email, Auth::consoleuser()->get()->name);
-        $body = str_replace($variables, $values, $body);
+        $body = EmailTemplate::replaceContent($body , $cid);
         $data = array('va' => $va, 'email' => $email, 'subject' => $subject);
         //Alright. Time to do some email sending.
         Mail::send('email.default', array("content" => $body), function($message) use ($data) {
@@ -1216,10 +1214,42 @@ class ConsoleController extends BaseController {
         return Redirect::route('consoleprofile')->with('message', 'Profile Updated Successfully.');
     }
 
+    public function get_systememailtemplatedit($id) {
+        //Verify this is a valid ID
+        $template = SystemEmailTemplate::findOrFail($id);
+        //Return our view
+        return View::make('console.emailtemplatesystemedit')->with('template', $template);
+    }
+
+    public function post_systememailtemplatesave() {
+        //Get our data
+        $id = Input::get('id');
+        $subject = Input::get('subject');
+        $content = Input::get('content');
+        //Verify that this in fact a valid system template ID
+        $template = SystemEmailTemplate::findOrFail($id);
+        //I'm too lazy to use proper validation for this
+        if (empty($subject)) {
+            return Redirect::to('console/emailtemplates/edit/system/' . $id)->with('message', 'Please enter a subject.');
+        }
+        if (empty($content)) {
+            return Redirect::to('console/emailtemplates/edit/system/' . $id)->with('message', 'Please enter an email body.');
+        }
+        //Alright all good let's push these edits
+        $template->subject = $subject;
+        $template->content = $content;
+        $template->save();
+        //Redirect back
+        return Redirect::route('consoleemailtemplates')->with('message', 'System template "' . $id . '" updated successfully.');
+    }
+
     public function get_stats() {
         //Todo in progress
         return View::make('console.stats');
     }
+
+
+    //Admin maintenance functions
 
     public function get_adminimport() {
         //Make sure I am the only one using this tool

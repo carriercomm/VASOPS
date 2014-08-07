@@ -18,4 +18,20 @@ class EmailTemplate extends Eloquent {
         return $query;
     }
 
+    /**
+     * replaceContent()
+     * Returns the email content as a string with the appropriate reference variables replaced with the dynamic values
+     * @param string $content
+     * @param int $user
+     * @return string
+     */
+
+    public static function replaceContent($content, $user) {
+        $user = User::findOrFail($user);
+        $variables = array("[name]", "[vaname]", "[cid]", "[email]", "[auditorname]");
+        $values = array($user->name, $user->vaname, $user->cid, $user->email, Auth::consoleuser()->get()->name);
+        $content = str_replace($variables, $values, $content);
+        return $content;
+    }
+
 }
