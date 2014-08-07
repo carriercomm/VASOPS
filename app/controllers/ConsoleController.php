@@ -440,6 +440,10 @@ class ConsoleController extends BaseController {
     public function get_emailtemplates() {
         $myTemplates = EmailTemplate::where('author', '=', Auth::consoleuser()->get()->cid)->orderBy('name', 'ASC')->get();
         $sharedTemplates = EmailTemplate::sharedTemplates();
+        if (Auth::consoleuser()->get()->access > 0) {
+            $systemTemplates = SystemEmailTemplate::orderBy('id', 'ASC')->get();
+            return View::make('console.emailtemplates')->with(array('myTemplates' => $myTemplates, 'sharedTemplates' => $sharedTemplates, 'systemTemplates' => $systemTemplates));
+        }
         return View::make('console.emailtemplates')->with(array('myTemplates' => $myTemplates, 'sharedTemplates' => $sharedTemplates));
     }
 

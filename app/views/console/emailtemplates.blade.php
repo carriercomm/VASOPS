@@ -77,7 +77,29 @@
                     <tr><td @if (Auth::consoleuser()->get()->access > 0) colspan="5" @else colspan="4" @endif>No shared templates found...</td></tr>
                     @else
                     @foreach ($sharedTemplates as $sharedTemplate)
-                    <tr data-templateid="{{{ $sharedTemplate->id }}}"><td><span class="label label-danger"><i class="fa fa-bookmark fa-fw"></i> {{{ ConsoleUser::getName($sharedTemplate->author) }}}</span></td><td>{{{ $sharedTemplate->name }}}</td><td>{{{ $sharedTemplate->subject }}}</td><td>{{{ substr($sharedTemplate->content,0,100) }}}...</td>@if (Auth::consoleuser()->get()->access > 0) <td><a class="nolinkstyle" href="{{ URL::route('consoleemailtemplates') }}/edit/{{{ $sharedTemplate->id }}}"><i class="fa fa-edit fa-fw pointer"></i></a><span class="emailTemplateDeleteX"><i class="fa fa-times fa-fw pointer"></i></span></td> @endif</tr>
+                    <tr data-templateid="{{{ $sharedTemplate->id }}}"><td><span class="label label-danger"><i class="fa fa-bookmark fa-fw"></i> {{{ ConsoleUser::getName($sharedTemplate->author) }}}</span></td><td>{{{ $sharedTemplate->name }}}</td><td>{{{ $sharedTemplate->subject }}}</td><td>{{{ strip_tags(substr($sharedTemplate->content,0,100)) }}}...</td>@if (Auth::consoleuser()->get()->access > 0) <td><a class="nolinkstyle" href="{{ URL::route('consoleemailtemplates') }}/edit/{{{ $sharedTemplate->id }}}"><i class="fa fa-edit fa-fw pointer"></i></a><span class="emailTemplateDeleteX"><i class="fa fa-times fa-fw pointer"></i></span></td> @endif</tr>
+                    @endforeach
+                    @endif
+                </table>
+            </div>
+        </div>
+    </div>
+
+    @if (!empty($systemTemplates))
+    <hr />
+    @endif
+
+    <div class="row">
+        <div class="col-lg-12">
+            <h4 style="font-style: italic">System Templates <small>(Admin Only)</small></h4>
+            <div class="table-responsive">
+                <table class="table table-bordered table-responsive table-striped">
+                    <tr><th>ID</th><th>Subject</th><th>Body</th><th>Actions</th></tr>
+                    @if (count($systemTemplates) < 1)
+                    <tr><td colspan="4">No system templates found...</td></tr>
+                    @else
+                    @foreach ($systemTemplates as $systemTemplate)
+                    <tr data-templateid="{{{ $systemTemplate->id }}}"><td>{{{ $systemTemplate->id }}}</td><td>{{{ $systemTemplate->subject }}}</td><td>{{{ strip_tags(substr($systemTemplate->content,0,100)) }}}...</td><td><a class="nolinkstyle" href="{{ URL::route('consoleemailtemplates') }}/edit/system/{{{ $systemTemplate->id }}}"><i class="fa fa-edit fa-fw pointer"></i></a></td></tr>
                     @endforeach
                     @endif
                 </table>
