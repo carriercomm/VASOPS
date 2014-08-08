@@ -61,6 +61,10 @@
                     $('#consoleVATabs a[href="#profile"]').tab('show');
                     smoothScroll.animateScroll(null, '#page-wrapper');
                     break;
+                case('#roster'):
+                    $('#consoleVATabs a[href="#roster"').tab('show'):
+                    smoothScroll.animateScroll(null, '#page-wrapper');
+                    break;
                 case("#banner"):
                     $('#consoleVATabs a[href="#banner"]').tab('show');
                     smoothScroll.animateScroll(null, '#page-wrapper');

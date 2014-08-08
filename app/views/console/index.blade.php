@@ -66,6 +66,9 @@
                 </div>
                 <div class="panel-body">
                     <div class="panel-group">
+                        @if (count($tickets) == 0)
+                        <p style="font-style: italic;">There are currently no unassigned tickets...</p>
+                        @else
                         @foreach ($tickets as $ticket)
                         <div class="panel panel-success">
                             <div class="panel-heading">
@@ -81,6 +84,7 @@
                             </div>
                         </div>
                         @endforeach
+                        @endif
                     </div>
                 </div>
             </div>

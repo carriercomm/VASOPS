@@ -121,10 +121,20 @@ class AjaxController extends BaseController {
 
     public function post_registration()
     {
-        //Pull our AJAX post data
-        $postStr = Input::get('data');
-        //Parse the serialized string
-        parse_str($postStr, $post);
+        $post = array();
+        $post['inputCid'] = Input::get('inputCid');
+        $post['inputVaName'] = Input::get('inputVaName');
+        $post['inputUrl'] = Input::get('inputUrl');
+        $post['inputDescription'] = Input::get('inputDescription');
+        $post['inputVatsimImagePageLink'] = Input::get('inputVatsimImagePageLink');
+        $post['inputCountry'] = Input::get('inputCountry');
+        $post['inputName'] = Input::get('inputName');
+        $post['inputEmail'] = Input::get('inputEmail');
+        $post['inputPassword'] = Input::get('inputPassword');
+        $post['inputPassword_confirmation'] = Input::get('inputPassword_confirmation');
+        $post['inputCategory'] = Input::get('inputCategory');
+        $post['inputCopyVARoster'] = Input::get('inputCopyVARoster');
+
 //      Laravel gets mad and throws an error if category isn't defined so let's go ahead and just define it but leave it empty.
         if (empty($post['inputCategory'])) {
             $post['inputCategory'] = '';
@@ -135,38 +145,77 @@ class AjaxController extends BaseController {
         }
 
 //      Start our validator
-        $validator = Validator::make(
-            array(
-                'Cid' => $post['inputCid'],
-                'Va Name' => $post['inputVaName'],
-                'Url' => $post['inputUrl'],
-                'Description' => $post['inputDescription'],
-                'Vatsim Image Page Link' => $post['inputVatsimImagePageLink'],
-                'Country' => $post['inputCountry'],
-                'Name' => $post['inputName'],
-                'Email' => $post['inputEmail'],
-                'Password' => $post['inputPassword'],
-                'Password_confirmation' => $post['inputPassword_confirmation'],
-                'Category' => $post['inputCategory'],
-            ),
-            array(
-                'Cid' => 'required|integer|unique:vas,cid',
-                'Va Name' => 'required',
-                'Url' => 'required|url',
-                'Description' => 'required|max:200',
-                'Vatsim Image Page Link' => 'required|url',
-                'Country' => 'required',
-                'Name' => 'required',
-                'Email' => 'required|email|unique:vas,email',
-                'Password' => 'required|min:6|confirmed',
-                'Password_confirmation' => 'required|min:6',
-                'Category' => 'required|max:' . Setting::fetch('max_categories'),
-            ),
-            array (
-                'Category.max' => 'You have selected more than :max categories.',
-                'Cid.unique' => 'There is already an account with an active virtual airline with that CID.',
-            )
-        );
+        if (Input::hasFile('inputUploadVARoster')) {
+            $validator = Validator::make(
+                array(
+                    'Cid' => $post['inputCid'],
+                    'Va Name' => $post['inputVaName'],
+                    'Url' => $post['inputUrl'],
+                    'Description' => $post['inputDescription'],
+                    'Vatsim Image Page Link' => $post['inputVatsimImagePageLink'],
+                    'Country' => $post['inputCountry'],
+                    'Name' => $post['inputName'],
+                    'Email' => $post['inputEmail'],
+                    'Password' => $post['inputPassword'],
+                    'Password_confirmation' => $post['inputPassword_confirmation'],
+                    'Category' => $post['inputCategory'],
+                ),
+                array(
+                    'Cid' => 'required|integer|unique:vas,cid',
+                    'Va Name' => 'required',
+                    'Url' => 'required|url',
+                    'Description' => 'required|max:200',
+                    'Vatsim Image Page Link' => 'required|url',
+                    'Country' => 'required',
+                    'Name' => 'required',
+                    'Email' => 'required|email|unique:vas,email',
+                    'Password' => 'required|min:6|confirmed',
+                    'Password_confirmation' => 'required|min:6',
+                    'Category' => 'required|max:' . Setting::fetch('max_categories'),
+                ),
+                array (
+                    'Category.max' => 'You have selected more than :max categories.',
+                    'Cid.unique' => 'There is already an account with an active virtual airline with that CID.',
+                )
+            );
+        }
+        else {
+            $validator = Validator::make(
+                array(
+                    'Cid' => $post['inputCid'],
+                    'Va Name' => $post['inputVaName'],
+                    'Url' => $post['inputUrl'],
+                    'Description' => $post['inputDescription'],
+                    'Vatsim Image Page Link' => $post['inputVatsimImagePageLink'],
+                    'Country' => $post['inputCountry'],
+                    'Name' => $post['inputName'],
+                    'Email' => $post['inputEmail'],
+                    'Password' => $post['inputPassword'],
+                    'Password_confirmation' => $post['inputPassword_confirmation'],
+                    'Category' => $post['inputCategory'],
+                    'Roster' => $post['inputCopyVARoster'],
+                ),
+                array(
+                    'Cid' => 'required|integer|unique:vas,cid',
+                    'Va Name' => 'required',
+                    'Url' => 'required|url',
+                    'Description' => 'required|max:200',
+                    'Vatsim Image Page Link' => 'required|url',
+                    'Country' => 'required',
+                    'Name' => 'required',
+                    'Email' => 'required|email|unique:vas,email',
+                    'Password' => 'required|min:6|confirmed',
+                    'Password_confirmation' => 'required|min:6',
+                    'Category' => 'required|max:' . Setting::fetch('max_categories'),
+                    'Roster' => 'required',
+                ),
+                array (
+                    'Category.max' => 'You have selected more than :max categories.',
+                    'Cid.unique' => 'There is already an account with an active virtual airline with that CID.',
+                    'Roster.required' => 'Please either upload a file containing your roster or copy and paste the roster.'
+                )
+            );
+        }
 
         if ($validator->fails())
         {
@@ -182,6 +231,27 @@ class AjaxController extends BaseController {
         }
         else {
 
+
+            //Check to see if the member submitted a file, if so let's get that uploaded and moved to the appropriate place
+            if (Input::hasFile('inputUploadVARoster')) {
+                $file = Input::file('inputUploadVARoster');
+                //Create an array of acceptable mime types
+                $mimetypes = array('text/plain', 'application/msword', 'application/zip', 'text/rtf', 'application/vnd.ms-excel', 'application/vnd.openxmlformats-officedocument.wordprocessingml.document', 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
+                //Create an array of acceptable file extensions
+                $fileextentions = array('txt', 'rtf', 'doc', 'docx', 'csv', 'xls', 'xlsx');
+                if (!in_array($file->getMimeType(), $mimetypes)) {
+                    echo '<div class="alert alert-error">The roster file you have uploaded does not appear to be an acceptable file type.</div>';
+                    die;
+                }
+                if (!in_array($file->getClientOriginalExtension(), $fileextentions)) {
+                    echo '<div class="alert alert-error">The roster file you have uploaded does not appear to have a valid file extension.</div>';
+                    die;
+                }
+                //Alright looks like this is an acceptable file.
+                $destination_path = public_path() . Setting::fetch('roster_directory');
+                $fileName = sha1($post['inputCid'] . time()) . $post['inputCid'] . '.' . $file->getClientOriginalExtension();
+                $file->move($destination_path, $fileName);
+            }
             //Submit Data
             //Create an instance of our model
             $vas = new User;
@@ -199,6 +269,10 @@ class AjaxController extends BaseController {
             $vas->categories = implode (",", $post['inputCategory']) . ',';
             //All VAs must be approved first so the default status will be 0 for unapproved or not active.
             $vas->status = '0';
+            if (!Input::hasFile('inputUploadVARoster'))
+                $vas->rosterdata = nl2br($post['inputCopyVARoster']);
+            else
+                $vas->rosterfile = $fileName;
             //Save our data
             $vas->save();
 

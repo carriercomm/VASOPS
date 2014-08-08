@@ -23,6 +23,11 @@
                     </a>
                 </li>
                 <li>
+                    <a href="#roster" data-toggle="tab">
+                        Roster
+                    </a>
+                </li>
+                <li>
                   <a href="#banner" data-toggle="tab">
                       Banner
                   </a>
@@ -421,6 +426,19 @@
             </table>
             </div>
 
+            </div>
+        </div>
+        <div id="roster" class="tab-pane fade in">
+            <div style="margin-top: 35px;" class="row">
+                <div class="col-lg-4">
+                    @if (!empty($va->rosterdata))
+                    <div class="well">
+                        {{ $va->rosterdata }}
+                    </div>
+                    @elseif (!empty($va->rosterfile))
+                    <pre>Download Roster File: <a href="{{ URL::to('/') }}{{{ Setting::fetch('roster_directory') }}}/{{{ $va->rosterfile }}}" download="{{{ $va->rosterfile }}}">Click Here</a></pre>
+                    @endif
+                </div>
             </div>
         </div>
         <div id="banner" class="tab-pane fade in">

@@ -365,6 +365,22 @@
         @endforeach
     </div>
 </div>
+<div class="control-group">
+    <label>Virtual Airline Roster: </label>
+    <div class="controls">
+        <button id="copyAndPasteVARosterBtn" class="btn btn-info"><i class="fa fa-list-ol fa-fw"></i> Copy and Paste VA Roster</button><small> or </small><button id="uploadVARosterBtn" class="btn btn-info"><i class="fa fa-upload fa-fw"></i> Upload VA Roster File</button>
+        <div style="display:none; margin-top: 7px;" id="copyVARosterDiv" class="well">
+            VATSIM requires that your VA has 10 pilots with active VATSIM CIDs. Active means more than 1 hour flying time on VATSIM, using your VA's callsign, in the last 3 months, as verified by VATSIM Server Records. Please provide a roster of your pilots on your website available with CIDs so we may quickly identify your 10 or more VATSIM pilots. You may copy and paste the data into the text area below.
+            <hr />
+            <div style="margin-top: 8px;"><textarea rows="7" style="width: 80%;" id="inputCopyVARoster" name="inputCopyVARoster" placeholder="Please copy your VA roster here..."></textarea></div>
+        </div>
+        <div style="display: none; margin-top: 7px;" id="uploadVARosterDiv" class="well">
+            VATSIM requires that your VA has 10 pilots with active VATSIM CIDs. Active means more than 1 hour flying time on VATSIM, using your VA's callsign, in the last 3 months, as verified by VATSIM Server Records. Please provide a roster of your pilots on your website available with CIDs so we may quickly identify your 10 or more VATSIM pilots. You may upload one of the following file types: .doc, .docx, .csv, .xls, .xlsx, .txt, .rtf.
+            <hr />
+            <div style="margin-top: 8px;"><input type="file" id="inputUploadVARoster" name="inputUploadVARoster" /></div>
+        </div>
+    </div>
+</div>
 <hr />
 <div class="control-group">
     <div class="controls">

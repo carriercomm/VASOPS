@@ -183,12 +183,17 @@
             $('#applyStep2').hide('slow');
             $('#applyStep2Errors').hide();
             $('#submittingAJAX').fadeIn();
+            var _token = "{{ csrf_token() }}";
             var vaFormData;
-            vaFormData =  $("#vaApplicationForm").serialize();
+//            vaFormData =  $("#vaApplicationForm").serialize();
+            vaFormData = new FormData($('#vaApplicationForm')[0]);
             $.ajax({
                 type: "POST",
                 url: "{{URL::route('ajaxRegistration')}}",
-                data: { data: vaFormData }
+                data: vaFormData,
+                processData: false,
+                contentType: false,
+                cache: false,
             })
                 .done(function(received) {
                     if (received != "") {
@@ -517,6 +522,19 @@
 
 
         }
+    });
+
+    $('#copyAndPasteVARosterBtn').on('click', function(e) {
+        e.preventDefault();
+        $('#uploadVARosterDiv').hide();
+        $('#copyVARosterDiv').slideToggle('fast');
+    });
+
+    $('#uploadVARosterBtn').on('click', function(e) {
+        e.preventDefault();
+        $('#copyVARosterDiv').hide();
+        $('#uploadVARosterDiv').slideToggle('fast');
+
     });
 
     @yield('publicjs')
