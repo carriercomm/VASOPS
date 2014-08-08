@@ -62,7 +62,7 @@
                     smoothScroll.animateScroll(null, '#page-wrapper');
                     break;
                 case('#roster'):
-                    $('#consoleVATabs a[href="#roster"').tab('show'):
+                    $('#consoleVATabs a[href="#roster"]').tab('show');
                     smoothScroll.animateScroll(null, '#page-wrapper');
                     break;
                 case("#banner"):
