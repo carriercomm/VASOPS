@@ -12,7 +12,8 @@ public function get_index()
     }
 
     //Pull category data
-    $categories = Category::get();
+    $publicCategories = Category::where('hidden', '!=', 1)->get();
+    $categories = Category::all();
     //Figure out which categories have children
     $categoryChildren = array();
     foreach ($categories as $categoryParent) {
@@ -21,7 +22,7 @@ public function get_index()
         }
     }
 
-    return View::make('index')->with(array('fname' => $fname, 'categories' => $categories, 'categoryChildren' => $categoryChildren));
+    return View::make('index')->with(array('fname' => $fname, 'categories' => $categories, 'categoryChildren' => $categoryChildren, 'publicCategories' => $publicCategories));
 }
 
     public function get_tickethash($hash)

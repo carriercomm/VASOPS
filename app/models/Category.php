@@ -29,4 +29,30 @@ class Category extends Eloquent {
         $numChildren = Category::where('parentid', '=', $id)->count();
         return $numChildren;
     }
+
+    /**
+     * isHiddenCategory()
+     * Looks to see if any category or categories passed to the function are hidden and returns true if one or more hidden categories is found else returns false.
+     * @param mixed $categories
+     * @return bool
+     */
+    static public function isHiddenCategory($categories) {
+        //Get a list of all hidden categories and create an array of them
+        $hiddenCategories = Category::where('hidden', '=', '1')->get();
+        $hiddenCategoriesArray = array();
+        foreach ($hiddenCategories as $hiddenCategory) {
+            $hiddenCategoriesArray[] = $hiddenCategory->id;
+        }
+        if (is_array($categories)) {
+            foreach ($categories as $category) {
+                if (in_array($category, $hiddenCategoriesArray))
+                    return true;
+            }
+        }
+        else {
+            if (in_array($categories, $hiddenCategoriesArray))
+                return true;
+        }
+        return false;
+    }
 }

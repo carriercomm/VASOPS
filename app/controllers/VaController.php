@@ -72,7 +72,7 @@ class VaController extends BaseController {
         $tickets['replies'] = $replies;
 
         //Pull our Category data
-        $categories = Category::get();
+        $categories = Category::where('hidden', '!=', 1)->get();
 
         //Check to see if there is a banner if so provide the source for it
         if ($record->banner) {

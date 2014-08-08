@@ -89,6 +89,7 @@ Route::post('console/va/email/{id}', array('as' => 'consoleemailva', 'uses' => '
 Route::get('console/stats', array('as' => 'consolestats', 'uses' => 'ConsoleController@get_stats', 'before' => 'consoleauth'));
 Route::get('console/profile', array('as' => 'consoleprofile', 'uses' => 'ConsoleController@get_profile', 'before' => 'consoleauth'));
 Route::post('console/profile', array('as' => 'consoleprofilesave', 'uses' => 'ConsoleController@post_profilesave', 'before' => 'consoleauth|csrf'));
+Route::post('console/hiddencategories/save', array('as' => 'consolevahiddencategoriessave', 'uses' => 'ConsoleController@post_vahiddencategoriessave', 'before' => 'consoleauth|csrf'));
     //------AJAX---------
     Route::post('console/ajax/vaedit', array('as' => 'consoleajaxvaedit', 'uses' => 'ConsoleController@post_vaedit', 'before' => 'consoleauth|csrf'));
     Route::post('console/ajax/createauditlog', array('as' => 'consoleajaxcreateauditlog', 'uses' => 'ConsoleController@post_createauditlog', 'before' => 'consoleauth|csrf'));

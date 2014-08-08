@@ -28,6 +28,11 @@
                     </a>
                 </li>
                 <li>
+                    <a href="#categories" data-toggle="tab">
+                        Categories
+                    </a>
+                </li>
+                <li>
                   <a href="#banner" data-toggle="tab">
                       Banner
                   </a>
@@ -430,13 +435,40 @@
         </div>
         <div id="roster" class="tab-pane fade in">
             <div style="margin-top: 35px;" class="row">
-                <div class="col-lg-4">
+                <div class="col-lg-7">
                     @if (!empty($va->rosterdata))
+                    <div class="alert alert-info">This is the submitted roster data for this VA.</div>
                     <div class="well">
                         {{ $va->rosterdata }}
                     </div>
                     @elseif (!empty($va->rosterfile))
                     <pre>Download Roster File: <a href="{{ URL::to('/') }}{{{ Setting::fetch('roster_directory') }}}/{{{ $va->rosterfile }}}" download="{{{ $va->rosterfile }}}">Click Here</a></pre>
+                    @else
+                    <div class="alert alert-warning">No roster data linked to this VA.</div>
+                    @endif
+                </div>
+            </div>
+        </div>
+        <div id="categories" class="tab-pane fade in">
+            <div style="margin-top: 35px;" class="row">
+                <div class="col-lg-7">
+                    <div class="alert alert-info">Selecting any of the following hidden categories will manually add the VA to this category.</div>
+                    @if (count($hiddenCategories) > 0)
+                    <div class="well">
+                        <form method="POST" action="{{ URL::route('consolevahiddencategoriessave') }}">
+                            <input type="hidden" name="_token" value="{{ csrf_token() }}" />
+                            <input type="hidden" name="cid" value="{{ $va->cid }}" />
+                            @foreach ($hiddenCategories as $category)
+                            <div class="form-group">
+                                <label for="checkbox{{{ $category->id }}}">{{{ $category->name }}}: </label>
+                                <input name="hiddenCategories[]" id="checkbox{{{ $category->id }}}" type="checkbox" value="{{{ $category->id }}}" @if (in_array($category->id, $currentHiddenCategories)) checked="checked" @endif class="checkbox-inline" />
+                            </div>
+                            @endforeach
+                            <div class="form-actions">
+                                <input type="submit" class="btn btn-success" value="Save" />
+                            </div>
+                        </form>
+                    </div>
                     @endif
                 </div>
             </div>
@@ -555,7 +587,7 @@
         </div>
         <div id="audit" class="tab-pane fade in">
             <div class="row">
-                <div class="col-lg-4">
+                <div class="col-lg-8">
                     <button id="showAuditInput" style="width: 100%;" class="btn btn-info">
                         Add a notation
                     </button>

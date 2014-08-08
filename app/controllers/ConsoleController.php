@@ -242,10 +242,26 @@ class ConsoleController extends BaseController {
         //Pull our tickets created by this VA
         $tickets = Ticket::where('vid', '=', $id)->orderBy('updated_at', 'DESC')->get();
 
+        //Pull our hidden categories
+        $hiddenCategories = Category::where('hidden', '=', 1)->get();
+        //Create an array of hidden category ids
+        $hiddenCategoryIds = array();
+        foreach ($hiddenCategories as $hiddenCategory) {
+            $hiddenCategoryIds[] = $hiddenCategory->id;
+        }
+        $categories = $va->categories;
+        $categories = explode(',', $categories);
+        //Get rid of the empty array pair
+        array_pop($categories);
+        $currentHiddenCategories = array();
+        foreach ($categories as $category) {
+            if (in_array($category, $hiddenCategoryIds))
+                $currentHiddenCategories[] = $category;
+        }
         //Pull our email templates
         $emailTemplates = EmailTemplate::where('author', '=', Auth::consoleuser()->get()->cid)->orderBy('name', 'DESC')->get();
         $sharedEmailTemplates = EmailTemplate::where('author', '!=', Auth::consoleuser()->get()->cid)->where('public', '=', '1')->orderBy('name', 'DESC')->get();
-        return View::make('console.va')->with(array('va' => $va, 'banner' => $banner, 'audit_log' => $audit_log, 'banner_maxwidth' => $banner_maxwidth, 'banner_maxheight' => $banner_maxheight, 'tickets' => $tickets, 'emailTemplates' => $emailTemplates, 'sharedEmailTemplates' => $sharedEmailTemplates));
+        return View::make('console.va')->with(array('va' => $va, 'banner' => $banner, 'audit_log' => $audit_log, 'banner_maxwidth' => $banner_maxwidth, 'banner_maxheight' => $banner_maxheight, 'tickets' => $tickets, 'emailTemplates' => $emailTemplates, 'sharedEmailTemplates' => $sharedEmailTemplates, 'hiddenCategories' => $hiddenCategories, 'currentHiddenCategories' => $currentHiddenCategories));
     }
 
     public function get_vaupdatestatus($id, $status) {
@@ -890,6 +906,10 @@ class ConsoleController extends BaseController {
             $check = Category::where('id', '=', $parent)->where('parentid', '=', '0')->firstOrFail();
         $category->name = $name;
         $category->parentid = $parent;
+        if (Input::get('categoryHidden') == 1)
+            $category->hidden = 1;
+        else
+            $category->hidden = 0;
         $category->save();
         //Great, all done. Now to redirect the user.
         return Redirect::route('consolecategories')->with('message', 'Category successfully updated.');
@@ -1401,6 +1421,42 @@ class ConsoleController extends BaseController {
             $i++;
         }
         echo 'A total of ' . $i . ' banners imported';
+    }
+
+    public function post_vahiddencategoriessave() {
+        $categories = Input::get('hiddenCategories');
+        if(count($categories) >= 1){
+            $categories = implode(',', $categories) . ',';
+        }
+        else {
+            $categories = '';
+        }
+        //Pull the current categories
+        $user = User::findOrFail(Input::get('cid'));
+        $currentCategoriesstr = $user->categories;
+        //Let's see if we already have some hidden categories buried in there.
+        $currentCategories = explode(',', $currentCategoriesstr);
+        array_pop($currentCategories);
+        if (Category::isHiddenCategory($currentCategories)) {
+            //Damn it to hell. More work for us. There are hidden categories already there so we first need to find and remove them and then add the selected ones
+            $allHiddenCategories = Category::where('hidden', '=', '1')->get();
+            $allHiddenCategoryIds = array();
+            foreach ($allHiddenCategories as $allHiddenCategory) {
+                $allHiddenCategoryIds[] = $allHiddenCategory->id . ',';
+            }
+            $currentCategories = str_replace($allHiddenCategoryIds, '', $currentCategoriesstr);
+            //Great now all of the hidden categories are gone. Let's just append our selected ones to the end of it
+            $currentCategories = $currentCategories . $categories;
+        }
+        else {
+            //Sweet jesus. We can just add the newly selected ones
+            $currentCategories = $currentCategoriesstr . $categories;
+        }
+        $user->categories = $currentCategories;
+        $user->save();
+        //Wow that was fucking painful and it is now 2:06 AM.
+        return Redirect::to('console/va/' . Input::get('cid') . '#categories')->with('message', 'Hidden Categories Saved Successfully.');
+
     }
 
 }

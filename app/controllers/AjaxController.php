@@ -96,6 +96,11 @@ class AjaxController extends BaseController {
 
         else {
 
+            if (Category::isHiddenCategory($post['inputCategory'])) {
+                echo '<div class="alert alert-error">You are not authorized to use that category.</div>';
+                die;
+            }
+
             //Pull our current VA record
             $vas = User::find(Auth::user()->get()->cid);
             //Map our fields
@@ -251,6 +256,10 @@ class AjaxController extends BaseController {
                 $destination_path = public_path() . Setting::fetch('roster_directory');
                 $fileName = sha1($post['inputCid'] . time()) . $post['inputCid'] . '.' . $file->getClientOriginalExtension();
                 $file->move($destination_path, $fileName);
+            }
+            if (Category::isHiddenCategory($post['inputCategory'])) {
+                echo '<div class="alert alert-error">You are not authorized to use that category.</div>';
+                die;
             }
             //Submit Data
             //Create an instance of our model

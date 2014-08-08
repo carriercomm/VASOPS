@@ -42,6 +42,10 @@
                                 @endforeach
                             </select>
                         </div>
+                        <div class="form-group">
+                            <label>Hidden: <small>(If checked, this category will not be selectable by a VA. VA's must be added to this category by an audit manager)</small></label>
+                            <input name="categoryHidden" value="1" class="checkbox" type="checkbox" />
+                        </div>
                         <div class="form-actions">
                             <input id="createCategoryBtn" type="submit" class="btn btn-success" value="Add Category" />
                             <input style="color: white;" id="resetCategoryBtn" type="reset" class="btn" value="Cancel" />

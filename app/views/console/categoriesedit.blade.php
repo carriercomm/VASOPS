@@ -26,16 +26,21 @@
            <form class="form" action="{{ URL::route('consolecategories') }}/edit/{{{ $category->id }}}" method="POST">
                <input type="hidden" name="_token" value="{{ csrf_token() }}" />
                <div class="form-group">
+                       <label>Name: </label>
                        <input class="form-control" name="categoryName" type="text" placeholder="Category Name" value="{{{ $category->name }}}" />
                </div>
                <div class="form-group">
-                   <label>Parent Category <span style="font-weight: normal; font-style: italic">(Optional)</span</label>
+                   <label>Parent Category: <span style="font-weight: normal; font-style: italic">(Optional)</span></label>
                     <select class="form-control" name="categoryParent">
                         <option value="0">**No Parent**</option>
                         @foreach ($potentialParents as $potentialParent)
                         <option value="{{{ $potentialParent->id }}}" @if ($potentialParent->id == $category->parentid) selected="selected" @endif>{{{ $potentialParent->name }}}</option>
                         @endforeach
                     </select>
+               </div>
+               <div class="form-group">
+                   <label>Hidden: <small>(If checked, this category will not be selectable by a VA. VA's must be added to this category by an audit manager)</small></label>
+                   <input name="categoryHidden" value="1" class="checkbox" type="checkbox" @if ($category->hidden == 1) checked="checked" @endif />
                </div>
                <div class="form-actions">
                    <input type="submit" class="btn btn-success" value="Edit Category" /> <input style="color: white;" type="reset" class="btn" value="Cancel" />
