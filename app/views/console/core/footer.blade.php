@@ -495,6 +495,7 @@
 
             $('#inputEmailTemplatesSelectVA').on('change', function() {
                 CKEDITOR.instances.inputEmailTemplatesBodyVA.setData($(this).val());
+                $('#inputEmailSubject').val($('#inputEmailTemplatesSelectVA option:selected').attr('data-subject'));
             })
 
         @yield('consolejs')

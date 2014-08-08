@@ -524,19 +524,19 @@
                         <input type="hidden" name="_token" value="{{ csrf_token() }}" />
                         <div class="form-group">
                             <label>Subject: </label>
-                            <input type="text" class="form-control" placeholder="Enter a subject..." name="inputSubject" />
+                            <input type="text" id="inputEmailSubject" class="form-control" placeholder="Enter a subject..." name="inputSubject" />
                         </div>
                         <div class="form-group">
                             <label>Email Template: </label>
                             <select id="inputEmailTemplatesSelectVA" class="form-control" name="inputTemplate">
                                 <option value="">Select an Email Template...</option>
                                 @foreach ($emailTemplates as $template)
-                                <option value="{{{ $template->content }}}">{{{ $template->name }}}</option>
+                                <option data-subject="{{{ $template->subject }}}" value="{{{ $template->content }}}">{{{ $template->name }}}</option>
                                 @endforeach
                                 @if (count($sharedEmailTemplates) > 0))
                                 <option value="">-----------SHARED TEMPLATES-----------</option>
                                 @foreach ($sharedEmailTemplates as $sharedTemplate)
-                                <option value="{{{ $sharedTemplate->content }}}">{{{ $sharedTemplate->name }}}</option>
+                                <option data-subject="{{{ $sharedTemplate->subject }}}" value="{{{ $sharedTemplate->content }}}">{{{ $sharedTemplate->name }}}</option>
                                 @endforeach
                                 @endif
                             </select>
