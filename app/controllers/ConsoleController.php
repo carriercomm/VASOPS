@@ -203,7 +203,7 @@ class ConsoleController extends BaseController {
         }
         else {
             //Hmm maybe they are trying to find a VA by name or by the name of the owner or URL
-            $vas = User::where('name', 'like', $like)->orWhere('email', 'like', $like)->orWhere('vaname', 'like', $like)->orWhere('url', 'like', $like)->orderBy('vaname', 'ASC')->get();
+            $vas = User::where('name', 'like', $like)->orWhere('url', 'like', $like)->orWhere('email', 'like', $like)->orWhere('vaname', 'like', $like)->orWhere('url', 'like', $like)->orderBy('vaname', 'ASC')->get();
         }
 
         if (count($vas) > 0) {
