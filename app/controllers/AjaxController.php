@@ -495,6 +495,11 @@ class AjaxController extends BaseController {
             $maxwidth = Setting::fetch('banner_maxwidth');
             $output = '';
             foreach ($vas as $va) {
+                //There is the potential that another number is before the category id and it got put in with this so let's double check this is just for this category
+                $categories = explode(',', $va->categories);
+                array_pop($categories);
+                if (!in_array($categoryId, $categories))
+                    continue;
                 $va->description = html_entity_decode($va->description);
                 $va->vaname = html_entity_decode($va->vaname);
                 $va->url = html_entity_decode($va->url);
