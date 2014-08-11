@@ -87,7 +87,6 @@
 
     @if (!empty($systemTemplates))
     <hr />
-    @endif
 
     <div class="row">
         <div class="col-lg-12">
@@ -106,6 +105,7 @@
             </div>
         </div>
     </div>
+    @endif
 
     <!--/#deleteEmailTemplateModal -->
     <div class="modal fade" id="deleteEmailTemplateModal" tabindex="-1" role="dialog" aria-hidden="true">
