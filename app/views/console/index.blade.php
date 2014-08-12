@@ -103,7 +103,7 @@
                         <tr>
                             <th>VA Name</th>
                             <th>URL</th>
-                            <th>CID</th>
+                            <th>VAID</th>
                             <th>Name</th>
                             <th>Date</th>
                             <th><i class="fa fa-edit fa-fw"></i></th>

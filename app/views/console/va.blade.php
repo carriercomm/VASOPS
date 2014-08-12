@@ -68,7 +68,7 @@
             <table style="min-width: 100%; cursor: pointer;" class="table-responsive">
             <tbody>
             <tr>
-                <td><h4><small>cid</small></h4></td><td><h4>{{{ $va->cid }}}</h4></td>
+                <td><h4><small>vaid</small></h4></td><td><h4>{{{ $va->cid }}}</h4></td>
             </tr>
             <tr>
                 <td><h4><small>name</small></h4></td>
@@ -640,5 +640,8 @@
 </script>
 @section('consolejs')
 CKEDITOR.replace('inputEmailTemplatesBodyVA');
+if (localStorage.getItem('searchQuery') != '') {
+    $('#searchInput').val(localStorage.getItem('searchQuery'));
+}
 @endsection
 @include('console.core.footer')

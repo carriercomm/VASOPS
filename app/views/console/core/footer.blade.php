@@ -502,6 +502,10 @@
                 $('#inputEmailSubject').val($('#inputEmailTemplatesSelectVA option:selected').attr('data-subject'));
             })
 
+            $('#ajaxSearchResults').on('click','.searchEditVABtn', function() {
+               localStorage.setItem('searchQuery', $('#searchInput').val());
+            });
+
         @yield('consolejs')
 
 
