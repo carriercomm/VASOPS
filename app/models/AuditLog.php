@@ -15,4 +15,20 @@ class AuditLog extends Eloquent {
         $audit_log->save();
     }
 
+    static public function getStatusName($status) {
+        $statusname = 'undefined';
+        switch ($status) {
+            case(-1):
+                $statusname = "removed";
+                break;
+            case(0):
+                $statusname = "pending";
+                break;
+            case(1):
+                $statusname = "approved";
+                break;
+        }
+        return $statusname;
+    }
+
 }

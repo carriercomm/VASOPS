@@ -23,10 +23,10 @@
                     Recent Audit Log
                 </div>
                 <div class="panel-body">
-                    <a class="nolinkstyle" href="{{ URL::route('console') }}/va/{{{ $auditLog1->va }}}#audit"><div class="well">
+                    <a class="nolinkstyle" href="{{ URL::route('console') }}/va/{{{ $auditLog1->va }}}#audit"><div style="position: relative; top: 10px; left: 15px;" class="label label-default">{{{ User::getVaName($auditLog1->va) }}}</div><div class="well" style="overflow: auto;">
                         {{ $auditLog1->content }}
                     </div></a>
-                    <a class="nolinkstyle" href="{{ URL::route('console') }}/va/{{{ $auditLog2->va }}}#audit"><div class="well">
+                    <a class="nolinkstyle" href="{{ URL::route('console') }}/va/{{{ $auditLog2->va }}}#audit"><div style="position: relative; top: 10px; left: 15px;" class="label label-default">{{{ User::getVaName($auditLog2->va) }}}</div><div class="well" style="overflow: auto;">
                         {{ $auditLog2->content }}
                     </div></a>
                 </div>

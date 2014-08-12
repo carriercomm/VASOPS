@@ -273,6 +273,10 @@ class ConsoleController extends BaseController {
             //Update the VA
             $va->status = $status;
             $va->save();
+            //Add an auditor note detailing this status change
+            //and just for good measure...
+            $statusname = AuditLog::getStatusName($status);
+            AuditLog::createNotation($id, "VA status changed to <strong>" . $statusname . "</strong>");
             //Finally redirect to the page
             return Redirect::to('console/va/' . $id . '#status');
         }
