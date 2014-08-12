@@ -640,7 +640,7 @@
 </script>
 @section('consolejs')
 CKEDITOR.replace('inputEmailTemplatesBodyVA');
-if (localStorage.getItem('searchQuery') != '') {
+if (localStorage.getItem('searchQuery') != '' && window.location.hash == '#searchq') {
     $('#searchInput').val(localStorage.getItem('searchQuery'));
 }
 @endsection
