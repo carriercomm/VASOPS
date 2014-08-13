@@ -210,7 +210,8 @@ class ConsoleController extends BaseController {
             //Format our output
             $send = '';
             foreach ($vas as $va) {
-                $send .= "<tr><td>$va->vaname</td><td>$va->url</td><td>$va->cid</td><td>$va->name</td><td>$va->created_at</td><td><a class=\"searchEditVABtn\" href=\"" . URL::route('console') .  "/va/" . $va->cid . "#searchq\"><i class=\"fa fa-edit fa-fw\"</a></td></tr>";
+                $status = User::formatUserStatus($va->status);
+                $send .= "<tr><td>$va->vaname</td><td>$status</td><td>$va->url</td><td>$va->cid</td><td>$va->name</td><td>$va->created_at</td><td><a class=\"searchEditVABtn\" href=\"" . URL::route('console') .  "/va/" . $va->cid . "#searchq\"><i class=\"fa fa-edit fa-fw\"</a></td></tr>";
             }
         }
         else {
@@ -277,6 +278,20 @@ class ConsoleController extends BaseController {
             //and just for good measure...
             $statusname = AuditLog::getStatusName($status);
             AuditLog::createNotation($id, "VA status changed to <strong>" . $statusname . "</strong>");
+            //If they are approving a VA then we need to send the VA approved email
+            if ($status == 1) {
+                //Great, now let's send our VA approved email to the member.
+                $template = SystemEmailTemplate::find('va_approved');
+                $subject = $template->subject;
+                $email = $va->email;
+                $content = EmailTemplate::replaceContent($template->content, $id);
+                //Send our email
+                $data = array('name' => $va->name, 'email' => $email, 'subject' => $subject);
+                //Alright. Time to do some email sending.
+                Mail::send('email.default', array("content" => $content), function($message) use ($data) {
+                    $message->to($data['email'], $data['name'])->subject($data['subject']);
+                });
+            }
             //Finally redirect to the page
             return Redirect::to('console/va/' . $id . '#status');
         }

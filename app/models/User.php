@@ -103,5 +103,28 @@ class User extends Eloquent implements UserInterface, RemindableInterface {
         }
     }
 
+    /**
+     * formatUserStatus() accepts the current integer status ID of the VA and returns a formtted string containing the human readable status
+     * @param int $status
+     * @return string
+     */
+    public static function formatUserStatus($status) {
+        switch($status) {
+            case(1):
+                $return = '<span class="label label-success">Active</span>';
+                break;
+            case(-1):
+                $return = '<span class="label label-default">Removed</span>';
+                break;
+            case(0):
+                $return = '<span class="label label-danger">Pending</span>';
+                break;
+            default:
+                $return = 'Unknown';
+                break;
+        }
+        return $return;
+    }
+
 
 }
