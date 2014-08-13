@@ -160,6 +160,10 @@
                                console.log('Error');
                            }
                         });
+                if (field == "url") {
+                    $('#vaProfileVisitWebsiteBtn').attr('href', value);
+                }
+
             });
 
             $('#vaNameField').on('click', function(){

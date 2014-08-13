@@ -211,7 +211,7 @@ class ConsoleController extends BaseController {
             $send = '';
             foreach ($vas as $va) {
                 $status = User::formatUserStatus($va->status);
-                $send .= "<tr><td>$va->vaname</td><td>$status</td><td>$va->url</td><td>$va->cid</td><td>$va->name</td><td>$va->created_at</td><td><a class=\"searchEditVABtn\" href=\"" . URL::route('console') .  "/va/" . $va->cid . "#searchq\"><i class=\"fa fa-edit fa-fw\"</a></td></tr>";
+                $send .= "<tr><td>$va->vaname</td><td>$status</td><td>$va->url</td><td>$va->cid</td><td>$va->name</td><td>$va->created_at</td><td><a class=\"searchEditVABtn\" href=\"" . URL::route('console') .  "/va/" . $va->cid . "\"><i class=\"fa fa-edit fa-fw\"</a></td></tr>";
             }
         }
         else {

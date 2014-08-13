@@ -116,6 +116,8 @@
                         </div>
                     </form>
                 </td>
+                <td><a id="vaProfileVisitWebsiteBtn" href="{{{ $va->url }}}" target="_blank"><button class="btn btn-info">Visit Website <i class="fa fa-arrow-right fa-fw"></i></button></a>
+                </td>
             </tr>
             <tr>
                 <td><h4><small>linkback url</small></h4></td><td><h4 id="vaVatsimImagePageLinkField">{{{ $va->vatsimimagepagelink }}}</h4>

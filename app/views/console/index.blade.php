@@ -23,10 +23,10 @@
                     Recent Audit Log
                 </div>
                 <div class="panel-body">
-                    <a class="nolinkstyle" href="{{ URL::route('console') }}/va/{{{ $auditLog1->va }}}#audit"><div style="position: relative; top: 10px; left: 15px;" class="label label-default">{{{ User::getVaName($auditLog1->va) }}}</div><div class="well" style="overflow: auto;">
+                    <a class="nolinkstyle" href="{{ URL::route('console') }}/va/{{{ $auditLog1->va }}}#audit"><div style="position: relative; top: 10px; left: 15px;" class="label label-default">{{{ User::getVaName($auditLog1->va) }}}</div><div style="position: relative; top: 10px; left: 40px;" class="label label-primary"><i class="fa fa-bookmark fa-fw"></i> {{{ ConsoleUser::getName($auditLog1->author) }}}</div><div class="well" style="overflow: auto;">
                         {{ $auditLog1->content }}
                     </div></a>
-                    <a class="nolinkstyle" href="{{ URL::route('console') }}/va/{{{ $auditLog2->va }}}#audit"><div style="position: relative; top: 10px; left: 15px;" class="label label-default">{{{ User::getVaName($auditLog2->va) }}}</div><div class="well" style="overflow: auto;">
+                    <a class="nolinkstyle" href="{{ URL::route('console') }}/va/{{{ $auditLog2->va }}}#audit"><div style="position: relative; top: 10px; left: 15px;" class="label label-default">{{{ User::getVaName($auditLog2->va) }}}</div><div style="position: relative; top: 10px; left: 40px;" class="label label-primary"><i class="fa fa-bookmark fa-fw"></i> {{{ ConsoleUser::getName($auditLog2->author) }}}</div><div class="well" style="overflow: auto;">
                         {{ $auditLog2->content }}
                     </div></a>
                 </div>
@@ -43,7 +43,7 @@
                         @foreach ($activeBroadcasts as $broadcast)
                         <div class="panel panel-info">
                             <div class="panel-heading">
-                                <span style="margin-right: 5px;" class="label label-primary">{{{ ConsoleUser::getName($broadcast->author) }}}</span> {{{ $broadcast->subject }}} <span style="float:right;" class="broadcast-date label label-info">{{{ $broadcast->created_at }}}</span>
+                                <span style="margin-right: 5px;" class="label label-primary"><i class="fa fa-bookmark fa-fw"></i> {{{ ConsoleUser::getName($broadcast->author) }}}</span> {{{ $broadcast->subject }}} <span style="float:right;" class="broadcast-date label label-info">{{{ $broadcast->created_at }}}</span>
                             </div>
                             <div class="panel-body">
                                 {{{ $broadcast->content }}}
