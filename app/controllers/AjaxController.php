@@ -375,7 +375,7 @@ class AjaxController extends BaseController {
             $ticket->save();
             $id = $ticket->id;
             //Get a list of auditors who have subscribed to ticket email notifications and send them an email
-            $auditors = ConsoleUser::where('ticketnotifications', '=', '1')->get();
+            $auditors = ConsoleUser::where('ticketnotifications', '=', '1')->where('access', '>', -1)->get();
             foreach ($auditors as $auditor) {
                 $email = $auditor->email;
                 if (empty($email))
@@ -617,7 +617,7 @@ class AjaxController extends BaseController {
                 $message->to($data['email'], $data['name'])->subject($data['subject']);
             });
             //Get a list of auditors who have subscribed to ticket email notifications and send them an email
-            $auditors = ConsoleUser::where('ticketnotifications', '=', '1')->get();
+            $auditors = ConsoleUser::where('ticketnotifications', '=', '1')->where('access', '>', -1)->get();
             foreach ($auditors as $auditor) {
                 $email = $auditor->email;
                 if (empty($email))
