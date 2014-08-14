@@ -330,15 +330,15 @@ class ConsoleController extends BaseController {
         switch($filter){
             case 'open':
                 $subheader = "Open Tickets";
-                $tickets = Ticket::where('status', '=', '1')->get();
+                $tickets = Ticket::where('status', '=', '1')->orderBy('updated_at', 'DESC')->get();
                 break;
             case 'closed':
                 $subheader = "Closed Tickets";
-                $tickets = Ticket::where('status', '=', '0')->get();
+                $tickets = Ticket::where('status', '=', '0')->orderBy('updated_at', 'DESC')->get();
                 break;
             case 'assigned':
                 $subheader = "Assigned Tickets";
-                $tickets = Ticket::where('assigned', '=', Auth::consoleuser()->get()->cid)->where('status', '=', '1')->get();
+                $tickets = Ticket::where('assigned', '=', Auth::consoleuser()->get()->cid)->where('status', '=', '1')->orderBy('updated_at', 'DESC')->get();
                 break;
         }
         //Get the replies
