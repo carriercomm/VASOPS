@@ -105,8 +105,10 @@
                             <th>URL</th>
                             <th>VAID</th>
                             <th>Name</th>
+                            <th>Flags</th>
                             <th>Date</th>
                             <th><i class="fa fa-edit fa-fw"></i></th>
+                            <th><i class="fa fa-info-circle fa-fw"></i></th>
                         </tr>
                         </thead>
                         <tbody>
@@ -116,8 +118,10 @@
                             <td><a href="{{{ $pendingVA->url }}}" target="_blank">{{{ $pendingVA->url }}}</a></td>
                             <td>{{{ $pendingVA->cid }}}</td>
                             <td>{{{ $pendingVA->name }}}</td>
+                            <td><span @if ($pendingVA->awaiting_response != 1) style="display: none;" @endif class="label label-warning awaiting_response_flag"><i class="fa fa-info fa-fw"></i> Awaiting Response <i style="display: none;" class="fa fa-spinner fa-spin fa-fw loader"></i><a data-vaid="{{{ $pendingVA->cid }}}" data-title="Remove Awaiting Response Flag" style="color: #ffffff" href="#" class="flagVAAwaitingResponseDeleteBtn tooltip-top"><i class="fa fa-times-circle fa-fw"></i></a></span></td>
                             <td>{{{ $pendingVA->created_at }}}</td>
-                            <td><a href="{{ URL::route('console') }}/va/{{{ $pendingVA->cid }}}"><i class="fa fa-edit fa-fw"</a></td>
+                            <td><a data-title="Edit VA" class="tooltip-top" href="{{ URL::route('console') }}/va/{{{ $pendingVA->cid }}}"><i class="fa fa-edit fa-fw"></i></a></td>
+                            <td><i style="display: none;" class="fa fa-spinner fa-spin fa-fw loader"></i><a data-vaid="{{{ $pendingVA->cid }}}" data-title="Flag VA as Awaiting Response" class="flagVAAwaitingResponseBtn tooltip-top" href="#"><i class="fa fa-info-circle fa-fw"></i></a></td>
                         </tr>
                         @endforeach
                         </tbody>
@@ -129,5 +133,49 @@
     </div>
 </div>
 <!-- /#page-wrapper -->
+@section('consolejs')
+$('.flagVAAwaitingResponseDeleteBtn').on('click', function(e){
+    e.preventDefault();
+    var btn = $(this);
+    var vaid = btn.attr('data-vaid');
+    var _token = "{{ csrf_token() }}";
+    var loader = btn.siblings('.loader');
+    btn.hide();
+    loader.show();
+    $.ajax({
+        "type": "post",
+        "url": "{{ URL::route('consoleflagvaawaitingresponsedelete') }}",
+        "data": { vaid: vaid, _token: _token }
+    })
+        .success(function(received) {
+            loader.hide();
+            btn.show();
+            btn.closest('.awaiting_response_flag').fadeOut();
+        });
 
+});
+
+$('.flagVAAwaitingResponseBtn').on('click', function(e){
+    e.preventDefault();
+    var btn = $(this);
+    var vaid = btn.attr('data-vaid');
+    var _token = "{{ csrf_token() }}";
+    var loader = btn.siblings('.loader');
+    btn.hide();
+    loader.show();
+    $.ajax({
+        "type": "post",
+        "url": "{{ URL::route('consoleflagvaawaitingresponse') }}",
+        "data": { vaid: vaid, _token: _token }
+    })
+        .success(function(received) {
+            loader.hide();
+            btn.show();
+            btn.closest('tr').find('.awaiting_response_flag').fadeIn();
+        });
+
+});
+
+
+@endsection
 @include('console.core.footer')

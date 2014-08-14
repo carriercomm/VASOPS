@@ -96,6 +96,8 @@ Route::post('console/hiddencategories/save', array('as' => 'consolevahiddencateg
     Route::post('console/ajax/findlinkback', array('as' => 'consoleajaxfindlinkback', 'uses' => 'ConsoleController@post_findlinkback', 'before' => 'consoleauth|csrf'));
     Route::post('console/ajax/search', array('as' => 'consoleajaxsearch', 'uses' => 'ConsoleController@post_ajaxsearch', 'before' => 'consoleauth|csrf'));
     Route::post('console/ajax/emailtemplate/delete', array('as' => 'consoleemailtemplatedelete', 'uses' => 'ConsoleController@post_emailtemplatedelete', 'before' => 'consoleauth|csrf'));
+    Route::post('console/ajax/flagvaawaitingresponse', array('as' => 'consoleflagvaawaitingresponse', 'uses' => 'ConsoleController@post_flagvaawaitingresponse', 'before' => 'consoleauth|csrf'));
+    Route::post('console/ajax/flagvaawaitingresponsedelete', array('as' => 'consoleflagvaawaitingresponsedelete', 'uses' => 'ConsoleController@post_flagvaawaitingresponsedelete', 'before' => 'consoleauth|csrf'));
     //-------------------
 //-----------------------------------------------------------------------
 

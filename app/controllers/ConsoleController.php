@@ -149,7 +149,7 @@ class ConsoleController extends BaseController {
                 break;
             $i++;
         }
-        $pendingVAs = User::where('status', '=', '0')->orderBy('created_at', 'DESC')->get();
+        $pendingVAs = User::where('status', '=', '0')->orderBy('awaiting_response', 'ASC')->orderBy('created_at', 'DESC')->get();
         $activeBroadcasts = Broadcast::where('status', '=', '1')->orderBy('created_at', 'DESC')->get();
         return View::make('console.index')->with(array('pendingVAs' => $pendingVAs, 'activeBroadcasts' => $activeBroadcasts, 'tickets' => $unAssignedTickets, 'auditLog1' => $auditLog1, 'auditLog2' => $auditLog2));
     }
@@ -1287,6 +1287,58 @@ class ConsoleController extends BaseController {
         return View::make('console.stats');
     }
 
+    public function post_vahiddencategoriessave() {
+        $categories = Input::get('hiddenCategories');
+        if(count($categories) >= 1){
+            $categories = implode(',', $categories) . ',';
+        }
+        else {
+            $categories = '';
+        }
+        //Pull the current categories
+        $user = User::findOrFail(Input::get('cid'));
+        $currentCategoriesstr = $user->categories;
+        //Let's see if we already have some hidden categories buried in there.
+        $currentCategories = explode(',', $currentCategoriesstr);
+        array_pop($currentCategories);
+        if (Category::isHiddenCategory($currentCategories)) {
+            //Damn it to hell. More work for us. There are hidden categories already there so we first need to find and remove them and then add the selected ones
+            $allHiddenCategories = Category::where('hidden', '=', '1')->get();
+            $allHiddenCategoryIds = array();
+            foreach ($allHiddenCategories as $allHiddenCategory) {
+                $allHiddenCategoryIds[] = $allHiddenCategory->id . ',';
+            }
+            $currentCategories = str_replace($allHiddenCategoryIds, '', $currentCategoriesstr);
+            //Great now all of the hidden categories are gone. Let's just append our selected ones to the end of it
+            $currentCategories = $currentCategories . $categories;
+        }
+        else {
+            //Sweet jesus. We can just add the newly selected ones
+            $currentCategories = $currentCategoriesstr . $categories;
+        }
+        $user->categories = $currentCategories;
+        $user->save();
+        //Wow that was fucking painful and it is now 2:06 AM.
+        return Redirect::to('console/va/' . Input::get('cid') . '#categories')->with('message', 'Hidden Categories Saved Successfully.');
+
+    }
+
+    public function post_flagvaawaitingresponse() {
+        $vaid = Input::get('vaid');
+        //Verify this is a valid VA
+        $va = User::findOrFail($vaid);
+        $va->awaiting_response = 1;
+        $va->save();
+    }
+
+    public function post_flagvaawaitingresponsedelete() {
+        $vaid = Input::get('vaid');
+        //Verify this is a valid VA
+        $va = User::findOrFail($vaid);
+        $va->awaiting_response = 0;
+        $va->save();
+    }
+
 
     //Admin maintenance functions
 
@@ -1442,40 +1494,5 @@ class ConsoleController extends BaseController {
         echo 'A total of ' . $i . ' banners imported';
     }
 
-    public function post_vahiddencategoriessave() {
-        $categories = Input::get('hiddenCategories');
-        if(count($categories) >= 1){
-            $categories = implode(',', $categories) . ',';
-        }
-        else {
-            $categories = '';
-        }
-        //Pull the current categories
-        $user = User::findOrFail(Input::get('cid'));
-        $currentCategoriesstr = $user->categories;
-        //Let's see if we already have some hidden categories buried in there.
-        $currentCategories = explode(',', $currentCategoriesstr);
-        array_pop($currentCategories);
-        if (Category::isHiddenCategory($currentCategories)) {
-            //Damn it to hell. More work for us. There are hidden categories already there so we first need to find and remove them and then add the selected ones
-            $allHiddenCategories = Category::where('hidden', '=', '1')->get();
-            $allHiddenCategoryIds = array();
-            foreach ($allHiddenCategories as $allHiddenCategory) {
-                $allHiddenCategoryIds[] = $allHiddenCategory->id . ',';
-            }
-            $currentCategories = str_replace($allHiddenCategoryIds, '', $currentCategoriesstr);
-            //Great now all of the hidden categories are gone. Let's just append our selected ones to the end of it
-            $currentCategories = $currentCategories . $categories;
-        }
-        else {
-            //Sweet jesus. We can just add the newly selected ones
-            $currentCategories = $currentCategoriesstr . $categories;
-        }
-        $user->categories = $currentCategories;
-        $user->save();
-        //Wow that was fucking painful and it is now 2:06 AM.
-        return Redirect::to('console/va/' . Input::get('cid') . '#categories')->with('message', 'Hidden Categories Saved Successfully.');
-
-    }
 
 }
