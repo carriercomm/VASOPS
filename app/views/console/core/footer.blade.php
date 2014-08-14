@@ -12,6 +12,7 @@
                         <tr>
                             <th>VA Name</th>
                             <th>Status</th>
+                            <th>Flags</th>
                             <th>URL</th>
                             <th>VAID</th>
                             <th>Name</th>

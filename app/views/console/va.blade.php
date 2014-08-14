@@ -530,7 +530,7 @@
                                 <span class="label label-default">Removed</span> <a href="{{ URL::route('console') }}/va/{{{ $va->cid }}}/status/0"><button id="pendingVABtn" style="padding: 1px;" data-title="Set VA status to Pending" class="btn btn-default tooltip-top"><i class="fa fa-square-o fa-fw"></i></button></a> <a href="{{ URL::route('console') }}/va/{{{ $va->cid }}}/status/1"><button id="approveVABtn" style="padding: 1px;" data-title="Set VA status to Approved" class="btn btn-default tooltip-top"><i class="fa fa-thumbs-up fa-fw"></i></button></a>
                                 @endif
                             </td></tr>
-                        <tr/><td>Link Back: </td><td>
+                        <tr><td>Link Back: </td><td>
                             @if ($va->linkbackstatus == 0)
                             <span id="linkbackNotFoundLabel" class="label label-danger">Not Found</span>
                             <span id="linkbackFoundLabel" style="display: none;" class="label label-success">Found</span>
@@ -547,6 +547,8 @@
                             <a href="{{ URL::route('console') }}/va/{{{ $va->cid }}}/linkbackstatus/0"><button id="notFoundLinkBackBtn" style="padding: 1px;" data-title="Set VA Link Back status to Not Found" class="btn btn-default tooltip-bottom"><i class="fa fa-thumbs-down fa-fw"></i></button></a>
                             @endif
                         </td></tr>
+                        <tr><td>Flags: </td>
+                        <td>@if ($va->awaiting_response == 1) <span class="label label-warning"><i class="fa fa-info fa-fw"></i> Awaiting Response</span> @endif</td></tr>
                     </table>
                 </div>
             </div>
