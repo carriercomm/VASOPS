@@ -466,13 +466,6 @@
 
             })
 
-            $('#inputConsoleTicketReplySubmit, #inputConsoleTicketReplyAndCloseSubmit, #inputConsoleTicketReplyAndOpenSubmit').on('click', function(e) {
-                if ($('#inputConsoleTicketReplyContent').val() == '') {
-                    var fg = $('#inputConsoleTicketReplyContent').closest('.form-group');
-                    fg.attr('class', fg.attr('class') + ' has-error')
-                    e.preventDefault();
-                }
-            });
 
             $('#verifyDeleteTicketTriggerModal').on('click', function() {
                 $('#verifyDeleteTicketModal').modal('show');

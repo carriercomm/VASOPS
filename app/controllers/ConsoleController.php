@@ -291,6 +291,7 @@ class ConsoleController extends BaseController {
                 Mail::send('email.default', array("content" => $content), function($message) use ($data) {
                     $message->to($data['email'], $data['name'])->subject($data['subject']);
                 });
+                return Redirect::to('console/va/' . $id . '#status')->with('message', 'VA Approved and Email sent to VA informing them of their acceptance.');
             }
             //Finally redirect to the page
             return Redirect::to('console/va/' . $id . '#status');
