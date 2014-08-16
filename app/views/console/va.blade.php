@@ -637,53 +637,54 @@
         </div>
     </div>
 </div>
-<!-- /#page-wrapper -->
 <!--/#removeVAModal -->
 <div class="modal fade" id="removeVAModal" tabindex="-1" role="dialog" aria-hidden="true">
-    <div class="modal-dialog">
-        <div class="modal-content">
-            <div class="modal-header">
-                <button type="button" class="close" data-dismiss="modal" aria-hidden="true"><i class="fa fa-times fa-fw"></i></button>
-                <h3 class="modal-title" id="myModalLabel">Reject VA</h3>
-            </div>
-            <form class="form" action="{{ URL::route('console') }}/va/{{{ $va->cid }}}/status/-1" method="POST">
-                <div class="modal-body">
-                    <div class="form-group">
-                        <label>Rejection Reason (for internal auditing purposes only): </label>
-                        <input type="text" class="form-control" placeholder="Detail your rejection rationale..." name="inputReason" />
-                    </div>
-                    <div class="form-group">
-                        <label>Choose Email Template</label>
-                        <select id="inputRemoveVASelectTemplate" class="form-control" name="inputTemplate">
-                            <option value="">Select an Email Template...</option>
-                            @foreach ($emailTemplates as $template)
-                            <option data-subject="{{{ $template->subject }}}" value="{{{ $template->content }}}">{{{ $template->name }}}</option>
-                            @endforeach
-                            @if (count($sharedEmailTemplates) > 0))
-                            <option value="">-----------SHARED TEMPLATES-----------</option>
-                            @foreach ($sharedEmailTemplates as $sharedTemplate)
-                            <option data-subject="{{{ $sharedTemplate->subject }}}" value="{{{ $sharedTemplate->content }}}">{{{ $sharedTemplate->name }}}</option>
-                            @endforeach
-                            @endif
-                        </select>
-                    </div>
-                    <div class="form-group">
-                        <label>Subject: </label>
-                        <input type="text" id="inputRemoveVASubject" class="form-control" placeholder="Enter a subject..." name="inputSubject" />
-                    </div>
-                    <div class="form-group">
-                        <label>Body: </label>
-                        <textarea data-title="Available Variables: [name] [vaname] [cid] [email] [auditorname]" id="inputRemoveVABody" rows="8" class="form-control tooltip-top" name="inputBody" placeholder="Compose your message..."></textarea>
-                    </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
-                    <input class="btn btn-danger" type="submit" value="Reject VA & Send Email" name="inputSubmitSendEmail"/>
-                    <input class="btn btn-danger" type="submit" value="Reject VA & Don't Send Email" name="inputSubmitNoEmail" />
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true"><i class="fa fa-times fa-fw"></i></button>
+                    <h3 class="modal-title" id="myModalLabel">Reject VA</h3>
                 </div>
-            </form>
+                <form class="form" action="{{ URL::route('console') }}/va/{{{ $va->cid }}}/status/-1" method="POST">
+                    <div class="modal-body">
+                        <div class="form-group">
+                            <label>Rejection Reason (for internal auditing purposes only): </label>
+                            <input type="text" class="form-control" placeholder="Detail your rejection rationale..." name="inputReason" />
+                        </div>
+                        <div class="form-group">
+                            <label>Choose Email Template</label>
+                            <select id="inputRemoveVASelectTemplate" class="form-control" name="inputTemplate">
+                                <option value="">Select an Email Template...</option>
+                                @foreach ($emailTemplates as $template)
+                                <option data-subject="{{{ $template->subject }}}" value="{{{ $template->content }}}">{{{ $template->name }}}</option>
+                                @endforeach
+                                @if (count($sharedEmailTemplates) > 0))
+                                <option value="">-----------SHARED TEMPLATES-----------</option>
+                                @foreach ($sharedEmailTemplates as $sharedTemplate)
+                                <option data-subject="{{{ $sharedTemplate->subject }}}" value="{{{ $sharedTemplate->content }}}">{{{ $sharedTemplate->name }}}</option>
+                                @endforeach
+                                @endif
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label>Subject: </label>
+                            <input type="text" id="inputRemoveVASubject" class="form-control" placeholder="Enter a subject..." name="inputSubject" />
+                        </div>
+                        <div class="form-group">
+                            <label>Body: </label>
+                            <textarea data-title="Available Variables: [name] [vaname] [cid] [email] [auditorname]" id="inputRemoveVABody" rows="8" class="form-control tooltip-top" name="inputBody" placeholder="Compose your message..."></textarea>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+                            <input class="btn btn-danger" type="submit" value="Reject VA & Send Email" name="inputSubmitSendEmail"/>
+                            <input class="btn btn-danger" type="submit" value="Reject VA & Don't Send Email" name="inputSubmitNoEmail" />
+                        </div>
+                </form>
+            </div>
         </div>
     </div>
 </div>
+<!-- /#page-wrapper -->
 
 <script>
     var vacid = {{{ $va->cid }}};

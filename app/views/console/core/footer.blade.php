@@ -104,7 +104,7 @@
                             $('#searchLoader').hide();
 
                             if (received == '0') {
-                                $('#searchTableBody').empty().prepend('<tr><td colspan="6">No Virtual Airline Records Located...</td></tr>');
+                                $('#searchTableBody').empty().prepend('<tr><td colspan="8">No Virtual Airline Records Located...</td></tr>');
                             }
                             else {
                                 $('#searchTableBody').empty().prepend(received);
