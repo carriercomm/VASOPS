@@ -527,7 +527,7 @@
                                 <span class="label label-danger">Pending</span> <a href="{{ URL::route('console') }}/va/{{{ $va->cid }}}/status/1"><button id="approveVABtn" style="padding: 1px;" data-title="Set VA status to Approved (Will send approved email to VA)" class="btn btn-default tooltip-top"><i class="fa fa-thumbs-up fa-fw"></i></button></a> <a href="{{ URL::route('console') }}/va/{{{ $va->cid }}}/status/-1"><button id="removeVABtn" style="padding: 1px;" data-title="Set VA status to Removed" class="btn btn-default tooltip-top"><i class="fa fa-ban fa-fw"></i></button></a>
                                 @endif
                                 @if ($va->status == -1)
-                                <span class="label label-default">Removed</span> <a href="{{ URL::route('console') }}/va/{{{ $va->cid }}}/status/0"><button id="pendingVABtn" style="padding: 1px;" data-title="Set VA status to Pending" class="btn btn-default tooltip-top"><i class="fa fa-square-o fa-fw"></i></button></a> <a href="{{ URL::route('console') }}/va/{{{ $va->cid }}}/status/1"><button id="approveVABtn" style="padding: 1px;" data-title="Set VA status to Approved" class="btn btn-default tooltip-top"><i class="fa fa-thumbs-up fa-fw"></i></button></a>
+                                <span class="label label-default">Removed</span> <a href="{{ URL::route('console') }}/va/{{{ $va->cid }}}/status/0"><button id="pendingVABtn" style="padding: 1px;" data-title="Set VA status to Pending" class="btn btn-default tooltip-top"><i class="fa fa-square-o fa-fw"></i></button></a> <a href="{{ URL::route('console') }}/va/{{{ $va->cid }}}/status/1"><button id="approveVABtn" style="padding: 1px;" data-title="Set VA status to Approved (Will send approved email to VA)" class="btn btn-default tooltip-top"><i class="fa fa-thumbs-up fa-fw"></i></button></a>
                                 @endif
                             </td></tr>
                         <tr><td>Link Back: </td><td>
@@ -544,7 +544,7 @@
                             @if ($va->linkbackstatus == 0)
                             <a href="{{ URL::route('console') }}/va/{{{ $va->cid }}}/linkbackstatus/1"><button id="foundLinkBackBtn" style="padding: 1px;" data-title="Set VA Link Back status to Found" class="btn btn-default tooltip-bottom"><i class="fa fa-thumbs-up fa-fw"></i></button></a>
                             @elseif ($va->linkbackstatus == 1)
-                            <a href="{{ URL::route('console') }}/va/{{{ $va->cid }}}/linkbackstatus/0"><button id="notFoundLinkBackBtn" style="padding: 1px;" data-title="Set VA Link Back status to Not Found" class="btn btn-default tooltip-bottom"><i class="fa fa-thumbs-down fa-fw"></i></button></a>
+                            <button id="notFoundLinkBackBtn" style="padding: 1px;" data-title="Set VA Link Back status to Not Found" class="btn btn-default tooltip-bottom"><i class="fa fa-thumbs-down fa-fw"></i></button>
                             @endif
                         </td></tr>
                         <tr><td>Flags: </td>
@@ -638,14 +638,71 @@
     </div>
 </div>
 <!-- /#page-wrapper -->
+<!--/#removeVAModal -->
+<div class="modal fade" id="removeVAModal" tabindex="-1" role="dialog" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true"><i class="fa fa-times fa-fw"></i></button>
+                <h3 class="modal-title" id="myModalLabel">Reject VA</h3>
+            </div>
+            <form class="form" action="{{ URL::route('console') }}/va/{{{ $va->cid }}}/status/-1" method="POST">
+                <div class="modal-body">
+                    <div class="form-group">
+                        <label>Rejection Reason (for internal auditing purposes only): </label>
+                        <input type="text" class="form-control" placeholder="Detail your rejection rationale..." name="inputReason" />
+                    </div>
+                    <div class="form-group">
+                        <label>Choose Email Template</label>
+                        <select id="inputRemoveVASelectTemplate" class="form-control" name="inputTemplate">
+                            <option value="">Select an Email Template...</option>
+                            @foreach ($emailTemplates as $template)
+                            <option data-subject="{{{ $template->subject }}}" value="{{{ $template->content }}}">{{{ $template->name }}}</option>
+                            @endforeach
+                            @if (count($sharedEmailTemplates) > 0))
+                            <option value="">-----------SHARED TEMPLATES-----------</option>
+                            @foreach ($sharedEmailTemplates as $sharedTemplate)
+                            <option data-subject="{{{ $sharedTemplate->subject }}}" value="{{{ $sharedTemplate->content }}}">{{{ $sharedTemplate->name }}}</option>
+                            @endforeach
+                            @endif
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label>Subject: </label>
+                        <input type="text" id="inputRemoveVASubject" class="form-control" placeholder="Enter a subject..." name="inputSubject" />
+                    </div>
+                    <div class="form-group">
+                        <label>Body: </label>
+                        <textarea data-title="Available Variables: [name] [vaname] [cid] [email] [auditorname]" id="inputRemoveVABody" rows="8" class="form-control tooltip-top" name="inputBody" placeholder="Compose your message..."></textarea>
+                    </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+                    <input class="btn btn-danger" type="submit" value="Reject VA & Send Email" name="inputSubmitSendEmail"/>
+                    <input class="btn btn-danger" type="submit" value="Reject VA & Don't Send Email" name="inputSubmitNoEmail" />
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
 <script>
     var vacid = {{{ $va->cid }}};
     var name = '{{{ Auth::consoleuser()->get()->name }}}';
 </script>
 @section('consolejs')
 CKEDITOR.replace('inputEmailTemplatesBodyVA');
+CKEDITOR.replace('inputRemoveVABody');
 if (localStorage.getItem('searchQuery') != '') {
     $('#searchInput').val(localStorage.getItem('searchQuery'));
 }
+
+$('#removeVABtn').on('click', function(e){
+    e.preventDefault();
+    $('#removeVAModal').modal('show');
+});
+$('#inputRemoveVASelectTemplate').on('change', function() {
+    CKEDITOR.instances.inputRemoveVABody.setData($(this).val());
+    $('#inputRemoveVASubject').val($('#inputRemoveVASelectTemplate option:selected').attr('data-subject'));
+})
 @endsection
 @include('console.core.footer')

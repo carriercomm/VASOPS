@@ -280,7 +280,11 @@ class ConsoleController extends BaseController {
             //Add an auditor note detailing this status change
             //and just for good measure...
             $statusname = AuditLog::getStatusName($status);
-            AuditLog::createNotation($id, "VA status changed to <strong>" . $statusname . "</strong>");
+            $reason = Input::get('inputReason');
+            if (!empty($reason))
+                AuditLog::createNotation($id, "VA status changed to <strong>" . $statusname . "</strong>. Reason: " . $reason . "");
+            else
+                AuditLog::createNotation($id, "VA status changed to <strong>" . $statusname . "</strong>");
             //If they are approving a VA then we need to send the VA approved email
             if ($status == 1) {
                 //Great, now let's send our VA approved email to the member.
@@ -295,6 +299,19 @@ class ConsoleController extends BaseController {
                     $message->to($data['email'], $data['name'])->subject($data['subject']);
                 });
                 return Redirect::to('console/va/' . $id . '#status')->with('message', 'VA Approved and Email sent to VA informing them of their acceptance.');
+            }
+            $inputSubmitSendEmail = Input::get('inputSubmitSendEmail');
+            if ($status == -1 && !empty($inputSubmitSendEmail)) {
+                //Alright they filled out the email form and want to send a rejection email. Let's pull our data
+                $subject = Input::get('inputSubject');
+                $body = Input::get('inputBody');
+                $body = EmailTemplate::replaceContent($body, $id);
+                //Send our email
+                $data = array('name' => $va->name, 'email' => $va->email, 'subject' => $subject);
+                Mail::send('email.default', array("content" => $body), function($message) use ($data) {
+                    $message->to($data['email'], $data['name'])->subject($data['subject']);
+                });
+                return Redirect::to('console/va/' . $id . '#status')->with('message', 'VA Rejected and email sent to VA informing them of the denial rationale.');
             }
             //Finally redirect to the page
             return Redirect::to('console/va/' . $id . '#status');

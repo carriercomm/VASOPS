@@ -69,7 +69,7 @@ Route::post('console/login', array('as' => 'postconsolelogin', 'uses' => 'Consol
 Route::any('console/validateLogin', array('as' => 'consolevalidatelogin', 'uses' => 'ConsoleController@post_validatelogin'));
 Route::get('console/logout', array('as' => 'consolelogout', 'uses' => 'ConsoleController@get_logout', 'before' => 'consoleauth'));
 Route::get('console/va/{id}', array('as' => 'consoleva', 'uses' => 'ConsoleController@get_va', 'before' => 'consoleauth'));
-Route::get('console/va/{id}/status/{status}', array('as' => 'consolevaupdatestatus', 'uses' => 'ConsoleController@get_vaupdatestatus', 'before' => 'consoleauth'));
+Route::any('console/va/{id}/status/{status}', array('as' => 'consolevaupdatestatus', 'uses' => 'ConsoleController@get_vaupdatestatus', 'before' => 'consoleauth'));
 Route::get('console/va/{id}/linkbackstatus/{status}', array('as' => 'consolevaupdatelinkbackstatus', 'uses' => 'ConsoleController@get_vaupdatelinkbackstatus', 'before' => 'consoleauth'));
 Route::get('console/helpdesk/{filter}', array('as' => 'consolehelpdesk', 'uses' => 'ConsoleController@get_helpdesk', 'before' => 'consoleauth'));
 Route::get('console/helpdesk/view/{id}', array('as' => 'consolehelpdeskview', 'uses' => 'ConsoleController@get_helpdeskview', 'before' => 'consoleauth'));
