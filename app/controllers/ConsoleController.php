@@ -262,10 +262,14 @@ class ConsoleController extends BaseController {
             if (in_array($category, $hiddenCategoryIds))
                 $currentHiddenCategories[] = $category;
         }
+        //Get all of our non hidden categories
+        $allcategories = Category::where('hidden', '=', 0)->get();
+        //Max categories
+        $max_categories = Setting::fetch('max_categories');
         //Pull our email templates
         $emailTemplates = EmailTemplate::where('author', '=', Auth::consoleuser()->get()->cid)->orderBy('name', 'DESC')->get();
         $sharedEmailTemplates = EmailTemplate::where('author', '!=', Auth::consoleuser()->get()->cid)->where('public', '=', '1')->orderBy('name', 'DESC')->get();
-        return View::make('console.va')->with(array('va' => $va, 'banner' => $banner, 'audit_log' => $audit_log, 'banner_maxwidth' => $banner_maxwidth, 'banner_maxheight' => $banner_maxheight, 'tickets' => $tickets, 'emailTemplates' => $emailTemplates, 'sharedEmailTemplates' => $sharedEmailTemplates, 'hiddenCategories' => $hiddenCategories, 'currentHiddenCategories' => $currentHiddenCategories));
+        return View::make('console.va')->with(array('va' => $va, 'banner' => $banner, 'audit_log' => $audit_log, 'banner_maxwidth' => $banner_maxwidth, 'banner_maxheight' => $banner_maxheight, 'tickets' => $tickets, 'emailTemplates' => $emailTemplates, 'sharedEmailTemplates' => $sharedEmailTemplates, 'hiddenCategories' => $hiddenCategories, 'currentHiddenCategories' => $currentHiddenCategories, 'categories' => $allcategories, 'currentCategories' => $categories, 'max_categories' => $max_categories));
     }
 
     public function get_vaupdatestatus($id, $status) {

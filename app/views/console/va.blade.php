@@ -454,16 +454,37 @@
         <div id="categories" class="tab-pane fade in">
             <div style="margin-top: 35px;" class="row">
                 <div class="col-lg-7">
-                    <div class="alert alert-info">Selecting any of the following hidden categories will manually add the VA to this category.</div>
                     @if (count($hiddenCategories) > 0)
                     <div class="well">
-                        <form method="POST" action="{{ URL::route('consolevahiddencategoriessave') }}">
+                        <h4 id="hiddenCategoriesBtn">Hidden Categories <i class="fa fa-plus fa-fw"></i></h4>
+                        <hr />
+                        <form id="hiddenCategoriesForm" style="display: none;" method="POST" action="{{ URL::route('consolevahiddencategoriessave') }}">
+                            <div class="alert alert-info">Selecting any of the following hidden categories will manually add the VA to this category.</div>
                             <input type="hidden" name="_token" value="{{ csrf_token() }}" />
                             <input type="hidden" name="cid" value="{{ $va->cid }}" />
                             @foreach ($hiddenCategories as $category)
                             <div class="form-group">
                                 <label for="checkbox{{{ $category->id }}}">{{{ $category->name }}}: </label>
                                 <input name="hiddenCategories[]" id="checkbox{{{ $category->id }}}" type="checkbox" value="{{{ $category->id }}}" @if (in_array($category->id, $currentHiddenCategories)) checked="checked" @endif class="checkbox-inline" />
+                            </div>
+                            @endforeach
+                            <div class="form-actions">
+                                <input type="submit" class="btn btn-success" value="Save" />
+                            </div>
+                        </form>
+                    </div>
+                    @endif
+                    @if (count($categories) > 0 )
+                    <div class="well">
+                        <h4 id="publicCategoriesBtn">Public Categories <i class="fa fa-plus fa-fw"></i></h4>
+                        <hr />
+                        <form id="publicCategoriesForm" style="display: none;" method="POST" action="">
+                            <div class="alert alert-info">Max Category Limit: <strong>{{{ $max_categories }}}</strong></div>
+                            <input type="hidden" name="_token" value="{{ csrf_token() }}" />
+                            @foreach ($categories as $category)
+                            <div class="form-group">
+                                <input id="{{{ $category->name }}}-{{{ $category->id }}}" name="categories[]" class="checkbox-inline" type="checkbox" value="{{{ $category->id }}}" @if (in_array($category->id, $currentCategories)) checked="checked" @endif />
+                                <label for="{{{ $category->name}}}-{{{ $category->id }}}">{{{ $category->name }}}</label>
                             </div>
                             @endforeach
                             <div class="form-actions">
@@ -481,7 +502,7 @@
                     @if (empty($banner))
                     <p id="errorBannerEmpty" style="display: none;" class="alert alert-danger">You must select an image to upload. Please try again.</p>
                     <p id="errorBannerInvalidType" style="display: none;" class="alert alert-danger">Invalid file type. Please upload a jpg or png image only.</p>
-                    <form id="uploadBannerForm" action="{{ URL::route('consoleuploadbanner') }}" enctype="multipart/form-data" method="POST" id="banner-form" class="form-inline">
+                    <form action="{{ URL::route('consoleuploadbanner') }}" enctype="multipart/form-data" method="POST" id="banner-form" class="form-inline">
                         <input type="hidden" name="_token" value="{{ csrf_token(); }}" />
                         <input type="hidden" name="va" value="{{{ $va->cid }}}" />
                         <div class="control-group">
@@ -705,5 +726,13 @@ $('#inputRemoveVASelectTemplate').on('change', function() {
     CKEDITOR.instances.inputRemoveVABody.setData($(this).val());
     $('#inputRemoveVASubject').val($('#inputRemoveVASelectTemplate option:selected').attr('data-subject'));
 })
+
+$('#hiddenCategoriesBtn').on('click', function() {
+    $('#hiddenCategoriesForm').slideToggle('fast');
+});
+$('#publicCategoriesBtn').on('click', function() {
+    $('#publicCategoriesForm').slideToggle('fast');
+});
+
 @endsection
 @include('console.core.footer')
