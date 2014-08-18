@@ -11,4 +11,14 @@ class Assignment extends Eloquent {
         return $assignmentscount;
     }
 
+    static public function getReadableStatus($status) {
+        if ($status = 0)
+            $return = 'Pending';
+        if ($status = 1)
+            $return = 'In Progress';
+        else
+            $return = 'Unknown';
+        return $return;
+    }
+
 }

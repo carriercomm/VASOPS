@@ -1136,13 +1136,19 @@ class ConsoleController extends BaseController {
         foreach ($assignments as $assignment) {
             $vas = $assignment->vas;
             $vas = explode(',', $vas);
-            //Remove the last empty valuee
-
+            //Remove the last empty value
             $vascount = count($vas) - 1;
             unset($vas[$vascount]);
+            //Get our current VAs in progress into an array
+            $vasInProgress = explode(',', $assignment->vas_in_progress);
+            $vasInProgressCount = count($vas) - 1;
+            unset($vasInProgress[$vasInProgressCount]);
             foreach ($vas as $va) {
                 $result = User::findOrFail($va);
-                $vaslist[] = array('cid' => $va, 'vaname' => $result->vaname, 'assignmentid' => $assignment->id);
+                $status = 0;
+                if (in_array($va, $vasInProgress))
+                    $status = 1;
+                $vaslist[] = array('cid' => $va, 'vaname' => $result->vaname, 'assignmentid' => $assignment->id, 'status' => $status);
             }
         }
         //Is our user an administrator?
@@ -1223,6 +1229,31 @@ class ConsoleController extends BaseController {
         return Redirect::route('consoleassignments')->with('message', 'Audit completed. Assignment Updated Successfully.');
     }
 
+    public function get_assignmentsinprogress($assignment, $va) {
+        //Ensure both variables are present
+        if (empty($assignment) || empty($va))
+            return Redirect::route('consoleassignments')->with('message', 'Missing GET parameters ($assignment, $va)');
+        //Verify the assignment exists and this member is assigned to this assignment
+        $assignment = Assignment::findOrFail($assignment);
+        $assigned = explode(',', $assignment->auditors);
+        if (!in_array(Auth::consoleuser()->get()->cid, $assigned))
+            return Redirect::route('consoleassignments')->with('message', 'Permission Denied. Auditor not assigned to this assignment.');
+        //Get current VAs in progress
+        $current = $assignment->vas_in_progress;
+        $current = explode(',', $current);
+        array_pop($current);
+        if (in_array($va, $current)) {
+            //Strange. not sure why that would be in there already, but let's go ahead and just redirect and advise it was successful
+            return Redirect::to('/console/assignments')->with('message', 'VA Audit set to In Progress successfully.');
+        }
+        $current = implode(',', $current) . ',';
+        $current .= $va . ',';
+        //Save it
+        $assignment->vas_in_progress = $current;
+        $assignment->save();
+        //Alright sweet all good
+        return Redirect::to('/console/assignments')->with('message', 'VA Audit set to In Progress successfully.');
+    }
     public function post_emailva($cid) {
         //Verify the VA CID is valid
         $va = User::findOrFail($cid);

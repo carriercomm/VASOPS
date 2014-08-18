@@ -58,9 +58,9 @@
             <h3>Complete Audits</h3>
             <div class="table-responsive">
                 <table class="table table-responsive">
-                    <tr><th>Assignment ID</th><th>VA Name</th><th>Audit VA</th><th>Mark Complete</th></tr>
+                    <tr><th>Assignment ID</th><th>Status</th><th>VA Name</th><th>Audit VA</th><th>Mark In Progress</th><th>Mark Complete</th></tr>
                     @foreach ($vasList as $va)
-                    <tr><td>{{{ $va['assignmentid'] }}}</td><td>{{{ $va['vaname'] }}}</td><td><a target="_blank" href="{{ URL::route('console') }}/va/{{{ $va['cid'] }}}"><button class="btn btn-info"><i class="fa fa-pencil fa-fw"></i> VA Profile</button></a></td><td><a href="{{ URL::route('consoleassignments') }}/complete/{{{ $va['assignmentid'] }}}/{{{ $va['cid'] }}}"><button class="btn btn-primary"><i class="fa fa-check-circle-o fa-fw"></i> Mark Complete</button></a></td></tr>
+                    <tr><td>{{{ $va['assignmentid'] }}}</td><td>@if ($va['status'] == 1) <span class="label label-warning">In Progress</span> @elseif ($va['status'] == 0) <span class="label label-default">Pending</span> @endif</td><td>{{{ $va['vaname'] }}}</td><td><a target="_blank" href="{{ URL::route('console') }}/va/{{{ $va['cid'] }}}"><button class="btn btn-info"><i class="fa fa-pencil fa-fw"></i> VA Profile</button></a></td><td><a href="{{ URL::route('consoleassignments') }}/inprogress/{{{ $va['assignmentid'] }}}/{{{ $va['cid'] }}}"><button class="btn btn-primary" @if ($va['status'] == 1) disabled="disabled" @endif><i class="fa fa-flag fa-fw"></i> Mark In Progress</button></a></td><td><a href="{{ URL::route('consoleassignments') }}/complete/{{{ $va['assignmentid'] }}}/{{{ $va['cid'] }}}"><button class="btn btn-success"><i class="fa fa-check-circle-o fa-fw"></i> Mark Complete</button></a></td></tr>
                     @endforeach
                 </table>
             </div>

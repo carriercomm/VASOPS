@@ -85,6 +85,7 @@ Route::post('console/uploadbanner', array('as' => 'consoleuploadbanner', 'uses' 
 Route::post('console/removebanner', array('as' => 'consoleremovebanner', 'uses' => 'ConsoleController@post_removebanner', 'before' => 'consoleauth|csrf'));
 Route::get('console/assignments', array('as' => 'consoleassignments', 'uses' => 'ConsoleController@get_assignments', 'before' => 'consoleauth'));
 Route::get('console/assignments/complete/{assignment}/{va}', array('as' => 'consoleassignmentscomplete', 'uses' => 'ConsoleController@get_assignmentscomplete', 'before' => 'consoleauth'));
+Route::get('console/assignments/inprogress/{assignment}/{va}', array('as' => 'consoleassignmentsinprogress', 'uses' => 'ConsoleController@get_assignmentsinprogress', 'before' => 'consoleauth'));
 Route::post('console/va/email/{id}', array('as' => 'consoleemailva', 'uses' => 'ConsoleController@post_emailva', 'before' => 'consoleauth|csrf'));
 Route::get('console/stats', array('as' => 'consolestats', 'uses' => 'ConsoleController@get_stats', 'before' => 'consoleauth'));
 Route::get('console/profile', array('as' => 'consoleprofile', 'uses' => 'ConsoleController@get_profile', 'before' => 'consoleauth'));
