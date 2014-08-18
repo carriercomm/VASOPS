@@ -478,9 +478,10 @@
                     <div class="well">
                         <h4 id="publicCategoriesBtn">Public Categories <i class="fa fa-plus fa-fw"></i></h4>
                         <hr />
-                        <form id="publicCategoriesForm" style="display: none;" method="POST" action="">
+                        <form id="publicCategoriesForm" style="display: none;" method="POST" action="{{ URL::route('consolevapubliccatgoriessave') }}">
                             <div class="alert alert-info">Max Category Limit: <strong>{{{ $max_categories }}}</strong></div>
                             <input type="hidden" name="_token" value="{{ csrf_token() }}" />
+                            <input type="hidden" name="cid" value="{{ $va->cid }}" />
                             @foreach ($categories as $category)
                             <div class="form-group">
                                 <input id="{{{ $category->name }}}-{{{ $category->id }}}" name="categories[]" class="checkbox-inline" type="checkbox" value="{{{ $category->id }}}" @if (in_array($category->id, $currentCategories)) checked="checked" @endif />

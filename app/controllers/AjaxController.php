@@ -115,7 +115,18 @@ class AjaxController extends BaseController {
             $vas->country = $post['inputCountry'];
             $vas->name = $post['inputName'];
             $vas->email = $post['inputEmail'];
+            //We need to check and see if any hidden categories are currently included in the categories string and add them to our new string if so
+            $currentCategories = explode(',', $vas->categories);
+            array_pop($currentCategories);
+            //Get a list of hidden categories
+            $appendlist = '';
+            foreach ($currentCategories as $currentCategory) {
+                if (Category::isHiddenCategory($currentCategory)) {
+                    $appendlist .= $currentCategory . ',';
+                }
+            }
             $vas->categories = implode (",", $post['inputCategory']) . ',';
+            $vas->categories .= $appendlist;
             //Save our data
             $vas->save();
 

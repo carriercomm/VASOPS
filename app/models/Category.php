@@ -55,4 +55,17 @@ class Category extends Eloquent {
         }
         return false;
     }
+
+    /**
+     * Returns an array of all hidden categories
+     * @return array
+     */
+    static public function getHiddenCategoriesArray() {
+        $categories = Category::where('hidden', '=', 1)->get();
+        $hiddenCategories = array();
+        foreach ($categories as $category) {
+            $hiddenCategories[$category->id] = $hiddenCategories->name;
+        }
+        return $hiddenCategories;
+    }
 }

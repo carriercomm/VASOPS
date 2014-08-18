@@ -1348,6 +1348,48 @@ class ConsoleController extends BaseController {
 
     }
 
+    public function post_vapubliccategoriessave() {
+        $cid = Input::get('cid');
+        $user = User::findOrFail($cid);
+        $categories = Input::get('categories');
+        if (empty($categories))
+            $categories = '';
+        //Fuck it. Let's just start the validator
+        $validator = Validator::make(array(
+            'categories' => $categories,
+        ), array(
+            'categories' => 'max: ' . Setting::fetch('max_categories'),
+        ), array(
+            'categories.max' => 'You have selected more than :max categories.',
+        ));
+        if ($validator->fails())
+        {
+            // The given data did not pass validation
+            $messages = $validator->messages();
+            $errorStr = '';
+            foreach ($messages->all('<li>:message</li>') as $message)
+            {
+                $errorStr .=  $message;
+            }
+            return Redirect::to('console/va/' . $cid . '#categories')->with('message', $errorStr);
+        }
+        //We need to check and see if any hidden categories are currently included in the categories string and add them to our new string if so
+        $currentCategories = explode(',', $user->categories);
+        array_pop($currentCategories);
+        //Get a list of hidden categories
+        $appendlist = '';
+        foreach ($currentCategories as $currentCategory) {
+            if (Category::isHiddenCategory($currentCategory)) {
+                $appendlist .= $currentCategory . ',';
+            }
+        }
+        $categories = implode(',', $categories);
+        $categories .= ',' . $appendlist;
+        $user->categories = $categories;
+        $user->save();
+        return Redirect::to('console/va/' . $cid . '#categories')->with('message', 'Public Categories Saved Successfully.');
+    }
+
     public function post_flagvaawaitingresponse() {
         $vaid = Input::get('vaid');
         //Verify this is a valid VA
