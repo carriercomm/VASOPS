@@ -1062,7 +1062,7 @@ class ConsoleController extends BaseController {
         $categories = Category::all();
         $vaInCategories = array();
         foreach ($categories as $category) {
-            $vaInCategories[$category->id] = User::where('categories', 'like', '%' . $category->id . ',%')->count();
+            $vaInCategories[$category->id] = User::where('categories', 'like', '%' . $category->id . ',%')->where('status', '>', -1)->count();
         }
         //Fetch a list of active auditors
         $auditors = ConsoleUser::where('access', '>', '-1')->get();
@@ -1101,7 +1101,7 @@ class ConsoleController extends BaseController {
         $auditors = implode(',', $auditors) . ',';
         $vas = '';
         foreach ($categories as $category) {
-            $query = User::where('categories', 'like', '%' . $category . ',%')->get();
+            $query = User::where('categories', 'like', '%' . $category . ',%')->where('status', '>', -1)->get();
             foreach ($query as $va) {
                 $vas = $vas . $va->cid . ',';
             }
