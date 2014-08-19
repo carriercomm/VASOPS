@@ -167,7 +167,7 @@
 
             });
 
-            $('#vaNameField').on('click', function(){
+            $('#vaNameField, #vaNameLabel').on('click', function(){
                 $('#vaNameField').hide();
                 $('#vaNameInputDiv').fadeIn('fast');
             });
@@ -176,7 +176,7 @@
                 $('#vaNameField').fadeIn();
             })
 
-            $('#vaEmailField').on('click', function(){
+            $('#vaEmailField, #vaEmailLabel').on('click', function(){
                 $('#vaEmailField').hide();
                 $('#vaEmailInputDiv').fadeIn('fast');
             });
@@ -185,7 +185,7 @@
                 $('#vaEmailField').fadeIn();
             })
 
-            $('#vaUrlField').on('click', function(){
+            $('#vaUrlField, #vaUrlLabel').on('click', function(){
                 $('#vaUrlField').hide();
                 $('#vaUrlInputDiv').fadeIn('fast');
             });
@@ -194,7 +194,7 @@
                 $('#vaUrlField').fadeIn();
             })
 
-            $('#vaVatsimImagePageLinkField').on('click', function(){
+            $('#vaVatsimImagePageLinkField, #vaVatsimImagePageLinkLabel').on('click', function(){
                 $('#vaVatsimImagePageLinkField').hide();
                 $('#vaVatsimImagePageLinkInputDiv').fadeIn('fast');
             });
@@ -203,7 +203,7 @@
                 $('#vaVatsimImagePageLinkField').fadeIn();
             })
 
-            $('#vaCountryField').on('click', function() {
+            $('#vaCountryField, #vaCountryLabel').on('click', function() {
                 $('#vaCountryField').hide();
                 $('#vaCountryInputDiv').fadeIn();
             })
@@ -212,7 +212,7 @@
                 $('#vaCountryField').fadeIn();
             })
 
-            $('#vaDescriptionField').on('click', function(){
+            $('#vaDescriptionField, #vaDescriptionLabel').on('click', function(){
                 $('#vaDescriptionField').hide();
                 $('#vaDescriptionInputDiv').fadeIn('fast');
             });

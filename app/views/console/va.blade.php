@@ -71,7 +71,7 @@
                 <td><h4><small>vaid</small></h4></td><td><h4>{{{ $va->cid }}}</h4></td>
             </tr>
             <tr>
-                <td><h4><small>name</small></h4></td>
+                <td id="vaNameLabel"><h4><small>name</small></h4></td>
                 <td>
                     <h4 id="vaNameField">{{{ $va->name }}}</h4>
                     <form>
@@ -88,7 +88,7 @@
                 </td>
             </tr>
             <tr>
-                <td><h4><small>email</small></h4></td><td><h4 id="vaEmailField">{{{ $va->email }}}</h4>
+                <td id="vaEmailLabel"><h4><small>email</small></h4></td><td><h4 id="vaEmailField">{{{ $va->email }}}</h4>
                     <form>
                         <div class="input-group" style="display: none;" id="vaEmailInputDiv">
                             <input class="form-control" id="vaEmailInput" type="text" value="{{{ $va->email }}}" />
@@ -103,7 +103,7 @@
                 </td>
             </tr>
             <tr>
-                <td><h4><small>url</small></h4></td><td><h4 id="vaUrlField">{{{ $va->url }}}</h4>
+                <td id="vaUrlLabel"><h4><small>url</small></h4></td><td><h4 id="vaUrlField">{{{ $va->url }}}</h4>
                     <form>
                         <div class="input-group" style="display: none;" id="vaUrlInputDiv">
                             <input class="form-control" id="vaUrlInput" type="text" value="{{{ $va->url }}}" />
@@ -120,7 +120,7 @@
                 </td>
             </tr>
             <tr>
-                <td><h4><small>linkback url</small></h4></td><td><h4 id="vaVatsimImagePageLinkField">{{{ $va->vatsimimagepagelink }}}</h4>
+                <td id="vaVatsimImagePageLinkLabel"><h4><small>linkback url</small></h4></td><td><h4 id="vaVatsimImagePageLinkField">{{{ $va->vatsimimagepagelink }}}</h4>
                     <form>
                         <div class="input-group" style="display: none;" id="vaVatsimImagePageLinkInputDiv">
                             <input class="form-control" id="vaVatsimImagePageLinkInput" type="text" value="{{{ $va->vatsimimagepagelink }}}" />
@@ -135,7 +135,7 @@
                 </td>
             </tr>
             <tr>
-            <td><h4><small>country</small></h4></td><td><h4 id="vaCountryField">{{{ $va->country }}}</h4>
+            <td id="vaCountryLabel"><h4><small>country</small></h4></td><td><h4 id="vaCountryField">{{{ $va->country }}}</h4>
             <form>
             <div class="input-group" style="display: none;" id="vaCountryInputDiv">
             <select class="form-control" id="vaCountryInput">
@@ -384,7 +384,7 @@
             </td>
             </tr>
             <tr>
-                <td><h4><small>description</small></h4></td><td><h4 id="vaDescriptionField">{{{ $va->description }}}</h4>
+                <td id="vaDescriptionLabel"><h4><small>description</small></h4></td><td><h4 id="vaDescriptionField">{{{ $va->description }}}</h4>
                     <form>
                         <div class="input-group" style="display: none;" id="vaDescriptionInputDiv">
                             <input class="form-control" id="vaDescriptionInput" type="text" value="{{{ $va->description }}}" />
