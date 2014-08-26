@@ -9,6 +9,7 @@
         <ul id="VaTabs" class="nav nav-tabs">
             <li class="active"><a href="#status" data-toggle="tab">Status</a></li>
             <li><a href="#editva" data-toggle="tab">Edit VA</a></li>
+            <li><a href="#roster" data-toggle="tab">Roster</a></li>
             <li><a href="#banner" data-toggle="tab">Banner</a></li>
             <li><a href="#clicks" data-toggle="tab">Clicks</a></li>
             <li><a href="#help" data-toggle="tab">Help</a></li>
@@ -367,6 +368,18 @@
                 </div>
                 <div style="display: none;" id="applyClosingFormTag">
                     </form>
+                </div>
+                <div class="tab-pane fade in" id="roster">
+                    <h3 style="margin-bottom: 15px;">Roster</h3>
+                    @if (!empty($va->rosterdata))
+                    <div class="well">
+                        {{ $va->rosterdata }}
+                    </div>
+                    @elseif (!empty($va->rosterfile))
+                    <pre>Download Roster File: <a href="{{ URL::to('/') }}{{{ Setting::fetch('roster_directory') }}}/{{{ $va->rosterfile }}}" download="{{{ $va->rosterfile }}}">Click Here</a></pre>
+                    @else
+                    <div class="alert alert-warning">No roster data linked to your VA.</div>
+                    @endif
                 </div>
                 <div class="tab-pane fade in" id="banner">
                     <h3 style="margin-bottom: 15px;">Banner</h3>
