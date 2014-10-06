@@ -20,26 +20,36 @@
 <div class="span12">
 <div id="applyStep1">
     <div class="well">
+        Participation in flight simulation as a member of a virtual airline is a desire of many pilots.  There are many virtual airlines from which to choose and pilots visit the VATSIM website seeking information about joining a VA. It is relatively easy to form a virtual airline, however, it is much more difficult to build and maintain a management structure that ensures a consistent and evolving airline experience for its members over time.<br /><br />
+
+        Becoming a VATSIM Virtual Airline Partner entails recognition of the concept that the environment offered by VATSIM is a valuable enhancement to flight simulation, and is a commitment by the VA to maintain the quality of the network flight experience.<br /><br />
+
+        Virtual Airlines that are recognized as official VATSIM VA Partners have been certified as meeting and maintaining basic standards establishing them as quality organizations for a  prospective pilot to consider joining.<br /><br /><br />
+
         All airlines listed in the VATSIM database must meet these basic requirements:<br /><br /><br />
-        (1) The airline management supports VATSIM and encourages their pilots to use VATSIM approved software for flying on the VATSIM network.<br /><br />
+        <strong>(1) Management supports VATSIM and encourages pilots to fly online</strong> As on online flight simulation network our mission is to provide an aviation      experience for pilots and air traffic controllers.  Encouraging and sustaining use of the network is the primary means of achieving this goal.  Therefore, we want to partner with virtual airlines that make it a policy for their pilots to fly their flights with the airline online.<br /><br />
 
-        (2) Many of their pilots regularly fly online, giving the airline a presence on the VATSIM network. The requirement is a minimum of ten pilots who have flown on VATSIM under your VA callsign within the last 90 days<br /><br />
+        <strong>(2) VA in existence minimum of six months</strong> Virtual Airlines are created all the time but many fail to either achieve a critical mass of members or maintain the management commitment for a significant period of time and are quickly abandoned.  A VA that has been in existence for six months or more is likely to have overcome the initial problems that doom many startups.<br /><br />
 
-        (3) The airline must have been in existence for at least three months. The three month period starts when your VA is fully functional and open for new pilots to sign up.<br /><br />
+        <strong>(3) 20+ pilots with VATSIM PIDs listed in an accessible roster</strong> The presence of at least twenty pilots on a VA’s roster indicates that it has achieved some level of acceptance in the pilot community.  Partner VAs are subject to periodic audits by VATSIM Audit Managers to ensure that they are maintaining the requirements for said status.  To facilitate these audits, VATSIM Pilot Identification numbers must be available to the audit managers on a roster that is publicly accessible on the VA website.  It would be beneficial as well if pilot roster entries were linked to a source such as www.vataware.com or www.vatstats.net <br /><br />
 
-        (4) Each airline has 10 or more pilots with a verified VATSIM PID/CID, listed in an easy to find roster or rosters (if hub based), who fly actively on the VATSIM Network. If your roster is not easily visible, send us a list with PID/CID. <strong>Those virtual airlines that use VA Financials must open a support ticket containing their roster of pilots who use VATSIM accompanied by their CID.</strong><br /><br />
+        <strong>(4) Minimum 15 pilots using VA call sign online in 90 day period</strong> Having pilots utilize the VATSIM network while conducting VA flights is why the network exists.  This requirement demonstrates that the Virtual Airline Partner is focused on online flying.<br /><br />
 
-        (5) Each airline displays a VATSIM logo, with link, on their website homepage, preferably in a conspicuous location. This is usually the front page or alternatively in a Partners page linked from the main page. VATSIM logos can now be found by navigating here: http://www.vatsim.net/network/docs/library/, then log in, then navigate to VATSIM logos on the left hand side".<br /><br />
+        <strong>(5) VA use of single callsign prefix</strong>      In order to ensure accurate tracking of online activity for audit purposes, a VA must utilize a single callsign prefix for flights conducted by its pilots.  Note-this is not to be construed as granting a VA exclusive right to utilize a particular callsign.<br /><br />
 
-        (6) The VA must have a dedicated website. No free website services are permitted.<br /><br />
+        <strong>(6) Display VATSIM logo on website with a link to www.vatsim.net</strong> We display your banner as a partner airline and require that you display ours.  The VATSIM logo must be featured either on the VA website homepage or in a clearly marked Partners section.<br /><br />
 
-        (7) All VAs must maintain an active email address from which they can be contacted by VATSIM officials.<br /><br />
+        <strong>(7) Virtual Airlines may not have identical names</strong> Each partner airline will have a distinct name for its listing and no other VA may utilize the exact same name.<br /><br />
 
-        (8) As a VA Partner, each VA will maintain decorum and respect both on the VATSIM network and in their own website communications regarding comments, discussions and interactions with other VATSIM members and participants.<br /><br />
+        <strong>(8) Active email address</strong> VATSIM managers must be able to contact an official from each VA Partner.  Every VA must provide an official’s email address where contact messages can be sent.  It will be the responsibility of the VA to update that contact information when necessary.<br /><br />
+
+        <strong>(9) Software installed on client’s user system</strong> Any software that VA members need to install to fulfill work for the VA must follow any data restrictions VATSIM imposes to secure the online system. Therefore, while online, no data collection beyond that necessary to fulfill the online flight task shall be collected.  In addition, the VA will not permit any pirated and/or copyright protected documents, charts, or other files or programs to be posted on or linked from its site without having received prior authorization from the legal owner of said material permitting such use.<br /><br />
+
+        <strong>(10) Behavior</strong> As a VA Partner, each VA will maintain decorum and respect both on the VATSIM network and in their own website communications regarding comments, discussions and interactions with other VATSIM members and participants. <br /><br />
 
         *ALSO NOTE*<br /><br />
 
-        A) VAs, when applying for partnership, must include all the requested information from above to help the application be processed promptly. To apply for affiliation, use the form below.<br /><br />
+        A) VAs, when applying for partnership, must include all the requested information from above in order for the application be processed promptly. To apply for affiliation, use the form below.<br /><br />
 
         B) An airline may be removed from the database at any time for any valid reason as deemed by VATSIM officials to include, but not limited to: Dead links, bad email addresses, continuous misbehavior by pilots on the network, or failure to adhere to the above stated affiliation requirements.<br /><br />
     </div>
