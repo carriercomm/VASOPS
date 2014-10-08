@@ -1437,6 +1437,56 @@ class ConsoleController extends BaseController {
         $va->save();
     }
 
+    public function get_email() {
+        //Get our pending and active VA count
+        $active = User::where('status', '=', '1')->count();
+        $pending = User::where('status', '=', '0')->count();
+        //Return our view
+        return View::make('console.email')->with(array('activeCount' => $active, 'pendingCount' => $pending));
+    }
+
+    public function post_email() {
+        //Get our form values
+        $recipients = Input::get('inputRecipients');
+        $subject = Input::get('inputSubject');
+        $body = Input::get('inputBody');
+        //Here we go
+        if ($recipients == 0) {
+            $vas = User::where('status', '=', 0)->get();
+        }
+        elseif ($recipients == 1) {
+            $vas = User::where('status', '=', 1)->get();
+        }
+        elseif ($recipients == 2) {
+            $vas = User::where('status', '=', 0)->orWhere('status', '=', 1)->get();
+        }
+        if (empty($vas)) {
+            //Damn them they somehow didn't select a VA what idiots
+            return Redirect::route('consoleemail')->with('message', 'Please select a recipient group');
+        }
+        if (empty($subject)) {
+            return Redirect::route('consoleemail')->with('message', 'Please enter a subject');
+        }
+        if (empty($body)) {
+            return Redirect::route('consoleemail')->with('message', 'Please enter an email body');
+        }
+        //Debug
+        $vas = User::where('cid', '=', '1095510')->get();
+        $i = 0;
+        foreach ($vas as $va) {
+            $body = EmailTemplate::replaceContent($body, $va->cid);
+            $subject = EmailTemplate::replaceContent($subject, $va->cid);
+            //Replace the email body variables
+            $data = array('va' => $va, 'subject' => $subject);
+            //Alright. Time to do some email sending.
+            Mail::send('email.default', array("content" => $body), function($message) use ($data) {
+                $message->to($data['va']->email, $data['va']->name)->subject($data['subject']);
+            });
+            $i += 1;
+        }
+        return Redirect::route('consoleemail')->with('message', 'Email successfully sent to <strong>' . $i . '</strong> vas.');
+    }
+
 
     //Admin maintenance functions
 

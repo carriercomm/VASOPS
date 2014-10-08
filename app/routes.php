@@ -124,6 +124,8 @@ Route::get('console/admin/import', array('as' => 'consoleadminimport', 'uses' =>
 Route::get('console/admin/bannerimport', array('as' => 'consoleadminbannerimport', 'uses' => 'ConsoleController@get_adminbannerimport', 'before' => 'consoleauth1'));
 Route::get('console/emailtemplates/edit/system/{id}', array('as' => 'consoleemailtemplateeditsystem', 'uses' => 'ConsoleController@get_systememailtemplatedit', 'before' => 'consoleauth1'));
 Route::post('console/emailtemplates/system/edit', array('as' => 'consolesystememailtemplatesave', 'uses' => 'ConsoleController@post_systememailtemplatesave', 'before' => 'consoleauth1|csrf'));
+Route::get('console/email', array('as' => 'consoleemail', 'uses' => 'ConsoleController@get_email', 'before' => 'consoleauth1'));
+Route::post('console/email', array('as' => 'consoleemailsend', 'uses' => 'ConsoleController@post_email', 'before' => 'consoleauth1|csrf'));
     //------AJAX---------
     Route::post('console/categories/deletechild', array('as' => 'consolecategoriesdeletechild', 'uses' => 'ConsoleController@post_categoriesdeletechild', 'before' => 'consoleauth1|csrf'));
     Route::post('console/categories/deleteparent', array('as' => 'consolecategoriesdeleteparent', 'uses' => 'ConsoleController@post_categoriesdeleteparent', 'before' => 'consoleauth1|csrf'));
