@@ -1470,8 +1470,6 @@ class ConsoleController extends BaseController {
         if (empty($body)) {
             return Redirect::route('consoleemail')->with('message', 'Please enter an email body');
         }
-        //Debug
-        $vas = User::where('cid', '=', '1095510')->get();
         $i = 0;
         foreach ($vas as $va) {
             $body = EmailTemplate::replaceContent($body, $va->cid);
