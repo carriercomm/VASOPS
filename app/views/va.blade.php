@@ -391,6 +391,7 @@
                         <div style="margin-top: 8px;"><input type="file" id="inputUploadVARoster" name="inputUploadVARoster"></div>
                     </div>-->
                     @endif
+                    <strong>Please submit any roster data via a help desk ticket.</strong>
                 </div>
                 <div class="tab-pane fade in" id="banner">
                     <h3 style="margin-bottom: 15px;">Banner</h3>

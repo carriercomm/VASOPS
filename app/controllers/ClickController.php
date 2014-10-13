@@ -23,6 +23,13 @@ class ClickController extends BaseController {
                 $click->ip = Request::getClientIp();
                 $click->save();
             }
+            else {
+                //No click found by that same IP at all. Let's insert into the DB
+                $click = new Click;
+                $click->vid = $id;
+                $click->ip = Request::getClientIp();
+                $click->save();
+            }
         }
         //Finally redirect the user to the VA URL
         return Redirect::to($va->url);
