@@ -35,7 +35,7 @@
 
         <strong>(4) Minimum 15 pilots using VA call sign online in 90 day period</strong> Having pilots utilize the VATSIM network while conducting VA flights is why the network exists.  This requirement demonstrates that the Virtual Airline Partner is focused on online flying.<br /><br />
 
-        <strong>(5) VA use of single callsign prefix</strong>      In order to ensure accurate tracking of online activity for audit purposes, a VA must utilize a single callsign prefix for flights conducted by its pilots.  Note-this is not to be construed as granting a VA exclusive right to utilize a particular callsign.<br /><br />
+        <strong>(5) VA use of single callsign prefix</strong>In order to ensure accurate tracking of online activity for audit purposes, a VA must utilize a single callsign prefix for flights conducted by its pilots.  Note-this is not to be construed as granting a VA exclusive right to utilize a particular callsign. <br /><br />
 
         <strong>(6) Display VATSIM logo on website with a link to www.vatsim.net</strong> We display your banner as a partner airline and require that you display ours.  The VATSIM logo must be featured either on the VA website homepage or in a clearly marked Partners section.<br /><br />
 
