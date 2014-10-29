@@ -541,8 +541,7 @@ class AjaxController extends BaseController {
 
     public function post_searchvas() {
         $query = Input::get('query');
-
-        $vas = User::where('vaname', 'like','%' . $query . '%')->where('status', '=', '1')->orderBy('vaname', 'ASC')->get();
+        $vas = User::where('vaname', 'like','%' . $query . '%')->orWhere('description','like', '%' . $query . '%')->orWhere('url', 'like' ,'%' . $query . '%')->orWhere('url', 'like','%'. $query . '%')->where('status', '=', '1')->orderBy('vaname', 'ASC')->get();
         if (count($vas) == 0 || empty($query) || $query == " ") {
             echo '<h4>No Virtual Airlines Found.</h4>';
         }

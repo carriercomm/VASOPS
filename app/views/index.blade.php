@@ -461,7 +461,7 @@
             <div class="control-group">
                 <div class="controls">
                     <div style="width: 100%;" class="input-append">
-                    <input id="ajaxSearchVAs" style="width: 100%;" class="input-large" type="text" placeholder="Virtual Airline Name..." />
+                    <input id="ajaxSearchVAs" style="width: 100%;" class="input-large" type="text" placeholder="Virtual Airline Name, Description, or Website..." />
                     <span class="add-on"><i class="fa fa-search fa-fw"></i></span>
                     </div>
                 </div>
