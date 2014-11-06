@@ -541,7 +541,7 @@ class AjaxController extends BaseController {
 
     public function post_searchvas() {
         $query = Input::get('query');
-        $vas = User::where('status', '=', 1)->where(function($q)
+        $vas = User::where('status', '=', 1)->where(function($q) use ($query)
             {
                 $q->where('vaname', 'like','%' . $query . '%')->orWhere('description','like', '%' . $query . '%')->orWhere('url', 'like' ,'%' . $query . '%')->orWhere('url', 'like','%'. $query . '%');
             })
