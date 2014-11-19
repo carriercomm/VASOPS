@@ -236,7 +236,7 @@
                         $('#helloUser').fadeIn('slow');
                         window.location.replace('{{ URL::route('va') }}')
                     }
-            });
+                });
             return false;
         });
 
