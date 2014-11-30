@@ -35,7 +35,7 @@
 
         <strong>(4) Minimum 15 pilots using VA call sign online in 90 day period (10 pilots for SOAs)</strong> Having pilots utilize the VATSIM network while conducting VA flights is why the network exists.  This requirement demonstrates that the Virtual Airline Partner is focused on online flying.<br /><br />
 
-        <strong>(5) VA use of single callsign prefix</strong>In order to ensure accurate tracking of online activity for audit purposes, a VA must utilize a single callsign prefix for flights conducted by its pilots.  Note-this is not to be construed as granting a VA exclusive right to utilize a particular callsign. <br /><br />
+        <strong>(5) VA use of single callsign prefix</strong> In order to ensure accurate tracking of online activity for audit purposes, a VA should utilize a single callsign prefix for flights conducted by its pilots.  Note-this is not to be construed as granting a VA exclusive right to utilize a particular callsign.  Exceptions to this requirement for Alliance VAs and others unable to comply may be granted provided the VA is able to provide a verifiable list of pilots with PID, callsign used and date of flight.<br /><br />
 
         <strong>(6) Display VATSIM logo on website with a link to www.vatsim.net</strong> We display your banner as a partner airline and require that you display ours.  The VATSIM logo must be featured either on the VA website homepage or in a clearly marked Partners section.<br /><br />
 
@@ -43,7 +43,7 @@
 
         <strong>(8) Active email address</strong> VATSIM managers must be able to contact an official from each VA Partner.  Every VA must provide an official’s email address where contact messages can be sent.  It will be the responsibility of the VA to update that contact information when necessary.<br /><br />
 
-        <strong>(9) Software installed on client’s user system</strong> Any software that VA members need to install to fulfill work for the VA must follow any data restrictions VATSIM imposes to secure the online system. Therefore, while online, no data collection beyond that necessary to fulfill the online flight task shall be collected.  In addition, the VA will not permit any pirated and/or copyright protected documents, charts, or other files or programs to be posted on or linked from its site without having received prior authorization from the legal owner of said material permitting such use.<br /><br />
+        <strong>(9) Software installed on client’s user system</strong> Any software that VA members need to install to fulfill work for the VA must follow any data restrictions VATSIM imposes to secure the online system. Therefore, while online, any data collection software or programs utilized by a VA must not interfere with, or possibly be harmful to, the VATSIM network.  In addition, the VA will not permit any pirated and/or copyright protected documents, charts, or other files or programs to be posted on or linked from its site without having received prior authorization from the legal owner of said material permitting such use. <br /><br />
 
         <strong>(10) Behavior</strong> As a VA Partner, each VA will maintain decorum and respect both on the VATSIM network and in their own website communications regarding comments, discussions and interactions with other VATSIM members and participants. <br /><br />
 
