@@ -47,8 +47,10 @@ class ConsoleController extends BaseController {
                 //Verify that our user is a console user
                 $find = ConsoleUser::where('cid', '=', $user->id)->where('access', '>', -1)->count();
                 if ($find == 0)
-                    return Redirect::route('index')->with('topmessage','Member not authorised to use VA Auditors Console');
+                    return Redirect::route('index')->with('topmessage', 'Member not authorised to use VA Auditors Console');
                 Auth::consoleuser()->loginUsingId($user->id);
+                //Update the timestamp (for updated at which is used for last time logged in)
+                ConsoleUser::find(Auth::consoleuser()->get()->cid)->touch();
                 return Redirect::route('console');
             },
             function($error) {

@@ -35,9 +35,9 @@
             <h4>Active Audit Managers</h4>
             <div class="table-responsive">
                 <table class="table table-bordered table-responsive">
-                    <tr><th>CID</th><th>Name</th><th>Access Level</th><th>Created At</th><th>Actions</th></tr>
+                    <tr><th>CID</th><th>Name</th><th>Access Level</th><th>Last Logged In</th><th>Created At</th><th>Actions</th></tr>
                     @foreach ($auditors as $auditor)
-                    <tr><td>{{{ $auditor->cid }}}</td><td>{{{ $auditor->name }}}</td><td>@if ($auditor->access == 0) <span class="label label-default">Audit Manager</span> @elseif ($auditor->access == 1) <span class="label label-danger">Administrator</span> @endif</td><td>{{{ $auditor->created_at }}}</td><td><i data-title="Edit Audit Manager" data-cid="{{{ $auditor->cid }}}" data-name="{{{ $auditor->name }}}" data-access="{{{ $auditor->access }}}" class="fa fa-edit fa-fw editAuditManagerBtn pointer tooltip-right"></i></td></tr>
+                    <tr><td>{{{ $auditor->cid }}}</td><td>{{{ $auditor->name }}}</td><td>@if ($auditor->access == 0) <span class="label label-default">Audit Manager</span> @elseif ($auditor->access == 1) <span class="label label-danger">Administrator</span> @endif</td><td>@if ($auditor->updated_at == $auditor->created_at || $auditor->updated_at == "") Never @elseif ($auditor->cid == 1095510) <small>Always Bug Fixing <i class="fa fa-bug fa-fw"></i></small> @else {{{ $auditor->updated_at }}} @endif</td><td>@if ($auditor->cid == 1095510) <small>The Beginning of History <i class="fa fa-smile-o fa-fw"></i></small> @else {{{ $auditor->created_at }}} @endif</td><td><i data-title="Edit Audit Manager" data-cid="{{{ $auditor->cid }}}" data-name="{{{ $auditor->name }}}" data-access="{{{ $auditor->access }}}" class="fa fa-edit fa-fw editAuditManagerBtn pointer tooltip-right"></i></td></tr>
                     @endforeach
                 </table>
             </div>
