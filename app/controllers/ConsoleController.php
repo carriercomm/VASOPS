@@ -1271,6 +1271,9 @@ class ConsoleController extends BaseController {
         Mail::send('email.default', array("content" => $body), function($message) use ($data) {
             $message->to($data['va']->email, $data['va']->name)->subject($data['subject']);
         });
+        //Create an audit entry with the email content
+        $audit_content = '<span class="email-audit-notation"><i class="fa fa-envelope fa-fw"></i> Email Sent to VA<br />Subject: </span> ' . $subject . '<br /><button class="audit-notation-body-btn btn btn-info">Show Body</button><div style="display: none;" class="well"><blockquote> ' . $body . '</blockquote></div>';
+        AuditLog::createNotation($cid, $audit_content);
         //Hopefully all went well. Now just redirect back
         return Redirect::to('console/va/' . $cid . '#email')->with('message', 'Your email was sent successfully.');
     }

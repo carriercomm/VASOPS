@@ -3,7 +3,12 @@
         display: none;
     }
 }
-
+.email-audit-notation {
+    font-weight: bold;
+}
+.audit-notation-body-btn {
+    margin-top: 5px;
+}
 .label-limegreen {
     background-color: #75D1A1;
 }

@@ -719,6 +719,11 @@ if (localStorage.getItem('searchQuery') != '') {
     $('#searchInput').val(localStorage.getItem('searchQuery'));
 }
 
+$('.audit-notation-body-btn').on('click', function() {
+    $(this).hide();
+    $(this).siblings('div').slideDown();
+});
+
 $('#removeVABtn').on('click', function(e){
     e.preventDefault();
     $('#removeVAModal').modal('show');
