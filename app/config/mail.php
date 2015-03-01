@@ -54,7 +54,7 @@ return array(
 	|
 	*/
 
-	'from' => array('address' => 'vasops@vasops.vatsim.net', 'name' => 'VATSIM VASOPS'),
+	'from' => array('address' => 'no-reply@vasops.vatsim.net', 'name' => 'VATSIM VASOPS'),
 
 	/*
 	|--------------------------------------------------------------------------
