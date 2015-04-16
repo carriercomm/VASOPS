@@ -1450,6 +1450,27 @@ class ConsoleController extends BaseController {
         return View::make('console.email')->with(array('activeCount' => $active, 'pendingCount' => $pending));
     }
 
+    public function get_transferownership() {
+        return View::make('console.transferownership');
+    }
+
+    public function post_transferownership() {
+        $data = array("currentCid" => Input::get('currentCid'), "newCid" => Input::get('newCid'));
+        //Check to see that old CID is a current VA
+        $va = User::where('cid', '=', $data["currentCid"])->count();
+        if ($va < 1) {
+            return 0;
+        }
+        $va2 = User::where('cid', '=', $data["newCid"])->count();
+        if ($va2 > 1) {
+            return 1;
+        }
+        else {
+            //Find all instances of
+            //Return our updates
+        }
+    }
+
     public function post_email() {
         //Get our form values
         $recipients = Input::get('inputRecipients');

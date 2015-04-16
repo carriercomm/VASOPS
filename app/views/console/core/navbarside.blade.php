@@ -51,6 +51,9 @@
                         <a href="{{ URL::route('consolebroadcasts') }}"> <i class="fa fa-bullhorn fa-fw"></i> Console Broadcasts</a>
                     </li>
                     <li>
+                        <a href="{{ URL::route('consoletransferownership') }}"><i class="fa fa-arrows-h fa-fw"></i> Transfer VA Ownership</a>
+                    </li>
+                    <li>
                         <a href="{{ URL::route('consoleemail') }}"><i class="fa fa-envelope fa-fw"></i> Mass Email</a>
                     </li>
                     <li>
